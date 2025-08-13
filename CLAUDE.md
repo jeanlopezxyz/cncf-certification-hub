@@ -109,7 +109,7 @@ Special groups:
 ### Deployment Configuration
 
 - **Site URL**: https://jeanlopezxyz.github.io
-- **Base Path**: /repo-cert
+- **Base Path**: /cncf-certification-hub
 - **Output**: Static HTML
 - **GitHub Pages** ready with optimized build process
 

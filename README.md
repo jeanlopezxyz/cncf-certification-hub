@@ -28,7 +28,7 @@ A comprehensive resource hub for CNCF (Cloud Native Computing Foundation) certif
 
 ```bash
 # Clone the repository
-git clone https://github.com/jeanlopezxyz/repo-cert.git
+git clone https://github.com/jeanlopezxyz/cncf-certification-hub.git
 cd cncf-certification-hub
 
 # Install dependencies
@@ -83,7 +83,7 @@ The project is configured for automatic deployment to GitHub Pages.
 
 1. Push to `main` branch
 2. GitHub Actions automatically builds and deploys
-3. Access at: `https://jeanlopezxyz.github.io/repo-cert`
+3. Access at: `https://jeanlopezxyz.github.io/cncf-certification-hub`
 
 ## 📊 Supported Certifications
 
@@ -238,7 +238,7 @@ resources: {
 
 ### Reporting Issues
 
-Found a broken link or outdated information? [Open an issue](https://github.com/jeanlopezxyz/repo-cert/issues) and we'll fix it!
+Found a broken link or outdated information? [Open an issue](https://github.com/jeanlopezxyz/cncf-certification-hub/issues) and we'll fix it!
 
 ## 🛠️ Technology Stack
 
@@ -255,7 +255,7 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 ## 📞 Contact
 
 - 📧 Email: jeanlopez@linux.com
-- 🐛 Issues: [GitHub Issues](https://github.com/jeanlopezxyz/repo-cert/issues)
+- 🐛 Issues: [GitHub Issues](https://github.com/jeanlopezxyz/cncf-certification-hub/issues)
 
 ## 🔗 Resources
 

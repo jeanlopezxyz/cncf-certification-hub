@@ -13,6 +13,10 @@ updates:
         dependency-type: "production"
       development-dependencies:
         dependency-type: "development"
+    ignore:
+      # Ignorar Tailwind hasta que @astrojs/tailwind soporte v4
+      - dependency-name: "tailwindcss"
+        versions: ["4.x"]
     commit-message:
       prefix: "deps"
       include: "scope"

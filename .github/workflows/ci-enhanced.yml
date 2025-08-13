@@ -1,0 +1,214 @@
+name: CI Enhanced
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # 1. Verificación de código
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - run: npm ci
+      
+      - name: TypeScript Check
+        run: npx tsc --noEmit
+        continue-on-error: true
+      
+      - name: ESLint Check
+        run: npx eslint . --ext .ts,.tsx,.js,.jsx --max-warnings 0
+        continue-on-error: true
+      
+      - name: Prettier Check
+        run: npx prettier --check "src/**/*.{ts,tsx,js,jsx,css,md}"
+        continue-on-error: true
+
+  # 2. Tests (cuando los agregues)
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - run: npm ci
+      
+      - name: Run Tests
+        run: npm test -- --run 2>/dev/null || echo "No tests configured yet"
+      
+      - name: Test Coverage
+        run: npm test -- --coverage 2>/dev/null || echo "No coverage configured yet"
+
+  # 3. Build con matrix
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - run: npm ci
+      
+      - name: Build project
+        run: npm run build
+      
+      - name: Check bundle size
+        run: |
+          echo "📦 Bundle Analysis:"
+          echo "==================="
+          echo "Total build size:"
+          du -sh dist/
+          echo ""
+          echo "Largest files:"
+          find dist -name "*.js" -o -name "*.css" | xargs du -sh | sort -rh | head -10
+      
+      - name: Upload build artifacts
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 7
+
+  # 4. Performance & Accessibility
+  lighthouse:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+      
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          configPath: './lighthouserc.json'
+          uploadArtifacts: true
+        continue-on-error: true
+
+  # 5. Security scanning mejorado
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run npm audit
+        run: |
+          echo "🔒 Security Audit:"
+          npm audit --audit-level=moderate || true
+          npm audit --json > audit-report.json || true
+      
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.before }}
+          head: HEAD
+        continue-on-error: true
+      
+      - name: OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'cncf-certification-hub'
+          path: '.'
+          format: 'HTML'
+        continue-on-error: true
+      
+      - name: Snyk Security Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
+  # 6. Validación de links
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: --verbose --no-progress './README.md' './src/**/*.md'
+          fail: false
+
+  # 7. Análisis de código con SonarCloud (opcional)
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        continue-on-error: true
+
+  # 8. Docker build (para contenedores)
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Docker image
+        run: |
+          cat > Dockerfile << 'EOF'
+          FROM node:20-alpine AS builder
+          WORKDIR /app
+          COPY package*.json ./
+          RUN npm ci
+          COPY . .
+          RUN npm run build
+
+          FROM nginx:alpine
+          COPY --from=builder /app/dist /usr/share/nginx/html
+          EXPOSE 80
+          EOF
+          docker build -t cncf-cert-hub:latest .
+      
+      - name: Container scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'cncf-cert-hub:latest'
+          format: 'table'
+        continue-on-error: true
+
+  # 9. Notificación de estado
+  notify:
+    needs: [quality, test, build, security]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: CI Summary
+        run: |
+          echo "🎯 CI Pipeline Summary"
+          echo "====================="
+          echo "Quality: ${{ needs.quality.result }}"
+          echo "Tests: ${{ needs.test.result }}"
+          echo "Build: ${{ needs.build.result }}"
+          echo "Security: ${{ needs.security.result }}"

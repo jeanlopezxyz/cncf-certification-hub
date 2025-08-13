@@ -3,7 +3,7 @@ import { ui, defaultLang } from './ui';
 export function getLangFromUrl(url: URL) {
   const segments = url.pathname.split('/').filter(Boolean);
   // Remove base path if exists
-  if (segments[0] === 'repo-cert') {
+  if (segments[0] === 'cncf-certification-hub') {
     segments.shift();
   }
   // Check if first segment is a language

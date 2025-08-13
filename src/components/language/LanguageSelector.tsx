@@ -27,7 +27,7 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
     const segments = path.split('/').filter(Boolean);
 
     // Remove base path if exists
-    if (segments[0] === 'repo-cert') {
+    if (segments[0] === 'cncf-certification-hub') {
       segments.shift();
     }
 
@@ -37,7 +37,7 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
     }
 
     // Build new path with base
-    let newPath = '/repo-cert';
+    let newPath = '/cncf-certification-hub';
     if (lang !== 'en') {
       newPath += '/' + lang;
     }

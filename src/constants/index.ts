@@ -7,7 +7,7 @@ export const APP_CONFIG = {
   name: 'CNCF Certification Resources Hub',
   shortName: 'CNCF Hub',
   description: 'Study guides & exam prep',
-  basePath: '/repo-cert',
+  basePath: '/cncf-certification-hub',
   defaultLanguage: 'en',
 } as const;
 

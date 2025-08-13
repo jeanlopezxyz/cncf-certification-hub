@@ -51,7 +51,7 @@ export default function Sidebar({ lang }: SidebarProps) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
-      const homePagePattern = /^\/(repo-cert)?(\/?(es|pt)?)?$/;
+      const homePagePattern = /^\/(cncf-certification-hub)?(\/?(es|pt)?)?$/;
       setIsHomePage(homePagePattern.test(path));
     }
   }, []);

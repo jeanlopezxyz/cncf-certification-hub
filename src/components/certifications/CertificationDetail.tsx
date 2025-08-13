@@ -37,7 +37,7 @@ export default function CertificationDetail({ certification, lang }: Certificati
           <ol className="flex items-center space-x-2 text-sm">
             <li>
               <a
-                href={`/repo-cert${lang === 'en' ? '' : '/' + lang}`}
+                href={`/cncf-certification-hub${lang === 'en' ? '' : '/' + lang}`}
                 className="text-gray-400 hover:text-white"
               >
                 {t('nav.dashboard')}
@@ -46,7 +46,7 @@ export default function CertificationDetail({ certification, lang }: Certificati
             <li className="text-gray-600">/</li>
             <li>
               <a
-                href={`/repo-cert${lang === 'en' ? '' : '/' + lang}#certifications`}
+                href={`/cncf-certification-hub${lang === 'en' ? '' : '/' + lang}#certifications`}
                 className="text-gray-400 hover:text-white"
               >
                 {t('nav.certifications')}

@@ -4,7 +4,7 @@
 
 User-agent: *
 Allow: /
-Allow: /repo-cert/
+Allow: /cncf-certification-hub/
 Allow: /es/
 Allow: /pt/
 
@@ -34,7 +34,7 @@ Allow: /.well-known/security.txt
 Allow: /security.txt
 
 # Sitemap location
-Sitemap: https://jeanlopezxyz.github.io/repo-cert/sitemap.xml
+Sitemap: https://jeanlopezxyz.github.io/cncf-certification-hub/sitemap.xml
 
 # Crawl delay for respectful crawling
 Crawl-delay: 1

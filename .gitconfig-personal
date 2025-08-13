@@ -1,0 +1,10 @@
+[user]
+    name = jeanlopezxyz
+    email = jeanlopez@linux.com
+    signingkey = # Tu GPG key personal (opcional)
+
+[core]
+    sshCommand = ssh -i ~/.ssh/id_rsa_personal
+
+[github]
+    user = jeanlopezxyz

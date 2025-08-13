@@ -3,12 +3,12 @@ name: CI - Community Project
 on:
   pull_request:
     branches: [main]
-  # Solo ejecutar en push si no es main (para evitar duplicación con deploy)
   push:
-    branches: [develop]
-    # O si prefieres, ejecutar solo en tags/releases
-    # tags:
-    #   - 'v*'
+    branches: [main, develop]
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - '.github/dependabot.yml'
 
 jobs:
   # 1. Verificación de código
@@ -173,36 +173,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         continue-on-error: true
 
-  # 8. Docker build (para contenedores)
-  docker:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Build Docker image
-        run: |
-          cat > Dockerfile << 'EOF'
-          FROM node:20-alpine AS builder
-          WORKDIR /app
-          COPY package*.json ./
-          RUN npm ci
-          COPY . .
-          RUN npm run build
-
-          FROM nginx:alpine
-          COPY --from=builder /app/dist /usr/share/nginx/html
-          EXPOSE 80
-          EOF
-          docker build -t cncf-cert-hub:latest .
-      
-      - name: Container scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'cncf-cert-hub:latest'
-          format: 'table'
-        continue-on-error: true
-
-  # 9. Notificación de estado
+  # 8. Notificación de estado
   notify:
     needs: [quality, test, build, security]
     runs-on: ubuntu-latest

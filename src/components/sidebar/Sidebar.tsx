@@ -33,14 +33,18 @@ export default function Sidebar({ lang }: SidebarProps) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isHomePage, setIsHomePage] = useState(false);
 
-  // Initialize collapsed state from localStorage
-  const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('sidebarCollapsed');
-      return saved === 'true';
+  // Initialize collapsed state from localStorage (avoid hydration mismatch)
+  const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Restore state after hydration
+  useEffect(() => {
+    setIsHydrated(true);
+    const saved = localStorage.getItem('sidebarCollapsed');
+    if (saved === 'true') {
+      setIsDesktopCollapsed(true);
     }
-    return false;
-  });
+  }, []);
 
   // Initialize state from localStorage or use defaults
   const [openSections, setOpenSections] = useState<string[]>([]);
@@ -49,36 +53,32 @@ export default function Sidebar({ lang }: SidebarProps) {
 
   // Check if we're on the home page
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const path = window.location.pathname;
-      const homePagePattern = /^\/(cncf-certification-hub)?(\/?(es|pt)?)?$/;
-      setIsHomePage(homePagePattern.test(path));
-    }
+    const path = window.location.pathname;
+    const homePagePattern = /^\/(cncf-certification-hub)?(\/?(es|pt)?)?$/;
+    setIsHomePage(homePagePattern.test(path));
   }, []);
 
   // Close mobile sidebar on route change
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const handleRouteChange = () => {
-        setIsMobileOpen(false);
-      };
+    const handleRouteChange = () => {
+      setIsMobileOpen(false);
+    };
 
-      // Listen for popstate events (browser back/forward)
-      window.addEventListener('popstate', handleRouteChange);
+    // Listen for popstate events (browser back/forward)
+    window.addEventListener('popstate', handleRouteChange);
 
-      // Listen for Astro page transitions
-      document.addEventListener('astro:page-load', handleRouteChange);
+    // Listen for Astro page transitions
+    document.addEventListener('astro:page-load', handleRouteChange);
 
-      return () => {
-        window.removeEventListener('popstate', handleRouteChange);
-        document.removeEventListener('astro:page-load', handleRouteChange);
-      };
-    }
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      document.removeEventListener('astro:page-load', handleRouteChange);
+    };
   }, []);
 
-  // Save collapsed state to localStorage when it changes (debounced)
+  // Save collapsed state to localStorage when it changes (only after hydration)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (isHydrated) {
       // Only save if the value actually changed
       const currentSaved = localStorage.getItem('sidebarCollapsed');
       const newValue = isDesktopCollapsed.toString();
@@ -87,14 +87,13 @@ export default function Sidebar({ lang }: SidebarProps) {
         localStorage.setItem('sidebarCollapsed', newValue);
       }
     }
-  }, [isDesktopCollapsed]);
+  }, [isDesktopCollapsed, isHydrated]);
 
   // Listen for logo click event to expand sidebar and collapse sections
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const handleExpandSidebar = (e: CustomEvent) => {
-        // Expand sidebar
-        setIsDesktopCollapsed(false);
+    const handleExpandSidebar = (e: CustomEvent) => {
+      // Expand sidebar
+      setIsDesktopCollapsed(false);
 
         // Collapse all sections if requested
         if (e.detail?.collapseAllSections) {
@@ -103,12 +102,11 @@ export default function Sidebar({ lang }: SidebarProps) {
         }
       };
 
-      document.addEventListener('expandSidebar', handleExpandSidebar as EventListener);
+    document.addEventListener('expandSidebar', handleExpandSidebar as EventListener);
 
-      return () => {
-        document.removeEventListener('expandSidebar', handleExpandSidebar as EventListener);
-      };
-    }
+    return () => {
+      document.removeEventListener('expandSidebar', handleExpandSidebar as EventListener);
+    };
   }, []);
 
   // Remove localStorage saving - we want fresh state on each load

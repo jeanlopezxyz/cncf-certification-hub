@@ -8,19 +8,26 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        slate: {
+          925: '#0a0f1f',
+          950: '#02040a'
+        }
+      },
       screens: {
         '3xl': '1920px',
       },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 3s ease-in-out infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        }
+      }
     },
   },
   plugins: [],
-  // Optimize for production
-  future: {
-    hoverOnlyWhenSupported: true,
-  },
-  // Remove unused styles in production
-  corePlugins: {
-    preflight: true,
-    container: false,
-  },
 }

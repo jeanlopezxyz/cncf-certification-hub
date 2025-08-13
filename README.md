@@ -17,6 +17,8 @@ A comprehensive resource hub for CNCF (Cloud Native Computing Foundation) certif
 
 ## 🚀 Quick Start
 
+[![Deploy to GitHub Pages](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/deploy.yml/badge.svg)](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/deploy.yml)
+
 ### Prerequisites
 
 - Node.js 18+

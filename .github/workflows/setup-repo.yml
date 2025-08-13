@@ -1,0 +1,69 @@
+name: Repository Setup
+
+# Solo ejecutar manualmente
+on:
+  workflow_dispatch:
+    inputs:
+      setup_branch_protection:
+        description: 'Setup branch protection for main'
+        required: true
+        default: 'true'
+        type: boolean
+
+jobs:
+  setup-branch-protection:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.setup_branch_protection == 'true' }}
+    
+    steps:
+      - name: Setup Branch Protection
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            
+            try {
+              await github.rest.repos.updateBranchProtection({
+                owner,
+                repo,
+                branch: 'main',
+                required_status_checks: {
+                  strict: true,
+                  contexts: [
+                    'quality',
+                    'test',
+                    'build', 
+                    'security',
+                    'lighthouse',
+                    'link-check',
+                    'notify'
+                  ]
+                },
+                enforce_admins: true,
+                required_pull_request_reviews: {
+                  required_approving_review_count: 1,
+                  dismiss_stale_reviews: true,
+                  require_code_owner_reviews: false
+                },
+                restrictions: null,
+                allow_force_pushes: false,
+                allow_deletions: false
+              });
+              
+              console.log('✅ Branch protection configured successfully');
+            } catch (error) {
+              console.error('❌ Error setting up branch protection:', error);
+              throw error;
+            }
+
+      - name: Setup Summary
+        run: |
+          echo "## 🔒 Branch Protection Configured" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Main branch is now protected with:**" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Requires pull request reviews" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Requires status checks to pass" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Applies to administrators" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Blocks force pushes" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Blocks deletions" >> $GITHUB_STEP_SUMMARY

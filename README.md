@@ -86,6 +86,72 @@ The project is configured for automatic deployment to GitHub Pages.
 2. GitHub Actions automatically builds and deploys
 3. Access at: `https://jeanlopezxyz.github.io/cncf-certification-hub`
 
+## 🔄 CI/CD Pipeline
+
+### Workflow Overview
+
+This project uses a secure, two-stage pipeline that ensures code quality before deployment:
+
+```mermaid
+graph LR
+    A[Push to main] --> B[CI - Community Project]
+    C[Pull Request] --> B
+    B --> D{CI Passes?}
+    D -->|✅ Success| E[Deploy to GitHub Pages]
+    D -->|❌ Failure| F[Block Deploy]
+    E --> G[Site Updated]
+```
+
+### Pipeline Stages
+
+#### 🔍 **Stage 1: CI - Community Project** (8 parallel jobs)
+
+| Job | Purpose | Tools |
+|-----|---------|-------|
+| **Quality** | Code standards & formatting | TypeScript, ESLint, Prettier |
+| **Test** | Unit tests | Vitest (when tests added) |
+| **Build** | Cross-platform compilation | Node.js 18 & 20 |
+| **Lighthouse** | Performance & accessibility | Google Lighthouse |
+| **Security** | Vulnerability scanning | npm audit, CodeQL |
+| **Link Check** | Validate documentation links | markdown-link-check |
+| **SonarCloud** | Code quality analysis | SonarCloud (optional) |
+| **Notify** | Pipeline results summary | GitHub Actions |
+
+#### 🚀 **Stage 2: Deploy to GitHub Pages**
+
+- **Trigger**: Only after CI completes successfully
+- **Actions**: Build static site, optimize assets, deploy
+- **Target**: GitHub Pages at production URL
+- **Rollback**: Automatic on deployment failure
+
+### Execution Scenarios
+
+| Scenario | CI Runs? | Deploy Runs? | Flow |
+|----------|----------|--------------|------|
+| **Push to main (code changes)** | ✅ | ✅ If CI passes | Sequential |
+| **Push to main (docs only)** | ❌ | ❌ No CI trigger | Manual only |
+| **Pull Request** | ✅ | ❌ | Validation only |
+| **Merge PR** | ✅ | ✅ If CI passes | Sequential |
+| **Failed CI** | ✅ | ❌ Blocked | No deployment |
+
+### Manual Deployment
+
+For documentation-only changes or emergency deployments:
+
+1. Go to **Actions** tab in GitHub
+2. Select **Deploy to GitHub Pages**
+3. Click **Run workflow**
+4. Choose branch and confirm
+
+### Pipeline Benefits
+
+- 🛡️ **Security**: No broken code reaches production
+- ⚡ **Performance**: Validated with Lighthouse scores
+- 🔍 **Quality**: Automated code review and standards
+- 🌍 **Accessibility**: WCAG compliance checks
+- 📱 **Multi-platform**: Tested across Node.js versions
+- 🔄 **Reliable**: Automatic rollback on failures
+
 ## 📊 Supported Certifications
 
 ### Kubernetes (Kubestronaut Path)

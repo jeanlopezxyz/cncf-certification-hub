@@ -78,12 +78,12 @@ export const ACHIEVEMENTS_ITEMS = [
   {
     id: 'kubestronaut',
     translationKey: 'achievements.kubestronaut.title',
-    href: '/achievements/kubestronaut',
+    href: './achievements/kubestronaut',
   },
   {
     id: 'golden-kubestronaut',
     translationKey: 'achievements.golden.title',
-    href: '/achievements/golden-kubestronaut',
+    href: './achievements/golden-kubestronaut',
   },
 ];
 

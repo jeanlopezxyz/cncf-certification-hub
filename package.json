@@ -39,7 +39,9 @@
     "typecheck": "tsc --noEmit",
     "test": "echo \"Tests will be added soon\" && exit 0",
     "validate": "npm run typecheck && npm run lint && npm run format:check",
-    "prepare-pr": "npm run validate && npm run build"
+    "prepare-pr": "npm run validate && npm run build",
+    "test:ci-local": "./scripts/test-ci-local.sh",
+    "test:lighthouse": "./scripts/test-lighthouse-local.sh"
   },
   "dependencies": {
     "@astrojs/react": "^4.3.0",
@@ -64,5 +66,8 @@
     "prettier": "^3.0.0",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.3.3"
+  },
+  "overrides": {
+    "tailwindcss": "^3.4.0"
   }
 }

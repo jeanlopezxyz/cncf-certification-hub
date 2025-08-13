@@ -232,14 +232,13 @@ export default function Sidebar({ lang }: SidebarProps) {
             onToggle={() => toggleSection('achievements')}
           >
             {ACHIEVEMENTS_ITEMS.map(item => {
-              const basePath = APP_CONFIG.basePath || '';
-              const langPath = lang === 'en' ? '' : `/${lang}`;
-              const fullHref = `${basePath}${langPath}${item.href}`;
+              // For relative paths starting with ./, just use them directly
+              const href = item.href.startsWith('./') ? item.href : `${APP_CONFIG.basePath}${lang === 'en' ? '' : '/' + lang}${item.href}`;
 
               return (
                 <a
                   key={item.id}
-                  href={fullHref}
+                  href={href}
                   onClick={closeMobileSidebar}
                   className="flex items-center gap-3 text-sm text-gray-400 hover:text-blue-400 transition-all duration-200 py-2 px-2 rounded-lg hover:bg-slate-800/20"
                 >

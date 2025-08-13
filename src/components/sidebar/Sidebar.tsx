@@ -140,9 +140,8 @@ export default function Sidebar({ lang }: SidebarProps) {
 
   return (
     <>
-      {/* Mobile Toggle Button - Hidden on home/main pages */}
-      {!isHomePage && (
-        <div className="fixed bottom-6 right-6 z-50 lg:hidden">
+      {/* Mobile Toggle Button - Show on all pages with sidebar */}
+      <div className="fixed bottom-6 right-6 z-50 lg:hidden">
           {/* Pulse animation ring */}
           {!isMobileOpen && (
             <div className="absolute inset-0 rounded-full bg-blue-600 opacity-25 animate-ping" />
@@ -182,7 +181,6 @@ export default function Sidebar({ lang }: SidebarProps) {
             </div>
           </button>
         </div>
-      )}
 
       {/* Mobile Backdrop */}
       {isMobileOpen && (

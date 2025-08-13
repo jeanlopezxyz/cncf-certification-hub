@@ -1,10 +1,14 @@
 name: CI - Community Project
 
 on:
-  push:
-    branches: [main, develop]
   pull_request:
     branches: [main]
+  # Solo ejecutar en push si no es main (para evitar duplicación con deploy)
+  push:
+    branches: [develop]
+    # O si prefieres, ejecutar solo en tags/releases
+    # tags:
+    #   - 'v*'
 
 jobs:
   # 1. Verificación de código

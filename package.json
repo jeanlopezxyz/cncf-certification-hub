@@ -1,14 +1,50 @@
 {
-  "name": "astro-cert-hub",
+  "name": "cncf-certification-hub",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "CNCF Certification Resources Hub - A comprehensive platform for tracking CNCF certifications and study progress",
+  "keywords": [
+    "cncf",
+    "kubernetes",
+    "certification",
+    "study-guide",
+    "astro",
+    "react",
+    "typescript"
+  ],
+  "author": "CNCF Certification Hub Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeanlopezxyz/cncf-certification-hub.git"
+  },
+  "homepage": "https://jeanlopezxyz.github.io/repo-cert",
+  "bugs": {
+    "url": "https://github.com/jeanlopezxyz/cncf-certification-hub/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run sync-i18n && astro build && node scripts/optimize-build.cjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "clean": "rm -rf dist .astro",
+    "sync-i18n": "node scripts/sync-i18n-pages.js"
   },
   "dependencies": {
-    "astro": "^5.12.8"
+    "@astrojs/react": "^4.3.0",
+    "@astrojs/tailwind": "^6.0.2",
+    "@tailwindcss/vite": "^4.1.11",
+    "astro": "^5.12.8",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "typescript": "^5.3.3"
   }
 }

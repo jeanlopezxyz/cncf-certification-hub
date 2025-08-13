@@ -1,16 +1,23 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/hero/Hero';
+import AchievementPrograms from '../components/achievements/AchievementPrograms';
+import CertificationGrid from '../components/certifications/CertificationGrid';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title={t('hero.title')} showSidebar={true}>
+  <div class="space-y-8">
+    <!-- Hero Section -->
+    <Hero client:load lang={lang} />
+
+    <!-- Achievement Programs -->
+    <AchievementPrograms client:load lang={lang} />
+
+    <!-- Certifications Grid -->
+    <CertificationGrid client:load lang={lang} />
+  </div>
+</Layout>

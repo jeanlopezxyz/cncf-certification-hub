@@ -1,0 +1,298 @@
+@import 'tailwindcss';
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply antialiased;
+    font-family:
+      'Plus Jakarta Sans',
+      system-ui,
+      -apple-system,
+      sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family:
+      'Space Grotesk',
+      system-ui,
+      -apple-system,
+      sans-serif;
+    @apply font-bold tracking-tight;
+  }
+
+  /* Minimalist custom scrollbar - Blue theme */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-blue-600/30 rounded-full;
+    border: none;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-blue-500/50;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    @apply bg-blue-400/60;
+  }
+
+  /* Hide scrollbar buttons (arrows) */
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  /* Corner where scrollbars meet */
+  ::-webkit-scrollbar-corner {
+    @apply bg-transparent;
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(37, 99, 235, 0.3) transparent;
+  }
+
+  /* Selection color */
+  ::selection {
+    @apply bg-blue-500/30 text-white;
+  }
+
+  /* Smooth scroll - Performance optimized */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Performance optimization for scroll effects */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Performance optimizations for animations */
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-fade-in-left,
+  .animate-scale-in {
+    contain: layout style paint;
+    will-change: opacity, transform;
+  }
+
+  .animate-fade-in:not(:hover),
+  .animate-fade-in-up:not(:hover),
+  .animate-fade-in-left:not(:hover),
+  .animate-scale-in:not(:hover) {
+    will-change: auto;
+  }
+
+  /* Respect user's motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in-up,
+    .animate-fade-in,
+    .animate-scale-in,
+    .animate-slide-in-left {
+      animation-duration: 0.01s !important;
+      animation-delay: 0s !important;
+    }
+
+    * {
+      animation-duration: 0.01s !important;
+      animation-delay: 0s !important;
+      transition-duration: 0.01s !important;
+      transition-delay: 0s !important;
+    }
+  }
+
+  /* Optimized scroll margin */
+  .scroll-section {
+    scroll-margin-top: 5rem;
+    contain: layout;
+  }
+}
+
+@layer utilities {
+  /* Text gradient animation */
+  @keyframes gradient {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+
+  /* Glow effect */
+  .glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+
+  /* Backdrop blur fallback */
+  @supports not (backdrop-filter: blur(12px)) {
+    .backdrop-blur-xl {
+      background-color: rgba(17, 24, 39, 0.95);
+    }
+  }
+
+  /* 3D Card Flip Support */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  /* Custom scrollbar for specific areas */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-blue-500/40 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-blue-400/60;
+  }
+
+  /* View Transitions API for smooth navigation */
+  ::view-transition-old(root) {
+    animation: fade-out 0.15s ease-in-out;
+  }
+
+  ::view-transition-new(root) {
+    animation: fade-in 0.15s ease-in-out;
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* Fade in up animation - Optimized */
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    backface-visibility: hidden;
+  }
+
+  /* Fade in animation */
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
+  }
+
+  /* Scale in animation - Optimized */
+  @keyframes scale-in {
+    0% {
+      opacity: 0;
+      transform: scale3d(0, 0, 1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale3d(1, 1, 1);
+    }
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    backface-visibility: hidden;
+  }
+
+  /* Slide in from left animation - Optimized */
+  @keyframes slide-in-left {
+    0% {
+      opacity: 0;
+      transform: translate3d(-20px, 0, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    backface-visibility: hidden;
+  }
+
+  /* 3D rotation utilities */
+  .rotate-y-0 {
+    transform: rotateY(0deg);
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  /* Hover scale effects */
+  .hover-scale:hover {
+    transform: scale(1.02);
+  }
+
+  .hover-scale-small:hover {
+    transform: scale(1.05);
+  }
+
+  /* Custom transition timings */
+  .transition-slow {
+    transition-duration: 0.7s;
+  }
+
+  .transition-very-slow {
+    transition-duration: 1s;
+  }
+}

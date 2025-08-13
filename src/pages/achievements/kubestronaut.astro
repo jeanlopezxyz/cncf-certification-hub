@@ -1,0 +1,370 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+import { certifications } from '../../data/certifications';
+import { APP_CONFIG } from '../../constants';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const basePath = `${APP_CONFIG.basePath}${lang === 'en' ? '' : '/' + lang}`;
+
+const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
+---
+
+<Layout title={t('achievements.kubestronaut.title')} lang={lang} showSidebar={true}>
+  <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32 py-6 sm:py-8">
+    <!-- Hero Section with Progress -->
+    <div
+      class="relative bg-gradient-to-br from-blue-700 via-blue-600 to-sky-600 rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 text-white shadow-2xl overflow-hidden"
+    >
+      <!-- Background pattern -->
+      <div class="absolute inset-0 opacity-10">
+        <div
+          class="absolute inset-0"
+          style={`background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');`}
+        >
+        </div>
+      </div>
+
+      <div
+        class="relative flex flex-col lg:flex-row items-center lg:items-start lg:justify-between gap-4"
+      >
+        <div class="text-center lg:text-left flex-1">
+          <div class="flex flex-col lg:flex-row items-center gap-3 mb-4">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center">
+              <img
+                src={`${APP_CONFIG.basePath}/kubestronaut-icon.svg`}
+                alt="Kubestronaut Icon"
+                class="w-full h-full object-contain drop-shadow-xl"
+              />
+            </div>
+            <div>
+              <h1
+                class="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent"
+              >
+                {t('achievements.kubestronaut.title')}
+              </h1>
+              <p class="text-base sm:text-lg opacity-90 mt-1 text-blue-50">
+                {t('achievements.kubestronaut.description')}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certification Count -->
+        <div
+          class="flex flex-col items-center bg-gradient-to-br from-blue-800/50 to-sky-700/50 backdrop-blur-sm rounded-2xl px-6 sm:px-8 py-4 sm:py-6 border border-blue-400/30 shadow-xl"
+        >
+          <div class="text-4xl sm:text-5xl font-bold mb-1 sm:mb-2 text-blue-100">5</div>
+          <div class="text-xs sm:text-sm text-blue-100">
+            {t('certifications.card.certifications')}
+          </div>
+          <div class="text-xs sm:text-sm text-blue-200 font-semibold">
+            {t('certifications.card.required')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certification Path -->
+    <div class="mb-6 sm:mb-8">
+      <h2
+        class="text-xl sm:text-2xl font-bold text-white mb-3 flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 sm:gap-3 text-center sm:text-left"
+      >
+        <div
+          class="w-8 h-8 bg-gradient-to-br from-blue-500 to-sky-500 rounded-lg flex items-center justify-center"
+        >
+          <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"
+            ></path>
+          </svg>
+        </div>
+        <span>{t('achievements.kubestronaut.requiredCerts')}</span>
+      </h2>
+
+      <!-- Certification Notes -->
+      <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="bg-blue-900/30 border border-blue-600/40 rounded-lg p-3 text-center">
+          <div
+            class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2"
+          >
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <p class="text-sm text-blue-100 leading-relaxed">
+            {t('achievements.kubestronaut.cksNote')}
+          </p>
+        </div>
+
+        <div class="bg-sky-900/30 border border-sky-600/40 rounded-lg p-3 text-center">
+          <div
+            class="w-8 h-8 bg-sky-500 rounded-full flex items-center justify-center mx-auto mb-2"
+          >
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
+              ></path>
+            </svg>
+          </div>
+          <p class="text-sm text-blue-100 leading-relaxed">
+            {t('achievements.kubestronaut.difficultyNote')}
+          </p>
+        </div>
+
+        <div class="bg-indigo-900/30 border border-indigo-600/40 rounded-lg p-3 text-center">
+          <div
+            class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-2"
+          >
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <p class="text-sm text-indigo-100 leading-relaxed">
+            {t('achievements.kubestronaut.prerequisiteNote')}
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:flex xl:items-stretch gap-3 lg:gap-4 xl:gap-2"
+      >
+        {
+          kubestronautCerts.map((certId, index) => {
+            const cert = certifications.find(c => c.id === certId);
+            const isCKS = certId === 'cks';
+
+            return (
+              <>
+                <a href={`${basePath}/certifications/${certId}`} class="group lg:flex-1">
+                  <div class="h-full min-h-[180px] p-4 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br from-blue-900/90 to-blue-950/95 border-blue-700/70 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-850/95 hover:to-blue-900/100 hover:shadow-lg hover:shadow-blue-500/50 flex">
+                    <div class="w-full h-full flex flex-col text-center">
+                      {/* Acronym - Fixed height */}
+                      <div class="h-[3rem] flex items-center justify-center">
+                        <div class="text-2xl sm:text-3xl font-bold text-blue-100 group-hover:text-white transition-colors">
+                          {cert?.acronym}
+                        </div>
+                      </div>
+
+                      {/* Name - Fixed height with top alignment */}
+                      <div class="h-[4rem] px-2 pt-2">
+                        <div class="text-xs sm:text-sm text-gray-300 text-center leading-tight">
+                          {cert?.name}
+                        </div>
+                      </div>
+
+                      {/* Prerequisites - Fixed height */}
+                      <div class="h-[1.5rem] flex items-center justify-center">
+                        {isCKS ? (
+                          <div class="text-xs text-amber-300">
+                            {t('certifications.card.requires')} CKA
+                          </div>
+                        ) : (
+                          <div />
+                        )}
+                      </div>
+
+                      {/* Level - Fixed position at bottom */}
+                      <div class="h-[1.5rem] flex items-center justify-center">
+                        <div
+                          class={`text-xs font-medium px-2 py-1 rounded-full ${
+                            cert?.level === 'entry'
+                              ? 'bg-blue-400/20 text-blue-200'
+                              : cert?.level === 'intermediate'
+                                ? 'bg-sky-400/20 text-sky-200'
+                                : 'bg-indigo-400/20 text-indigo-200'
+                          }`}
+                        >
+                          {t(`certifications.level.${cert?.level}`)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+                {/* Arrow in the gap between cards - only on large screens */}
+                {index < kubestronautCerts.length - 1 && (
+                  <div class="hidden lg:flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </>
+            );
+          })
+        }
+      </div>
+    </div>
+
+    <!-- Info Cards Grid -->
+    <div class="grid md:grid-cols-2 xl:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-8">
+      <!-- Requirements Card -->
+      <div
+        class="bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-2xl p-6 border border-blue-700/50 shadow-lg shadow-blue-800/30"
+      >
+        <h3 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5 text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <span>{t('achievements.kubestronaut.requirements')}</span>
+        </h3>
+        <ul class="space-y-3">
+          <li class="flex items-start">
+            <span class="text-blue-400 mr-2 leading-5 flex-shrink-0">•</span>
+            <span class="text-gray-300 text-sm leading-5"
+              >{t('achievements.kubestronaut.req1')}</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-blue-400 mr-2 leading-5 flex-shrink-0">•</span>
+            <span class="text-gray-300 text-sm leading-5"
+              >{t('achievements.kubestronaut.req2')}</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-blue-400 mr-2 leading-5 flex-shrink-0">•</span>
+            <span class="text-gray-300 text-sm leading-5"
+              >{t('achievements.kubestronaut.req3')}</span
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Benefits Card -->
+      <div
+        class="bg-gradient-to-br from-sky-900/40 to-sky-950/50 rounded-2xl p-6 border border-sky-700/50 shadow-lg shadow-sky-800/30"
+      >
+        <h3 class="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5 text-sky-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+            ></path>
+          </svg>
+          <span>{t('achievements.kubestronaut.benefits')}</span>
+        </h3>
+        <ul class="space-y-3">
+          <li class="flex items-start">
+            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
+            <span class="text-gray-300 text-sm leading-5"
+              >{t('achievements.kubestronaut.benefit1')}</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
+            <span class="text-gray-300 text-sm leading-5"
+              >{t('achievements.kubestronaut.benefit2')}</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
+            <span class="text-gray-300 text-sm leading-5"
+              >{t('achievements.kubestronaut.benefit3')}</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
+            <span class="text-gray-300 text-sm leading-5"
+              >{t('achievements.kubestronaut.benefit4')}</span
+            >
+          </li>
+          <li class="flex items-start">
+            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
+            <span class="text-gray-300 text-sm leading-5"
+              >{t('achievements.kubestronaut.benefit5')}</span
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- How to Get Started -->
+    <div
+      class="bg-gradient-to-r from-blue-800/20 to-sky-800/20 rounded-2xl p-4 sm:p-6 lg:p-8 xl:p-10 border border-blue-600/40 mb-6 sm:mb-8"
+    >
+      <h3 class="text-lg sm:text-xl font-bold text-white mb-4 text-center sm:text-left">
+        {t('achievements.kubestronaut.how')}
+      </h3>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 xl:gap-8 2xl:gap-12"
+      >
+        <div class="flex items-start gap-3">
+          <div
+            class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0"
+          >
+            <span class="text-white font-bold text-sm">1</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-white mb-1 text-sm sm:text-base">
+              {t('achievements.kubestronaut.step1Title')}
+            </h4>
+            <p class="text-xs sm:text-sm text-gray-400">
+              {t('achievements.kubestronaut.step1Desc')}
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div
+            class="w-8 h-8 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0"
+          >
+            <span class="text-white font-bold text-sm">2</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-white mb-1 text-sm sm:text-base">
+              {t('achievements.kubestronaut.step2Title')}
+            </h4>
+            <p class="text-xs sm:text-sm text-gray-400">
+              {t('achievements.kubestronaut.step2Desc')}
+            </p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div
+            class="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center flex-shrink-0"
+          >
+            <span class="text-white font-bold text-sm">3</span>
+          </div>
+          <div>
+            <h4 class="font-semibold text-white mb-1 text-sm sm:text-base">
+              {t('achievements.kubestronaut.step3Title')}
+            </h4>
+            <p class="text-xs sm:text-sm text-gray-400">
+              {t('achievements.kubestronaut.step3Desc')}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="mt-6 sm:mt-8 text-center">
+      <p class="text-gray-400 mb-4">{t('achievements.kubestronaut.ctaText')}</p>
+      <a
+        href={`${basePath}/certifications/${kubestronautCerts[0]}`}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-sky-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-sky-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30"
+      >
+        {t('achievements.kubestronaut.ctaButton')}
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</Layout>

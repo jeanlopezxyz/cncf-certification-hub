@@ -1,0 +1,319 @@
+---
+import '../styles/global.css';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import { EXTERNAL_URLS } from '../config/app.config';
+import { APP_CONFIG } from '../constants/index';
+import LanguageSelector from '../components/language/LanguageSelector';
+import Sidebar from '../components/sidebar/Sidebar';
+import { ViewTransitions } from 'astro:transitions';
+
+export interface Props {
+  title: string;
+  description?: string;
+  showSidebar?: boolean;
+  lang?: string;
+}
+
+const { title, description, showSidebar = false, lang: propLang } = Astro.props;
+const lang = propLang || getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const finalDescription = description || t('site.description');
+---
+
+<!doctype html>
+<html lang={lang} class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={finalDescription} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={`${APP_CONFIG.basePath}/favicon.svg`} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | CNCF Certification Resources Hub</title>
+    <link rel="preconnect" href={EXTERNAL_URLS.fonts.googleapis} />
+    <link rel="preconnect" href={EXTERNAL_URLS.fonts.gstatic} crossorigin />
+    <link href={EXTERNAL_URLS.fonts.googleFontsCss} rel="stylesheet" />
+    <ViewTransitions />
+  </head>
+  <body class="bg-gray-950 text-gray-100 min-h-screen">
+    <nav
+      class="fixed top-0 w-full z-50 bg-slate-900/95 backdrop-blur-xl border-b border-blue-900/30 shadow-lg shadow-black/10"
+    >
+      <div class="w-full px-2 sm:pl-4 sm:pr-4 max-w-[1920px] mx-auto sm:mx-0 sm:max-w-full">
+        <div class="flex justify-between items-center h-20">
+          {/* Logo and Title */}
+          <div
+            class="flex items-center flex-1 sm:flex-none justify-start transition-all duration-300"
+            id="header-logo"
+          >
+            <a
+              href={`/repo-cert${lang === 'en' ? '' : '/' + lang}`}
+              class="flex items-center gap-3 group"
+              id="logo-link"
+            >
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-blue-600 to-sky-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:shadow-blue-500/40 transition-all duration-300 group-hover:scale-105"
+              >
+                <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM5 5h14v14H5V5z"
+                  ></path>
+                  <path d="M7 7h10v1H7zM7 9h10v1H7zM7 11h10v1H7zM7 13h8v1H7zM7 15h6v1H7z"></path>
+                </svg>
+              </div>
+              <div class="hidden sm:block">
+                <div
+                  class="font-black text-xl bg-gradient-to-r from-blue-400 via-sky-300 to-blue-400 bg-clip-text text-transparent tracking-tight"
+                >
+                  CNCF Certification Resources Hub
+                </div>
+                <div class="text-sm text-gray-400 font-medium tracking-wide -mt-1">
+                  {t('site.subtitle')}
+                </div>
+              </div>
+            </a>
+          </div>
+          <div
+            class="flex items-center space-x-2 sm:space-x-3 absolute right-2 sm:relative sm:right-auto"
+          >
+            <LanguageSelector client:load currentLang={lang} />
+            <a
+              href={EXTERNAL_URLS.github}
+              target="_blank"
+              class="text-gray-400 hover:text-blue-400 transition-colors p-1.5 sm:p-2"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                ></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    {
+      showSidebar && (
+        <Sidebar client:load lang={lang} transition:persist transition:name="sidebar" />
+      )
+    }
+    <div
+      class="pt-20 flex flex-col min-h-screen relative"
+      id="main-wrapper"
+      data-sidebar={showSidebar}
+    >
+      <main class="flex-grow" id="main-content">
+        <slot />
+      </main>
+      <footer class="bg-gray-900 border-t border-gray-800 mt-20" id="footer">
+        <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32 py-12">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8 xl:gap-12 2xl:gap-16">
+            <div class="col-span-2">
+              <h3 class="font-bold text-lg mb-4">{t('footer.title')}</h3>
+              <p class="text-gray-400 text-sm mb-4">{t('footer.built')}</p>
+              <p class="text-gray-500 text-xs">{t('footer.disclaimer')}</p>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-4">{t('footer.studyResources')}</h4>
+              <ul class="space-y-2 text-sm">
+                <li>
+                  <a
+                    href={EXTERNAL_URLS.kubernetes.docs}
+                    target="_blank"
+                    class="text-gray-400 hover:text-white transition-colors"
+                    >{t('footer.kubernetesDocs')}</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href={EXTERNAL_URLS.learning.killerSh}
+                    target="_blank"
+                    class="text-gray-400 hover:text-white transition-colors"
+                    >{t('footer.killersh')}</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href={EXTERNAL_URLS.githubCNCF}
+                    target="_blank"
+                    class="text-gray-400 hover:text-white transition-colors"
+                    >{t('footer.cncfCurriculum')}</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-4">{t('footer.community')}</h4>
+              <ul class="space-y-2 text-sm">
+                <li>
+                  <a
+                    href={EXTERNAL_URLS.kubernetes.slack}
+                    target="_blank"
+                    class="text-gray-400 hover:text-white transition-colors"
+                    >{t('footer.kubernetesSlack')}</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href={EXTERNAL_URLS.kubernetes.discussion}
+                    target="_blank"
+                    class="text-gray-400 hover:text-white transition-colors"
+                    >{t('footer.discussionForum')}</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href={EXTERNAL_URLS.kubernetes.reddit}
+                    target="_blank"
+                    class="text-gray-400 hover:text-white transition-colors">{t('footer.reddit')}</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-400">
+            <p>{t('footer.journey')}</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <style>
+      /* Custom transition for margin to match sidebar transform */
+      .transition-margin {
+        transition-property: margin-left;
+        transition-timing-function: ease-in-out;
+        transition-duration: 300ms;
+      }
+    </style>
+    <script>
+      // Apply initial sidebar state immediately (optimized for performance)
+      (function () {
+        const w = document.getElementById('main-wrapper');
+        if (w?.dataset.sidebar === 'true') {
+          if (window.innerWidth >= 1024) {
+            // Single localStorage read
+            const collapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            // Apply state immediately
+            w.classList.add(collapsed ? 'lg:ml-0' : 'lg:ml-80');
+
+            // Add transition after paint with same timing as sidebar
+            setTimeout(() => {
+              w.classList.add('transition-margin', 'duration-300', 'ease-in-out');
+            }, 50);
+          }
+        }
+      })();
+
+      // Handle sidebar collapse state for main wrapper
+      if (typeof window !== 'undefined') {
+        const updateMargins = () => {
+          const wrapper = document.getElementById('main-wrapper');
+          if (wrapper?.dataset.sidebar !== 'true') return;
+
+          // Single read from localStorage
+          const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+
+          if (window.innerWidth >= 1024) {
+            // Batch DOM operations
+            wrapper.classList.toggle('lg:ml-0', isCollapsed);
+            wrapper.classList.toggle('lg:ml-80', !isCollapsed);
+          } else {
+            // Mobile: remove both classes
+            wrapper.classList.remove('lg:ml-80', 'lg:ml-0');
+          }
+        };
+
+        // Initialize layout based on saved sidebar state
+        const initializeLayout = () => {
+          const wrapper = document.getElementById('main-wrapper');
+          const hasSidebar = wrapper?.dataset.sidebar === 'true';
+
+          if (hasSidebar && typeof window !== 'undefined') {
+            // Check saved sidebar state
+            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+
+            // Apply initial state immediately
+            if (window.innerWidth >= 1024) {
+              wrapper.classList.remove('lg:ml-80', 'lg:ml-0');
+              if (sidebarCollapsed) {
+                wrapper.classList.add('lg:ml-0');
+              } else {
+                wrapper.classList.add('lg:ml-80');
+              }
+            }
+          }
+
+          // Then run updateMargins to sync with actual sidebar state
+          setTimeout(updateMargins, 50);
+        };
+
+        // Run initialization immediately
+        initializeLayout();
+
+        // Wait for DOM to be ready before setting up observers
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.querySelector('aside');
+            if (sidebar) {
+              const observer = new MutationObserver(updateMargins);
+              observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+            }
+            // Update margins after DOM is ready
+            updateMargins();
+          });
+        } else {
+          // DOM is already ready
+          const sidebar = document.querySelector('aside');
+          if (sidebar) {
+            const observer = new MutationObserver(updateMargins);
+            observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+          }
+          updateMargins();
+        }
+
+        // Also monitor collapse button clicks
+        document.addEventListener('click', e => {
+          const button = e.target.closest('button[aria-label="Toggle sidebar collapse"]');
+          if (button) {
+            // Synchronize with sidebar transition (300ms)
+            requestAnimationFrame(() => {
+              updateMargins();
+            });
+          }
+        });
+
+        // Run on Astro page navigation
+        document.addEventListener('astro:after-swap', () => {
+          initializeLayout();
+        });
+
+        // Handle resize events
+        window.addEventListener('resize', updateMargins);
+
+        // Handle logo click to expand sidebar and collapse all sections
+        // Use Astro page load event to ensure React components are mounted
+        document.addEventListener('astro:page-load', () => {
+          const logoLink = document.getElementById('logo-link');
+          const wrapper = document.getElementById('main-wrapper');
+          const hasSidebar = wrapper?.dataset.sidebar === 'true';
+
+          if (logoLink && hasSidebar) {
+            logoLink.addEventListener('click', e => {
+              e.preventDefault();
+
+              // Dispatch custom event to expand sidebar and collapse sections
+              const event = new CustomEvent('expandSidebar', {
+                detail: { collapseAllSections: true },
+              });
+              document.dispatchEvent(event);
+
+              // Navigate to home after a short delay
+              setTimeout(() => {
+                window.location.href = logoLink.href;
+              }, 200);
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

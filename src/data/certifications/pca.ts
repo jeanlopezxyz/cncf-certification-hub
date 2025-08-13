@@ -1,0 +1,90 @@
+import type { Certification } from '../types';
+
+export const pca: Certification = {
+  id: 'pca',
+  acronym: 'PCA',
+  name: 'Prometheus Certified Associate',
+  description: 'cert.pca.description',
+  level: 'entry',
+  type: 'multiple-choice',
+  duration: 90,
+  price: 250,
+  requiredFor: ['Golden Kubestronaut'],
+  color: 'from-blue-700 to-indigo-800',
+  kubernetesVersion: 'Not applicable',
+  examAttempts: 2,
+  simulatorProvider: 'No simulator - Multiple choice exam',
+  simulatorAccess: 'Not applicable - No hands-on simulator provided',
+  examFormat: 'Online proctored, multiple-choice test with 60 questions',
+  retakePolicy: 'One free retake included with registration cost',
+  prerequisites: 'No prerequisites',
+  domains: [
+    {
+      name: 'Observability Concepts',
+      weight: 18,
+      topics: [
+        'Metrics',
+        'Understand logs and events',
+        'Tracing and Spans',
+        'Push vs Pull',
+        'Service Discovery',
+        'Basics of SLOs, SLAs, and SLIs',
+      ],
+    },
+    {
+      name: 'Prometheus Fundamentals',
+      weight: 20,
+      topics: [
+        'System Architecture',
+        'Configuration and Scraping',
+        'Understanding Prometheus Limitations',
+        'Data Model and Labels',
+        'Exposition Format',
+      ],
+    },
+    {
+      name: 'PromQL',
+      weight: 28,
+      topics: [
+        'Selecting Data',
+        'Rates and Derivatives',
+        'Aggregating over time',
+        'Aggregating over dimensions',
+        'Binary operators',
+        'Histograms',
+        'Timestamp Metrics',
+      ],
+    },
+    {
+      name: 'Instrumentation and Exporters',
+      weight: 16,
+      topics: [
+        'Client Libraries',
+        'Instrumentation',
+        'Exporters',
+        'Structuring and naming metrics',
+      ],
+    },
+    {
+      name: 'Alerting & Dashboarding',
+      weight: 18,
+      topics: [
+        'Dashboarding basics',
+        'Configuring Alerting rules',
+        'Understand and Use Alertmanager',
+        'Alerting basics (when, what, and why)',
+      ],
+    },
+  ],
+  resources: {
+    official: 'https://www.cncf.io/certification/pca/',
+    github: [
+      'https://github.com/prometheus/prometheus',
+      'https://github.com/avinashdesireddy/PCA-Prometheus-Certified-Associate',
+    ],
+    practice: ['https://kodekloud.com/courses/prometheus-certified-associate-pca/'],
+  },
+  studyTimeWeeks: 4,
+  passingScore: 75,
+  validity: 3,
+};

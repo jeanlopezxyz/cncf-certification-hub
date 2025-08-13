@@ -1,0 +1,20 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CertificationStudyGuide from '../../components/certifications/CertificationStudyGuide';
+import { certifications } from '../../data/certifications';
+import { getLangFromUrl } from '../../i18n/utils';
+
+export async function getStaticPaths() {
+  return certifications.map(cert => ({
+    params: { id: cert.id },
+    props: { certification: cert },
+  }));
+}
+
+const { certification } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+---
+
+<Layout title={certification.name} showSidebar={true}>
+  <CertificationStudyGuide client:load certification={certification} lang={lang} />
+</Layout>

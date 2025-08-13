@@ -1,9 +1,26 @@
 # CNCF Certification Resources Hub
 
+[![Deploy to GitHub Pages](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/deploy.yml/badge.svg)](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/deploy.yml)
+[![CI - Community Project](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/ci-enhanced.yml/badge.svg)](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/ci-enhanced.yml)
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/small.svg)](https://astro.build)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A comprehensive resource hub for CNCF (Cloud Native Computing Foundation) certification preparation. Track your progress, access study materials, and achieve your Kubestronaut status.
+
+## Table of Contents
+
+- [Features](#features)
+- [Supported Certifications](#supported-certifications)
+- [Achievement Programs](#achievement-programs)
+- [Getting Started](#getting-started)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Deployment](#deployment)
+- [CI/CD Pipeline](#cicd-pipeline)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Additional Resources](#additional-resources)
 
 ## Features
 
@@ -15,10 +32,36 @@ A comprehensive resource hub for CNCF (Cloud Native Computing Foundation) certif
 - **Modern UI** - Clean interface with Kubernetes-themed styling
 - **Study Resources** - Curated links to official docs and practice exams
 
-## Getting Started
+## Supported Certifications
 
-[![Deploy to GitHub Pages](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/deploy.yml/badge.svg)](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/deploy.yml)
-[![CI - Community Project](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/ci-enhanced.yml/badge.svg)](https://github.com/jeanlopezxyz/cncf-certification-hub/actions/workflows/ci-enhanced.yml)
+### Kubernetes (Kubestronaut Path)
+- **KCNA** - Kubernetes and Cloud Native Associate
+- **KCSA** - Kubernetes and Cloud Native Security Associate
+- **CKA** - Certified Kubernetes Administrator
+- **CKAD** - Certified Kubernetes Application Developer
+- **CKS** - Certified Kubernetes Security Specialist
+
+### CNCF Projects
+- **PCA** - Prometheus Certified Associate
+- **ICA** - Istio Certified Associate
+- **CCA** - Cilium Certified Associate
+- **CAPA** - Certified Argo Project Associate
+- **CGOA** - Certified GitOps Associate
+- **KCA** - Kyverno Certified Associate
+- **OTCA** - OpenTelemetry Certified Associate
+- **CBA** - Backstage Certified Associate
+- **CNPA** - Cloud Native Platform Associate
+
+### Linux Foundation
+- **LFCS** - Linux Foundation Certified System Administrator
+
+## Achievement Programs
+
+**Kubestronaut**: Complete all 5 Kubernetes certifications (KCNA, KCSA, CKA, CKAD, CKS)
+
+**Golden Kubestronaut**: Complete all 15+ CNCF certifications
+
+## Getting Started
 
 ### Prerequisites
 
@@ -48,7 +91,15 @@ npm run preview    # Preview production build
 npm run clean      # Clean build artifacts
 ```
 
-## 📁 Project Structure
+## Technology Stack
+
+- **Astro 5** - Static site generator with file-based routing
+- **React 19** - Interactive components with TypeScript
+- **Tailwind CSS 3** - Utility-first styling framework
+- **TypeScript 5** - Static type checking
+- **Vite** - Fast build tool and development server
+
+## Project Structure
 
 ```
 src/
@@ -80,7 +131,7 @@ src/
 
 ### GitHub Pages
 
-The project is configured for automatic deployment to GitHub Pages.
+The project is configured for automatic deployment to GitHub Pages:
 
 1. Push to `main` branch
 2. GitHub Actions automatically builds and deploys
@@ -151,35 +202,6 @@ For documentation-only changes or emergency deployments:
 - **Accessibility**: WCAG compliance validation
 - **Multi-platform**: Testing across multiple Node.js versions
 - **Reliability**: Automatic rollback mechanisms on deployment failure
-
-## Supported Certifications
-
-### Kubernetes (Kubestronaut Path)
-- **KCNA** - Kubernetes and Cloud Native Associate
-- **KCSA** - Kubernetes and Cloud Native Security Associate
-- **CKA** - Certified Kubernetes Administrator
-- **CKAD** - Certified Kubernetes Application Developer
-- **CKS** - Certified Kubernetes Security Specialist
-
-### CNCF Projects
-- **PCA** - Prometheus Certified Associate
-- **ICA** - Istio Certified Associate
-- **CCA** - Cilium Certified Associate
-- **CAPA** - Certified Argo Project Associate
-- **CGOA** - Certified GitOps Associate
-- **KCA** - Kyverno Certified Associate
-- **OTCA** - OpenTelemetry Certified Associate
-- **CBA** - Backstage Certified Associate
-- **CNPA** - Cloud Native Platform Associate
-
-### Linux Foundation
-- **LFCS** - Linux Foundation Certified System Administrator
-
-## Achievement Programs
-
-**Kubestronaut**: Complete all 5 Kubernetes certifications (KCNA, KCSA, CKA, CKAD, CKS)
-
-**Golden Kubestronaut**: Complete all 15+ CNCF certifications
 
 ## Contributing
 
@@ -306,14 +328,6 @@ resources: {
 ### Reporting Issues
 
 Found a broken link or outdated information? [Open an issue](https://github.com/jeanlopezxyz/cncf-certification-hub/issues) and we'll address it promptly.
-
-## Technology Stack
-
-- **Astro 5** - Static site generator with file-based routing
-- **React 19** - Interactive components with TypeScript
-- **Tailwind CSS 3** - Utility-first styling framework
-- **TypeScript 5** - Static type checking
-- **Vite** - Fast build tool and development server
 
 ## License
 

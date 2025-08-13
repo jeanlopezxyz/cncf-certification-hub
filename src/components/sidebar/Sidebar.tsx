@@ -133,7 +133,7 @@ export default function Sidebar({ lang }: SidebarProps) {
 
   // Function to close mobile sidebar
   const closeMobileSidebar = () => {
-    if (window.innerWidth < 1024) {
+    if (isHydrated && window.innerWidth < 1024) {
       setIsMobileOpen(false);
     }
   };
@@ -213,6 +213,7 @@ export default function Sidebar({ lang }: SidebarProps) {
 
       {/* Sidebar */}
       <aside
+        suppressHydrationWarning
         className={`
           fixed left-0 top-20 h-[calc(100vh-5rem)] z-30
           bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950

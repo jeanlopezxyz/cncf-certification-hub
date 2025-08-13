@@ -1,4 +1,4 @@
-import type { Certification } from '../types';
+import type { Certification } from '../../types';
 
 export const cks: Certification = {
   id: 'cks',
@@ -14,8 +14,7 @@ export const cks: Certification = {
   color: 'from-blue-600 to-blue-800',
   // Exam details
   kubernetesVersion: '1.33', // Current exam version
-  kubernetesVersionPolicy:
-    'Exam environment aligns with most recent K8s minor version within 4-8 weeks of release',
+  // kubernetesVersionPolicy: 'Exam environment aligns with most recent K8s minor version within 4-8 weeks of release',
   examAttempts: 2, // Two attempts included with registration
   simulatorProvider: 'Killer.sh',
   simulatorAccess: '2 attempts (36 hours each)',

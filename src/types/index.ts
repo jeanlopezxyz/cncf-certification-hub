@@ -37,12 +37,65 @@ export interface ExamDomain {
 }
 
 /**
+ * Book resource
+ */
+export interface BookResource extends StudyResource {
+  author: string;
+  format?: 'pdf' | 'paperback' | 'ebook';
+  year?: number;
+}
+
+/**
+ * Course resource
+ */
+export interface CourseResource extends StudyResource {
+  author: string;
+  rating?: number;
+}
+
+/**
+ * Video resource
+ */
+export interface VideoResource extends StudyResource {
+  author: string;
+}
+
+/**
+ * Blog resource
+ */
+export interface BlogResource extends StudyResource {
+  author: string;
+}
+
+/**
+ * Documentation resource
+ */
+export interface DocumentationResource extends StudyResource {}
+
+/**
+ * Community resource
+ */
+export interface CommunityResource extends StudyResource {}
+
+/**
+ * Tool resource
+ */
+export interface ToolResource extends StudyResource {}
+
+/**
  * Study resources for a certification
  */
 export interface CertificationResources {
   official: string;
   github: string[];
   practice: string[];
+  books?: BookResource[];
+  courses?: CourseResource[];
+  videos?: VideoResource[];
+  blogs?: BlogResource[];
+  documentation?: DocumentationResource[];
+  communities?: CommunityResource[];
+  tools?: ToolResource[];
 }
 
 /**
@@ -59,10 +112,21 @@ export interface Certification {
   price: number; // in USD
   requiredFor?: string[];
   prerequisite?: string;
+  prerequisites?: string;
   domains: ExamDomain[];
   resources: CertificationResources;
   icon?: string;
   color: string;
+  // Additional properties found in data
+  kubernetesVersion?: string;
+  examAttempts?: number;
+  simulatorProvider?: string;
+  simulatorAccess?: string;
+  examFormat?: string;
+  retakePolicy?: string;
+  studyTimeWeeks?: number;
+  passingScore?: number;
+  validity?: number;
 }
 
 /**

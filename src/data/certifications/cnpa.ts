@@ -1,4 +1,4 @@
-import type { Certification } from '../types';
+import type { Certification } from '../../types';
 
 export const cnpa: Certification = {
   id: 'cnpa',

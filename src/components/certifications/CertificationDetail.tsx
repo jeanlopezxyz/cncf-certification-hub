@@ -1,5 +1,5 @@
 import { useTranslations, translateCertificationValue } from '../../i18n/utils';
-import type { Certification } from '../../data/types';
+import type { Certification } from '../../types';
 import { useState, useEffect } from 'react';
 
 interface CertificationDetailProps {

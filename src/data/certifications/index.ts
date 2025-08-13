@@ -16,7 +16,7 @@ import { cba } from './cba';
 import { cnpa } from './cnpa';
 
 // Re-export types
-export type { Certification, StudyResource } from '../types';
+export type { Certification, StudyResource } from '../../types';
 
 // Export all certifications as an array
 export const certifications = [

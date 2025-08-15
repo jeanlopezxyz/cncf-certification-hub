@@ -36,7 +36,7 @@ export default function AchievementPrograms({ lang }: AchievementProgramsProps) 
   ];
 
   return (
-    <section id="achievements" className="pt-12 pb-6 sm:pt-16 sm:pb-8 scroll-section">
+    <section id="achievements" className="pt-4 pb-6 sm:pt-6 sm:pb-8 scroll-section">
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32">
         {/* Section Header */}
         <div className="text-center mb-10">

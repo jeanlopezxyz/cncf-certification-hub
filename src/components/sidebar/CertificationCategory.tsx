@@ -67,9 +67,6 @@ export default function CertificationCategory({
               ? 'bg-blue-500/20 text-blue-300' 
               : 'bg-slate-800/30 text-gray-500'
           }`}>{certifications.length}</span>
-          <div className={`transition-transform duration-300 text-gray-400 group-hover:text-blue-400 ${isOpen ? 'rotate-180' : ''}`}>
-            <ChevronDownIcon className="w-4 h-4" />
-          </div>
         </div>
       </button>
 

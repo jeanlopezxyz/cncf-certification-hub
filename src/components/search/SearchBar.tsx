@@ -28,6 +28,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [isFocused, setIsFocused] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -180,21 +181,28 @@ export default function SearchBar({ lang }: SearchBarProps) {
       }
 
       if (maxScore > threshold) { // Dynamic threshold based on query length
-        const category = CERTIFICATION_CATEGORIES.find(cat => 
+        const categoryObj = CERTIFICATION_CATEGORIES.find(cat => 
           cat.certificationIds.includes(cert.id)
-        )?.name || '';
+        );
+        const categoryKey = categoryObj?.key || '';
+        const categoryName = categoryObj ? t(categoryObj.translationKey) : '';
+
+        // Translate description if it's a translation key
+        const description = cert.description.startsWith('cert.') 
+          ? t(cert.description) 
+          : cert.description;
 
         results.push({
           type: 'certification',
           id: cert.id,
           title: `${cert.acronym} - ${cert.name}`,
-          description: cert.description,
+          description: description,
           url: `${basePath}${langPath}/certifications/${cert.id}`,
           score: maxScore,
           matchType,
-          category,
+          category: categoryName,
           level: cert.level,
-          tags: [cert.level, category, cert.type]
+          tags: [cert.level, categoryKey, cert.type]
         });
       }
     });
@@ -320,111 +328,205 @@ export default function SearchBar({ lang }: SearchBarProps) {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto" ref={containerRef}>
-      <div className="relative">
-        {/* Search Icon */}
-        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 z-10">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+    <>
+      {/* Mobile Search Button - Only visible on mobile */}
+      <button
+        onClick={() => {
+          setIsExpanded(true);
+          setTimeout(() => inputRef.current?.focus(), 100);
+        }}
+        className="sm:hidden flex items-center justify-center w-10 h-10 bg-slate-800/80 border border-slate-700 rounded-lg hover:bg-slate-700/80 transition-all duration-300"
+        aria-label={t('aria.search')}
+      >
+        <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </button>
+
+      {/* Expanded Search for Mobile / Normal Search for Desktop */}
+      <div 
+        className={`${isExpanded ? 'fixed inset-0 bg-black/50 z-50 sm:relative sm:inset-auto sm:bg-transparent' : 'hidden sm:block'} sm:relative sm:w-full sm:max-w-md sm:mx-auto`}
+        ref={containerRef}
+      >
+        {/* Mobile Search Header */}
+        {isExpanded && (
+          <div className="sm:hidden fixed top-0 left-0 right-0 bg-slate-900 p-4 border-b border-blue-500/30">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => {
+                  setIsExpanded(false);
+                  setQuery('');
+                  setSuggestions([]);
+                }}
+                className="text-gray-400 hover:text-white p-2"
+                aria-label="Close search"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+              </button>
+              <div className="flex-1 relative">
+                {/* Search Icon */}
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 z-10">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+
+                {/* Clear button when there's text */}
+                {query && (
+                  <button
+                    onClick={() => {
+                      setQuery('');
+                      setSuggestions([]);
+                      inputRef.current?.focus();
+                    }}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white active:text-blue-400 z-10 p-2"
+                    type="button"
+                    aria-label="Clear search"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+
+                {/* Mobile Search Input */}
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={query}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setTimeout(() => setIsFocused(false), 100)}
+                  placeholder={t('search.placeholder')}
+                  className="w-full h-14 pl-12 pr-12 rounded-2xl text-lg border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Desktop Search */}
+        <div className={`${isExpanded ? 'hidden' : 'hidden sm:block'} relative`}>
+          {/* Search Icon */}
+          <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 z-10">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+
+          {/* Clear button when there's text */}
+          {query && (
+            <button
+              onClick={() => {
+                setQuery('');
+                setSuggestions([]);
+                inputRef.current?.focus();
+              }}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white z-10 p-1"
+              type="button"
+              aria-label="Clear search"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+
+          {/* Desktop Search Input */}
+          <input
+            type="text"
+            value={query}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setTimeout(() => setIsFocused(false), 100)}
+            placeholder={t('search.placeholder')}
+            className="w-full h-12 pl-12 pr-4 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
+            style={{
+              boxShadow: isFocused 
+                ? '0 0 20px rgba(59, 130, 246, 0.2), 0 0 40px rgba(59, 130, 246, 0.1)' 
+                : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+            }}
+            aria-label={t('aria.search')}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
+          />
+
+          {/* Glow Effect on Focus */}
+          {isFocused && (
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600/20 via-sky-500/10 to-blue-600/20 -z-10 blur-lg animate-pulse" />
+          )}
         </div>
 
-        {/* Search Input */}
-        <input
-          ref={inputRef}
-          type="text"
-          value={query}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setTimeout(() => setIsFocused(false), 100)}
-          placeholder={t('search.placeholder')}
-          className="w-full h-12 pl-12 pr-4 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
-          style={{
-            boxShadow: isFocused 
-              ? '0 0 20px rgba(59, 130, 246, 0.2), 0 0 40px rgba(59, 130, 246, 0.1)' 
-              : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-          }}
-          aria-label={t('aria.search')}
-        />
-
-        {/* Glow Effect on Focus */}
-        {isFocused && (
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600/20 via-sky-500/10 to-blue-600/20 -z-10 blur-lg animate-pulse" />
-        )}
-      </div>
-
-      {/* Search Suggestions */}
-      {(isFocused || suggestions.length > 0) && suggestions.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-3 bg-slate-800/95 backdrop-blur-xl rounded-2xl border border-blue-800/40 shadow-2xl shadow-black/20 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200">
+        {/* Search Suggestions */}
+        {(isFocused || suggestions.length > 0) && suggestions.length > 0 && (
+          <div className={`${isExpanded ? 'fixed top-20 left-4 right-4' : 'absolute left-0 right-0 top-full mt-2 sm:mt-3'} bg-slate-800/98 sm:bg-slate-800/95 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-blue-800/40 shadow-2xl shadow-black/20 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200`}>
           {/* Header gradient */}
-          <div className="h-1 bg-gradient-to-r from-blue-500 via-sky-400 to-blue-500" />
+          <div className="h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 via-sky-400 to-blue-500" />
           
-          <div className="p-2 max-h-80 overflow-y-auto">
+          <div className="p-1 sm:p-2 max-h-60 sm:max-h-80 overflow-y-auto">
             {suggestions.map((suggestion, index) => (
               <button
                 key={`${suggestion.type}-${suggestion.id}`}
                 onClick={() => handleSuggestionClick(suggestion)}
-                className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden ${
+                className={`w-full text-left px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl transition-all duration-200 group relative overflow-hidden ${
                   index === focusedIndex
                     ? 'bg-gradient-to-r from-blue-600/80 to-blue-700/80 text-white shadow-lg shadow-blue-600/30'
                     : 'hover:bg-slate-700/50 text-gray-300 hover:text-white'
                 }`}
               >
-                {/* Active item glow effect */}
+                {/* Active item glow effect - hidden on mobile */}
                 {index === focusedIndex && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-blue-500/30 to-blue-600/20 animate-pulse" />
+                  <div className="hidden sm:block absolute inset-0 bg-gradient-to-r from-blue-600/20 via-blue-500/30 to-blue-600/20 animate-pulse" />
                 )}
                 
-                <div className="flex items-start gap-3 relative z-10">
-                  {/* Certification Icon */}
+                <div className="flex items-start gap-2 sm:gap-3 relative z-10">
+                  {/* Certification Icon - smaller on mobile */}
                   <div className={`mt-0.5 ${getCertificationColor(suggestion.matchType, suggestion.score)} transition-all duration-200 ${
                     index === focusedIndex ? '' : 'group-hover:scale-110'
-                  }`}>
-                    {getCertificationIcon()}
+                  } flex-shrink-0`}>
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" />
+                      <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
                   </div>
                   
                   <div className="flex-1 min-w-0">
                     {/* Title */}
-                    <div className={`text-sm font-semibold transition-all duration-200 ${
+                    <div className={`text-sm sm:text-sm font-semibold transition-all duration-200 ${
                       index === focusedIndex ? 'text-white' : 'text-gray-300 group-hover:text-white'
                     }`}>
                       {highlightMatch(suggestion.title, query)}
                     </div>
                     
-                    {/* Description */}
-                    <div className={`text-xs mt-1 line-clamp-2 transition-all duration-200 ${
-                      index === focusedIndex ? 'text-blue-200' : 'text-gray-500 group-hover:text-gray-400'
-                    }`}>
-                      {suggestion.description}
-                    </div>
-                    
                     {/* Tags/Meta info */}
-                    {(suggestion.level || suggestion.category || suggestion.tags) && (
+                    {(suggestion.level || suggestion.category) && (
                       <div className="flex items-center gap-1 mt-1.5 flex-wrap">
                         {suggestion.level && (
-                          <span className="px-1.5 py-0.5 text-xs bg-slate-700/50 text-gray-400 rounded">
-                            {suggestion.level}
+                          <span className="px-1.5 py-0.5 text-xs sm:text-xs bg-slate-700/50 text-gray-400 rounded">
+                            {t(`certifications.level.${suggestion.level}`)}
                           </span>
                         )}
-                        {suggestion.category && suggestion.category !== suggestion.level && (
-                          <span className="px-1.5 py-0.5 text-xs bg-slate-700/50 text-gray-400 rounded">
+                        {suggestion.category && (
+                          <span className="px-1.5 py-0.5 text-xs sm:text-xs bg-slate-700/50 text-gray-400 rounded">
                             {suggestion.category}
                           </span>
-                        )}
-                        {suggestion.tags && suggestion.tags.slice(0, 2).map(tag => 
-                          tag !== suggestion.level && tag !== suggestion.category && (
-                            <span key={tag} className="px-1.5 py-0.5 text-xs bg-slate-700/30 text-gray-500 rounded">
-                              {tag}
-                            </span>
-                          )
                         )}
                       </div>
                     )}
                   </div>
                   
-                  {/* Arrow icon with relevance indicator */}
-                  <div className="flex flex-col items-center mt-1">
+                  {/* Arrow icon with relevance indicator - hidden on mobile */}
+                  <div className="hidden sm:flex flex-col items-center mt-1">
                     <div className="opacity-0 group-hover:opacity-50 transition-opacity duration-200">
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
@@ -455,17 +557,18 @@ export default function SearchBar({ lang }: SearchBarProps) {
         </div>
       )}
 
-      {/* Backdrop for mobile */}
-      {isFocused && suggestions.length > 0 && (
-        <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm -z-20 lg:hidden"
-          onClick={() => {
-            setIsFocused(false);
-            setSuggestions([]);
-            setFocusedIndex(-1);
-          }}
-        />
-      )}
-    </div>
+        {/* Backdrop for mobile */}
+        {isFocused && suggestions.length > 0 && !isExpanded && (
+          <div 
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm -z-20 lg:hidden"
+            onClick={() => {
+              setIsFocused(false);
+              setSuggestions([]);
+              setFocusedIndex(-1);
+            }}
+          />
+        )}
+      </div>
+    </>
   );
 }

@@ -46,7 +46,7 @@ export default function CertificationCard({
         {/* Prerequisite Badge - Top right corner with proper spacing */}
         {cert.prerequisite && (
           <div className="absolute top-3 right-3 z-10 max-w-[140px]">
-            <span className="text-[10px] sm:text-xs bg-gradient-to-r from-orange-900/40 to-amber-900/40 text-orange-200 px-2 py-1 rounded-full border border-orange-700/50 font-semibold inline-block">
+            <span className="text-xs bg-gradient-to-r from-orange-900/40 to-amber-900/40 text-orange-200 px-3 py-1.5 rounded-full border border-orange-700/50 font-semibold inline-block">
               {translateCertificationValue(cert.prerequisite, lang)}
             </span>
           </div>
@@ -56,10 +56,10 @@ export default function CertificationCard({
         <div className="mb-4">
           <div className="flex items-start justify-between">
             <div className="flex-1" style={{ paddingRight: cert.prerequisite ? '150px' : '20px' }}>
-              <span className="text-2xl sm:text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent block leading-tight">
+              <span className="text-3xl sm:text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent block leading-tight">
                 {cert.acronym}
               </span>
-              <h3 className="text-xs sm:text-sm lg:text-base text-gray-300 mt-2 line-clamp-2 leading-relaxed min-h-[2.5rem]">
+              <h3 className="text-sm sm:text-sm lg:text-base text-gray-300 mt-2 line-clamp-2 leading-relaxed min-h-[2.5rem]">
                 {cert.name}
               </h3>
             </div>
@@ -68,10 +68,10 @@ export default function CertificationCard({
 
         {/* Primary Tags Section - Responsive layout */}
         <div className="mb-4">
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">
+          <div className="flex flex-wrap gap-2">
             {/* Level */}
             <span
-              className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded-full font-medium whitespace-nowrap ${
+              className={`text-xs px-3 py-1.5 rounded-full font-medium whitespace-nowrap ${
                 cert.level === 'entry'
                   ? 'bg-green-900/40 text-green-200 border border-green-700/50'
                   : cert.level === 'intermediate'
@@ -84,7 +84,7 @@ export default function CertificationCard({
 
             {/* Exam Type - Hide on very small screens if needed */}
             <span
-              className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded-full font-medium whitespace-nowrap ${
+              className={`text-xs px-3 py-1.5 rounded-full font-medium whitespace-nowrap ${
                 cert.type === 'performance'
                   ? 'bg-purple-900/40 text-purple-200 border border-purple-700/50'
                   : 'bg-blue-900/40 text-blue-200 border border-blue-700/50'
@@ -96,7 +96,7 @@ export default function CertificationCard({
             </span>
 
             {/* Duration - On new line if needed */}
-            <span className="text-[10px] sm:text-xs bg-slate-900/40 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-slate-200 border border-slate-700/50 font-medium whitespace-nowrap">
+            <span className="text-xs bg-slate-900/40 px-3 py-1.5 rounded-full text-slate-200 border border-slate-700/50 font-medium whitespace-nowrap">
               {cert.duration}m
             </span>
           </div>
@@ -106,14 +106,14 @@ export default function CertificationCard({
         <div className="mb-4 min-h-[60px] flex-1">
           {cert.requiredFor && cert.requiredFor.length > 0 ? (
             <>
-              <div className="text-[10px] sm:text-xs text-gray-400 mb-1.5 font-medium">
+              <div className="text-xs text-gray-400 mb-1.5 font-medium">
                 {t('certifications.requiredFor')}
               </div>
-              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              <div className="flex flex-wrap gap-2">
                 {cert.requiredFor.map((badge: string) => (
                   <span
                     key={badge}
-                    className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded-full font-medium inline-flex items-center gap-1 ${
+                    className={`text-xs px-3 py-1.5 rounded-full font-medium inline-flex items-center gap-1 ${
                       badge === 'Kubestronaut'
                         ? 'bg-blue-900/40 text-blue-200 border border-blue-700/50'
                         : 'bg-amber-900/40 text-amber-200 border border-amber-700/50'

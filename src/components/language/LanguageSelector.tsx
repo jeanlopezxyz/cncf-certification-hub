@@ -85,7 +85,7 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative group flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 transition-all duration-300 border border-blue-900/30 hover:border-blue-800/50 hover:scale-105 active:scale-95 min-w-[48px] overflow-hidden"
+        className="relative group flex items-center justify-center gap-2 w-10 h-10 sm:w-auto sm:h-auto sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl bg-slate-800/80 hover:bg-slate-700/80 transition-all duration-300 border border-slate-700 sm:border-blue-900/30 hover:border-slate-600 sm:hover:border-blue-800/50 sm:hover:scale-105 sm:active:scale-95 overflow-hidden"
         aria-label={t('aria.selectLanguage')}
       >
         {/* Animated background gradient */}
@@ -101,9 +101,9 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
           {langCodes[currentLang]}
         </span>
         
-        {/* Dropdown chevron */}
+        {/* Dropdown chevron - hidden on mobile */}
         <svg
-          className={`w-4 h-4 text-blue-400 transition-all duration-300 relative z-10 ${
+          className={`w-4 h-4 text-blue-400 transition-all duration-300 relative z-10 hidden sm:block ${
             isOpen ? 'rotate-180 text-blue-300' : 'group-hover:text-blue-300'
           }`}
           fill="none"

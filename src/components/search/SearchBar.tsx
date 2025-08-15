@@ -469,7 +469,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
 
         {/* Search Suggestions */}
         {(isFocused || suggestions.length > 0) && suggestions.length > 0 && (
-          <div className={`${isExpanded ? 'fixed top-20 left-2 right-2 mt-2' : 'absolute left-0 right-0 top-full mt-2 sm:mt-3'} bg-slate-800/98 sm:bg-slate-800/95 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-blue-800/40 shadow-2xl shadow-black/20 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200`}>
+          <div className={`${isExpanded ? 'fixed top-20 left-2 right-2 mt-2 bg-slate-900' : 'absolute left-0 right-0 top-full mt-2 sm:mt-3 bg-slate-800'} backdrop-blur-xl rounded-xl sm:rounded-2xl border border-blue-800/40 shadow-2xl shadow-black/20 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200`}>
           {/* Header gradient */}
           <div className="h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 via-sky-400 to-blue-500" />
           

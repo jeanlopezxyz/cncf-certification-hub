@@ -1,182 +1,237 @@
 #!/usr/bin/env bash
-# subs.sh - Extrae audio, limpia/realza voz y transcribe con Whisper (open source).
-#          Sin cuDNN ni CTranslate2. GPU si hay, con fallback automático a CPU.
-# Requisitos: ffmpeg, python3, pip. (Instala openai-whisper si falta)
-# Opcional: jq (para generar <base>_filtered.txt)
+# subs_simple.sh - Versión simple que prioriza calidad de transcripción
+# Menos procesamiento = mejor transcripción en muchos casos
 
 set -euo pipefail
 
 usage() {
   cat <<'EOF'
 Uso:
-  subs.sh <video_entrada> [--model <tiny|base|small|medium|large>] [--lang <codigo>]
-          [--no-denoise] [--strong-denoise] [--vad] [--boost <dB>] [--loudnorm]
-          [--device <auto|cuda|cpu>] [--batch <n>] [--initial-prompt "<texto>"]
+  subs_simple.sh <video_entrada> [opciones]
+
+Opciones principales:
+  --model <tiny|base|small|medium|large>     (default: medium)
+  --lang <codigo>                            es, en, fr, etc. (IMPORTANTE)
+  --device <auto|cuda|cpu>                   (default: auto)
+
+Opciones de audio (usar CON CUIDADO):
+  --denoise                                  Reducción de ruido suave
+  --normalize                                Normalizar volumen
+  --no-process                               Solo extraer audio sin procesar
+
+Opciones de transcripción:
+  --beam-size <1-5>                          Calidad búsqueda (default: 5)
+  --temperature <0-1>                        Creatividad (default: 0)
+  --word-timestamps                          Timestamps por palabra
 
 Ejemplos:
-  subs.sh charla.mp4 --model medium --lang es
-  subs.sh charla.mp4 --strong-denoise --boost 4dB --vad
-  subs.sh charla.mp4 --model large --lang es --device cpu   # si quieres evitar GPU
+  # Mejor calidad - sin procesamiento
+  subs_simple.sh video.mp4 --model medium --lang es --no-process
 
-Salida:
-  - <base>.wav            -> audio crudo (mono, 16kHz)
-  - <base>_clean.wav      -> audio limpio + EQ + compresor (+ loudnorm/boost)
-  - <base>_trim.wav       -> (si --vad) audio con silencios recortados
-  - <base>.txt/.srt/.vtt/.json -> salidas de Whisper
-  - <base>_filtered.txt   -> (si hay jq) texto filtrado por confianza/ruido
+  # Con denoise suave
+  subs_simple.sh video.mp4 --model medium --lang es --denoise
+
+  # Máxima calidad
+  subs_simple.sh video.mp4 --model large --lang es --beam-size 5 --word-timestamps
 EOF
 }
 
 if [[ ${1:-} == "-h" || ${1:-} == "--help" || $# -lt 1 ]]; then usage; exit 0; fi
 
 need(){ command -v "$1" >/dev/null 2>&1 || { echo "Error: falta '$1' en el PATH."; exit 1; }; }
-
 need ffmpeg
 need python3
-if ! command -v whisper >/dev/null 2>&1; then
-  echo "Instalando whisper (open source)..."
+
+# Verificar whisper
+if ! python3 -c "import whisper" >/dev/null 2>&1; then
+  echo "Instalando whisper..."
   python3 -m pip install --upgrade openai-whisper >/dev/null
 fi
 
 INPUT="$1"; shift || true
 [[ -f "$INPUT" ]] || { echo "Error: no existe el archivo: $INPUT"; exit 1; }
 
-# Defaults
-MODEL="small"
+# Defaults optimizados para calidad
+MODEL="medium"
 LANG=""
-DENOISE=1
-STRONG_DENOISE=0
-APPLY_VAD=0
-BOOST_DB=""
-APPLY_LOUDNORM=0
-DEVICE="auto"          # auto|cuda|cpu
-BATCH="4"              # reduce si hay OOM
-INITIAL_PROMPT="Transcribe literalmente lo que se escucha, sin añadir palabras ni frases comunes."
+DEVICE="auto"
+DENOISE=0
+NORMALIZE=0
+NO_PROCESS=0
+BEAM_SIZE=5
+TEMPERATURE=0
+WORD_TIMESTAMPS=0
 
-# Flags
+# Parsing argumentos
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --model) MODEL="${2:-small}"; shift 2 ;;
-    --lang)  LANG="${2:-}";       shift 2 ;;
-    --no-denoise) DENOISE=0; shift ;;
-    --strong-denoise) STRONG_DENOISE=1; shift ;;
-    --vad) APPLY_VAD=1; shift ;;
-    --boost) BOOST_DB="${2:-}"; shift 2 ;;
-    --loudnorm) APPLY_LOUDNORM=1; shift ;;
+    --model) MODEL="${2:-medium}"; shift 2 ;;
+    --lang) LANG="${2:-}"; shift 2 ;;
     --device) DEVICE="${2:-auto}"; shift 2 ;;
-    --batch)  BATCH="${2:-4}"; shift 2 ;;
-    --initial-prompt) INITIAL_PROMPT="${2:-}"; shift 2 ;;
+    --denoise) DENOISE=1; shift ;;
+    --normalize) NORMALIZE=1; shift ;;
+    --no-process) NO_PROCESS=1; shift ;;
+    --beam-size) BEAM_SIZE="${2:-5}"; shift 2 ;;
+    --temperature) TEMPERATURE="${2:-0}"; shift 2 ;;
+    --word-timestamps) WORD_TIMESTAMPS=1; shift ;;
     *) echo "Parámetro no reconocido: $1"; usage; exit 1 ;;
   esac
 done
 
+# Validaciones
+valid_models=("tiny" "base" "small" "medium" "large")
+[[ " ${valid_models[*]} " =~ " ${MODEL} " ]] || { echo "Modelo inválido: $MODEL"; exit 1; }
+
+# Setup
 BASENAME="$(basename "$INPUT")"
 STEM="${BASENAME%.*}"
-RAW_WAV="${STEM}.wav"
-CLEAN_WAV="${STEM}_clean.wav"
+RAW_WAV="${STEM}_raw.wav"
 
-echo "[1/4] Extrayendo audio -> ${RAW_WAV} (mono, 16kHz)"
+echo "🎵 [1/3] Extrayendo audio..."
+
+# Extraer audio básico
 ffmpeg -y -i "$INPUT" -vn -ac 1 -ar 16000 -acodec pcm_s16le "$RAW_WAV" >/dev/null 2>&1
 
 SOURCE_WAV="$RAW_WAV"
 
-# --- Limpieza: denoise + EQ + compresor + loudnorm/boost + limitador ---
-if [[ $DENOISE -eq 1 ]]; then
-  echo "[2/4] Limpieza + EQ + Compresor de voz"
-  if [[ $STRONG_DENOISE -eq 1 ]]; then
-    DENOISE_CHAIN="afftdn=nr=20:nf=-35"
-  else
-    DENOISE_CHAIN="afftdn=nr=12:nf=-25"
+# Procesamiento MÍNIMO si se requiere
+if [[ $NO_PROCESS -eq 0 && ($DENOISE -eq 1 || $NORMALIZE -eq 1) ]]; then
+  echo "🎛️  [2/3] Procesamiento mínimo de audio..."
+
+  CLEAN_WAV="${STEM}_clean.wav"
+  FILTERS=()
+
+  # Solo denoise muy suave si se pide
+  if [[ $DENOISE -eq 1 ]]; then
+    FILTERS+=("afftdn=nr=8:nf=-25")
   fi
 
-  HP_LP="highpass=f=80,lowpass=f=7800"
-  EQ_MUD="equalizer=f=300:t=h:width_type=o:width=1.0:g=-3"
-  EQ_PRESS="equalizer=f=3000:t=h:width_type=o:width=0.8:g=3"
-  COMPRESSOR="acompressor=threshold=-18dB:ratio=4:attack=5:release=50:makeup=8"
-  [[ $APPLY_LOUDNORM -eq 1 ]] && LOUD="loudnorm=I=-16:TP=-1.5:LRA=11" || LOUD=""
-  [[ -n "$BOOST_DB" ]] && BOOST="volume=${BOOST_DB}" || BOOST=""
-  LIMIT="alimiter=limit=0.95"
-
-  AF_CHAIN="$DENOISE_CHAIN,$HP_LP,$EQ_MUD,$EQ_PRESS,$COMPRESSOR"
-  [[ -n "$LOUD"  ]] && AF_CHAIN="$AF_CHAIN,$LOUD"
-  [[ -n "$BOOST" ]] && AF_CHAIN="$AF_CHAIN,$BOOST"
-  AF_CHAIN="$AF_CHAIN,$LIMIT"
-
-  ffmpeg -y -i "$SOURCE_WAV" -af "$AF_CHAIN" -ac 1 -ar 16000 "$CLEAN_WAV" >/dev/null 2>&1
-  SOURCE_WAV="$CLEAN_WAV"
-else
-  echo "[2/4] Saltando limpieza (--no-denoise)"
-fi
-
-# --- VAD opcional (recorta silencios/pausas largas) ---
-if [[ $APPLY_VAD -eq 1 ]]; then
-  echo "[3/4] Recortando silencios (VAD) -> ${STEM}_trim.wav"
-  ffmpeg -y -i "$SOURCE_WAV" \
-    -af "silenceremove=start_periods=1:start_threshold=0.02:start_silence=0.5:stop_periods=-1:stop_threshold=0.02:stop_silence=0.8" \
-    -ac 1 -ar 16000 "${STEM}_trim.wav" >/dev/null 2>&1
-  SOURCE_WAV="${STEM}_trim.wav"
-else
-  echo "[3/4] Saltando VAD"
-fi
-
-# --- Construcción de args para whisper (anti-alucinación + device) ---
-WHISPER_ARGS=( "$SOURCE_WAV" --model "$MODEL" --temperature 0 --condition_on_previous_text False \
-               --no_speech_threshold 0.92 --compression_ratio_threshold 2.4 --initial_prompt "$INITIAL_PROMPT" \
-               --batch_size "$BATCH" )
-[[ -n "$LANG" ]] && WHISPER_ARGS+=( --language "$LANG" )
-
-# Device
-if [[ "$DEVICE" == "cpu" ]]; then
-  WHISPER_ARGS+=( --device cpu --fp16 False )
-elif [[ "$DEVICE" == "cuda" ]]; then
-  WHISPER_ARGS+=( --device cuda --fp16 True )
-else
-  if command -v nvidia-smi >/dev/null 2>&1; then
-    WHISPER_ARGS+=( --device cuda --fp16 True )
-  else
-    WHISPER_ARGS+=( --device cpu --fp16 False )
+  # Solo normalización suave si se pide
+  if [[ $NORMALIZE -eq 1 ]]; then
+    FILTERS+=("loudnorm=I=-18:TP=-2:LRA=11")
   fi
+
+  # Aplicar filtros mínimos
+  if [[ ${#FILTERS[@]} -gt 0 ]]; then
+    IFS=','
+    FILTER_CHAIN="${FILTERS[*]}"
+
+    if ffmpeg -y -i "$RAW_WAV" -af "$FILTER_CHAIN" -ar 16000 -ac 1 "$CLEAN_WAV" >/dev/null 2>&1; then
+      SOURCE_WAV="$CLEAN_WAV"
+      echo "   Aplicado: $FILTER_CHAIN"
+    else
+      echo "   ⚠️  Procesamiento falló, usando audio original"
+    fi
+  fi
+else
+  echo "🎛️  [2/3] Sin procesamiento de audio (--no-process o sin opciones)"
 fi
 
-# Evitar fragmentación CUDA (si aplica)
-export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True,max_split_size_mb=64}"
+echo "🎯 [3/3] Transcribiendo con Whisper..."
 
-echo "[4/4] Transcribiendo con Whisper (modelo: ${MODEL}${LANG:+, lang: $LANG})"
-# Intento 1: según device elegido
-if ! whisper "${WHISPER_ARGS[@]}"; then
-  echo "⚠️  Falla en GPU/FP16 o memoria. Reintentando con batch más pequeño..."
-  # Reduce picos de VRAM
-  WHISPER_ARGS=( "${WHISPER_ARGS[@]/--batch_size $BATCH/--batch_size 2}" )
-  if ! whisper "${WHISPER_ARGS[@]}"; then
+# Determinar device
+determine_device() {
+  case "$DEVICE" in
+    cpu) echo "cpu" ;;
+    cuda|auto)
+      if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi >/dev/null 2>&1; then
+        echo "cuda"
+      else
+        echo "cpu"
+      fi ;;
+  esac
+}
+
+ACTUAL_DEVICE=$(determine_device)
+
+# Argumentos Whisper optimizados para CALIDAD
+WHISPER_ARGS=(
+  "$SOURCE_WAV"
+  --model "$MODEL"
+  --output_dir "."
+  --output_format all
+  --temperature "$TEMPERATURE"
+  --beam_size "$BEAM_SIZE"
+  --best_of 5
+  --patience 1.0
+  --condition_on_previous_text False
+  --compression_ratio_threshold 2.4
+  --logprob_threshold -1.0
+  --no_speech_threshold 0.6
+)
+
+# IDIOMA es CRÍTICO para buena transcripción
+if [[ -n "$LANG" ]]; then
+  WHISPER_ARGS+=(--language "$LANG")
+  echo "   Idioma especificado: $LANG"
+else
+  echo "   ⚠️  Sin idioma especificado - la detección automática puede fallar"
+fi
+
+[[ $WORD_TIMESTAMPS -eq 1 ]] && WHISPER_ARGS+=(--word_timestamps True)
+
+# Initial prompt según idioma (MUY IMPORTANTE)
+if [[ "$LANG" == "es" || "$LANG" == "spanish" ]]; then
+  INITIAL_PROMPT="Transcribe exactamente lo que se dice en español, incluyendo muletillas y expresiones naturales."
+elif [[ "$LANG" == "en" || "$LANG" == "english" ]]; then
+  INITIAL_PROMPT="Transcribe exactly what is said in English, including natural speech patterns."
+else
+  INITIAL_PROMPT="Transcribe exactly what is said, maintaining natural speech."
+fi
+WHISPER_ARGS+=(--initial_prompt "$INITIAL_PROMPT")
+
+# Configurar device
+if [[ "$ACTUAL_DEVICE" == "cpu" ]]; then
+  WHISPER_ARGS+=(--device cpu --fp16 False)
+  command -v nproc >/dev/null 2>&1 && WHISPER_ARGS+=(--threads "$(nproc)")
+else
+  WHISPER_ARGS+=(--device cuda --fp16 True)
+fi
+
+echo "   Configuración: $MODEL | $ACTUAL_DEVICE | beam_size=$BEAM_SIZE | temp=$TEMPERATURE"
+
+# Ejecutar Whisper
+if ! python3 -m whisper "${WHISPER_ARGS[@]}"; then
+  if [[ "$ACTUAL_DEVICE" == "cuda" ]]; then
     echo "⚠️  Reintentando en CPU..."
-    # Forzar CPU sin FP16
-    whisper "${WHISPER_ARGS[@]/--device cuda/--device cpu}" --fp16 False || {
-      echo "❌ Whisper falló también en CPU."; exit 1;
+    # Fallback simple en CPU
+    python3 -m whisper "$SOURCE_WAV" --model "$MODEL" --output_dir "." --output_format all \
+      --device cpu --fp16 False --temperature "$TEMPERATURE" \
+      ${LANG:+--language "$LANG"} \
+      --initial_prompt "$INITIAL_PROMPT" || {
+      echo "❌ Transcripción falló"
+      exit 1
     }
+  else
+    echo "❌ Transcripción falló"
+    exit 1
   fi
 fi
 
-# Post-proceso opcional con jq para filtrar segmentos de baja confianza
+# Estadísticas finales
 if command -v jq >/dev/null 2>&1 && [[ -f "${STEM}.json" ]]; then
-  jq -r '
-    .segments
-    | map(select(
-        ((.no_speech_prob // 0) < 0.85) and
-        ((.avg_logprob     // -10) > -0.65) and
-        ((.compression_ratio // 0) < 2.4) and
-        ((.text // "") | length > 0)
-      ))
-    | .[].text
-  ' "${STEM}.json" | sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//' > "${STEM}_filtered.txt"
-  echo "🧹 Post-proceso: generado ${STEM}_filtered.txt (texto filtrado por confianza/ruido)."
-else
-  echo "Tip: instala 'jq' para generar un texto filtrado por confianza."
+  SEGMENTS=$(jq -r '.segments | length' "${STEM}.json" 2>/dev/null || echo "0")
+  AVG_CONF=$(jq -r '[.segments[].avg_logprob] | add / length' "${STEM}.json" 2>/dev/null || echo "N/A")
+
+  echo "
+📊 Estadísticas:
+   Segmentos detectados: $SEGMENTS
+   Confianza promedio: $AVG_CONF
+   "
 fi
 
-echo "✅ Listo.
-Archivos generados:
-  - Audio crudo : ${RAW_WAV}
-  - Audio limpio: ${CLEAN_WAV} $( [[ $APPLY_VAD -eq 1 ]] && echo "y ${STEM}_trim.wav" )
-  - Texto       : ${STEM}.txt (y ${STEM}.srt / ${STEM}.vtt / ${STEM}.json)
-  - Filtrado    : ${STEM}_filtered.txt (si hay jq)
+echo "✅ Transcripción completada
+
+📁 Archivos:
+   • ${STEM}.txt - Transcripción
+   • ${STEM}.srt - Subtítulos
+   • ${STEM}.vtt - WebVTT
+   • ${STEM}.json - Datos completos
+   • ${SOURCE_WAV##*/} - Audio usado
+
+💡 Si la calidad no es buena:
+   1. Especifica --lang es (crítico)
+   2. Usa --model large para mejor calidad
+   3. Prueba --no-process si el audio está distorsionado
+   4. Ajusta --temperature 0.2 si hay repeticiones
 "

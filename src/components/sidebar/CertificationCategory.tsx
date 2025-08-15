@@ -53,7 +53,6 @@ export default function CertificationCategory({
         aria-expanded={isOpen}
         aria-label={`Toggle ${categoryName} category`}
       >
-        <span className="w-1 h-1 bg-purple-400 rounded-full flex-shrink-0 ml-2 transition-all duration-200 group-hover:bg-blue-400 group-hover:scale-150"></span>
         <span className={`flex-1 text-left font-bold text-gray-200 group-hover:text-white transition-colors duration-200 ${
           isOpen ? 'text-white' : ''
         }`}>{t(categoryName) || categoryName}</span>
@@ -88,9 +87,9 @@ export default function CertificationCategory({
               key={cert.id}
               href={certHref}
               onClick={onLinkClick}
-              className={`flex items-center gap-3 text-sm transition-all duration-200 py-2.5 pl-7 pr-2 rounded-lg group relative overflow-hidden ${
+              className={`flex items-center gap-3 text-sm transition-all duration-200 py-2.5 pl-5 pr-2 rounded-lg group relative overflow-hidden ${
                 isActive 
-                  ? 'text-purple-400 bg-purple-400/10 font-bold' 
+                  ? 'text-blue-400 bg-blue-400/10 font-bold' 
                   : 'text-gray-400 hover:text-blue-400 hover:bg-slate-800/20'
               }`}
               style={{
@@ -100,16 +99,11 @@ export default function CertificationCategory({
               }}
             >
               {isActive && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-purple-400 rounded-r-full" />
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-400 rounded-r-full shadow-lg shadow-blue-400/50" />
               )}
-              <span className={`w-0.5 h-3 rounded-full flex-shrink-0 transition-all duration-200 ${
-                isActive 
-                  ? 'bg-purple-400 w-1.5 h-1.5' 
-                  : 'bg-gray-700 group-hover:bg-blue-400/50'
-              }`}></span>
               <span className={`font-semibold tracking-wide transition-all duration-200 ${
                 isActive 
-                  ? 'text-purple-400' 
+                  ? 'text-blue-400' 
                   : 'text-gray-300 group-hover:text-blue-300 group-hover:translate-x-1'
               }`}>{cert.acronym}</span>
             </a>

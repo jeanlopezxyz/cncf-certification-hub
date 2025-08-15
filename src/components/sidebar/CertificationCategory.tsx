@@ -111,8 +111,9 @@ export default function CertificationCategory({
               }`}
               style={{
                 animationDelay: isOpen ? `${index * 30}ms` : '0ms',
-                animation: isOpen ? 'slideIn 300ms ease-out forwards' : 'none',
                 opacity: isOpen ? 1 : 0,
+                transform: isOpen ? 'translateX(0)' : 'translateX(-10px)',
+                transition: `all 300ms ease-out ${index * 30}ms`,
               }}
             >
               {isActive && (
@@ -130,19 +131,6 @@ export default function CertificationCategory({
           );
         })}
       </div>
-      
-      <style jsx>{`
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateX(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      `}</style>
     </div>
   );
 }

@@ -139,7 +139,9 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
                   }`}
                   style={{
                     animationDelay: `${index * 50}ms`,
-                    animation: 'slideInFromRight 0.3s ease-out forwards',
+                    transform: 'translateX(0) scale(1)',
+                    opacity: 1,
+                    transition: 'all 0.3s ease-out',
                   }}
                 >
                   {/* Active item glow effect */}
@@ -193,19 +195,6 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
           </div>
         </div>
       )}
-      
-      <style jsx>{`
-        @keyframes slideInFromRight {
-          0% {
-            opacity: 0;
-            transform: translateX(20px) scale(0.9);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0) scale(1);
-          }
-        }
-      `}</style>
     </div>
   );
 }

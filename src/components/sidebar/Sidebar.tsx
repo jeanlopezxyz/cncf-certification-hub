@@ -85,6 +85,23 @@ export default function Sidebar({ lang }: SidebarProps) {
     setCurrentPath(path);
     const homePagePattern = /^\/(cncf-certification-hub)?(\/?(es|pt)?)?$/;
     setIsHomePage(homePagePattern.test(path));
+  }, [lang]); // Update when language changes
+  
+  // Also update on navigation
+  useEffect(() => {
+    const handleNavigationChange = () => {
+      const path = window.location.pathname;
+      setCurrentPath(path);
+      const homePagePattern = /^\/(cncf-certification-hub)?(\/?(es|pt)?)?$/;
+      setIsHomePage(homePagePattern.test(path));
+    };
+    
+    // Listen for Astro page transitions
+    document.addEventListener('astro:page-load', handleNavigationChange);
+    
+    return () => {
+      document.removeEventListener('astro:page-load', handleNavigationChange);
+    };
   }, []);
 
   // Ensure state is maintained when language changes
@@ -307,7 +324,8 @@ export default function Sidebar({ lang }: SidebarProps) {
               const langPath = lang === 'en' ? '' : `/${lang}`;
               // No slash before item.href since it doesn't start with /
               const href = `${basePath}${langPath}/${item.href}`;
-              const isActive = currentPath === href || currentPath.endsWith(`/${item.href}`);
+              // More precise matching - only exact match
+              const isActive = currentPath === href;
 
               return (
                 <a
@@ -370,7 +388,8 @@ export default function Sidebar({ lang }: SidebarProps) {
               const basePath = APP_CONFIG.basePath || '';
               const langPath = lang === 'en' ? '' : `/${lang}`;
               const fullHref = `${basePath}${langPath}/tips/${item.id}`;
-              const isActive = currentPath === fullHref || currentPath.endsWith(`/tips/${item.id}`);
+              // More precise matching - only exact match
+              const isActive = currentPath === fullHref;
 
               return (
                 <a

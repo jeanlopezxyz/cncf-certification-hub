@@ -53,6 +53,11 @@ export default function CertificationCategory({
         aria-expanded={isOpen}
         aria-label={`Toggle ${categoryName} category`}
       >
+        {/* Category indicator icon */}
+        <div className={`transition-transform duration-300 text-blue-400 ${isOpen ? 'rotate-90' : ''}`}>
+          <ChevronDownIcon className="w-3 h-3 rotate-[-90deg]" />
+        </div>
+        
         <span className={`flex-1 text-left font-bold text-gray-200 group-hover:text-white transition-colors duration-200 ${
           isOpen ? 'text-white' : ''
         }`}>{t(categoryName) || categoryName}</span>
@@ -87,9 +92,9 @@ export default function CertificationCategory({
               key={cert.id}
               href={certHref}
               onClick={onLinkClick}
-              className={`flex items-center gap-3 text-sm transition-all duration-200 py-2.5 pl-5 pr-2 rounded-lg group relative overflow-hidden ${
+              className={`flex items-center gap-3 text-sm transition-all duration-200 py-2.5 pl-3 pr-2 rounded-lg group relative overflow-hidden ${
                 isActive 
-                  ? 'text-blue-400 bg-blue-400/10 font-bold' 
+                  ? 'text-blue-400 bg-blue-400/10 font-bold shadow-lg shadow-blue-400/20' 
                   : 'text-gray-400 hover:text-blue-400 hover:bg-slate-800/20'
               }`}
               style={{
@@ -101,11 +106,26 @@ export default function CertificationCategory({
               {isActive && (
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-400 rounded-r-full shadow-lg shadow-blue-400/50" />
               )}
-              <span className={`font-semibold tracking-wide transition-all duration-200 ${
+              
+              {/* Certification indicator dot */}
+              <span className={`w-0.5 h-4 rounded-full flex-shrink-0 transition-all duration-200 ${
                 isActive 
-                  ? 'text-blue-400' 
-                  : 'text-gray-300 group-hover:text-blue-300 group-hover:translate-x-1'
-              }`}>{cert.acronym}</span>
+                  ? 'bg-blue-400 w-2 h-2 rounded-full shadow-md shadow-blue-400/50' 
+                  : 'bg-blue-400/40 group-hover:bg-blue-400 group-hover:h-5'
+              }`}></span>
+              
+              <div className="flex-1">
+                <span className={`font-semibold tracking-wide transition-all duration-200 block ${
+                  isActive 
+                    ? 'text-blue-400' 
+                    : 'text-gray-300 group-hover:text-blue-300'
+                }`}>{cert.acronym}</span>
+                <span className={`text-xs transition-all duration-200 block mt-0.5 ${
+                  isActive 
+                    ? 'text-blue-300/80' 
+                    : 'text-gray-500 group-hover:text-gray-400'
+                }`}>{cert.name}</span>
+              </div>
             </a>
           );
         })}

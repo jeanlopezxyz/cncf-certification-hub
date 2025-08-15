@@ -39,7 +39,7 @@ export default function CertificationGrid({ lang }: CertificationGridProps) {
   const filteredCerts = [...kubestronautCerts, ...otherCerts, ...lfcsCert];
 
   return (
-    <section id="certifications" className="pt-8 pb-20 scroll-section">
+    <section id="certifications" className="py-12 sm:py-16 scroll-section">
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32">
         <CertificationHeader t={t} />
 

@@ -307,7 +307,7 @@ export default function Sidebar({ lang }: SidebarProps) {
               const langPath = lang === 'en' ? '' : `/${lang}`;
               // No slash before item.href since it doesn't start with /
               const href = `${basePath}${langPath}/${item.href}`;
-              const isActive = currentPath === href || currentPath.includes(`/${item.href}`);
+              const isActive = currentPath === href || currentPath.endsWith(`/${item.href}`);
 
               return (
                 <a
@@ -370,7 +370,7 @@ export default function Sidebar({ lang }: SidebarProps) {
               const basePath = APP_CONFIG.basePath || '';
               const langPath = lang === 'en' ? '' : `/${lang}`;
               const fullHref = `${basePath}${langPath}/tips/${item.id}`;
-              const isActive = currentPath === fullHref || currentPath.includes(`/tips/${item.id}`);
+              const isActive = currentPath === fullHref || currentPath.endsWith(`/tips/${item.id}`);
 
               return (
                 <a

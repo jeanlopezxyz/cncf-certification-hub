@@ -82,7 +82,7 @@ export default function CertificationCategory({
       >
         {certifications.map((cert, index) => {
           const certHref = `${basePath}/certifications/${cert.id}`;
-          const isActive = currentPath === certHref || currentPath.includes(`/certifications/${cert.id}`);
+          const isActive = currentPath === certHref || currentPath.endsWith(`/certifications/${cert.id}`);
           
           return (
             <a

@@ -91,24 +91,20 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-600/10 to-blue-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
         
-        {/* World icon and language code layout */}
-        <div className="relative z-10 flex items-center justify-center h-full w-full px-1">
-          {/* World icon on the left */}
-          <div className="flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
-            <WorldIcon className="w-3.5 h-3.5 text-blue-300 group-hover:text-white" />
+        {/* Clean centered layout with world icon and language */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full w-full">
+          {/* World icon at the top */}
+          <div className="transition-transform duration-300 group-hover:scale-110 mb-1">
+            <WorldIcon className="w-4 h-4 text-blue-300 group-hover:text-white" />
           </div>
           
-          {/* Language code in the center */}
-          <div className="flex-1 flex items-center justify-center">
-            <span className="font-black text-xs text-blue-300 group-hover:text-white transition-all duration-300 leading-none tracking-tight">
+          {/* Language code at the bottom with dropdown indicator */}
+          <div className="flex items-center gap-1">
+            <span className="font-bold text-[10px] text-blue-300 group-hover:text-white transition-all duration-300 leading-none">
               {langCodes[currentLang]}
             </span>
-          </div>
-          
-          {/* Dropdown indicator on the right */}
-          <div className="flex-shrink-0">
             <svg
-              className={`w-2.5 h-2.5 text-blue-400 transition-all duration-300 ${
+              className={`w-2 h-2 text-blue-400 transition-all duration-300 ${
                 isOpen ? 'rotate-180 text-blue-300' : 'group-hover:text-blue-300'
               }`}
               fill="none"

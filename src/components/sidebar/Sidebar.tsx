@@ -41,15 +41,42 @@ export default function Sidebar({ lang }: SidebarProps) {
   // Restore state after hydration
   useEffect(() => {
     setIsHydrated(true);
-    const saved = localStorage.getItem('sidebarCollapsed');
-    if (saved === 'true') {
+    
+    // Restore collapsed state
+    const savedCollapsed = localStorage.getItem('sidebarCollapsed');
+    if (savedCollapsed === 'true') {
       setIsDesktopCollapsed(true);
+    }
+    
+    // Restore open sections if they exist
+    const savedSections = localStorage.getItem('sidebarOpenSections');
+    if (savedSections) {
+      try {
+        const parsed = JSON.parse(savedSections);
+        if (Array.isArray(parsed)) {
+          setOpenSections(parsed);
+        }
+      } catch (e) {
+        // If parsing fails, keep default empty state
+      }
+    }
+    
+    // Restore open categories if they exist
+    const savedCategories = localStorage.getItem('sidebarOpenCategories');
+    if (savedCategories) {
+      try {
+        const parsed = JSON.parse(savedCategories);
+        if (Array.isArray(parsed)) {
+          setOpenCategories(parsed);
+        }
+      } catch (e) {
+        // If parsing fails, keep default empty state
+      }
     }
   }, []);
 
-  // Initialize state from localStorage or use defaults
+  // Initialize state from localStorage or use defaults (empty arrays)
   const [openSections, setOpenSections] = useState<string[]>([]);
-
   const [openCategories, setOpenCategories] = useState<string[]>([]);
 
   // Check if we're on the home page and track current path
@@ -111,7 +138,19 @@ export default function Sidebar({ lang }: SidebarProps) {
     };
   }, []);
 
-  // Remove localStorage saving - we want fresh state on each load
+  // Save open sections to localStorage when they change
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem('sidebarOpenSections', JSON.stringify(openSections));
+    }
+  }, [openSections, isHydrated]);
+
+  // Save open categories to localStorage when they change
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem('sidebarOpenCategories', JSON.stringify(openCategories));
+    }
+  }, [openCategories, isHydrated]);
 
   const toggleSection = (section: string) => {
     setOpenSections(prev => {

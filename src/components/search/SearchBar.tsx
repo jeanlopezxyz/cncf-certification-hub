@@ -348,27 +348,27 @@ export default function SearchBar({ lang }: SearchBarProps) {
         className={`${isExpanded ? 'fixed inset-0 bg-black/50 z-50 sm:relative sm:inset-auto sm:bg-transparent' : 'hidden sm:block'} sm:relative sm:w-full sm:max-w-md sm:mx-auto`}
         ref={containerRef}
       >
-        {/* Mobile Search Header */}
+        {/* Mobile Search Header - matches main header height */}
         {isExpanded && (
-          <div className="sm:hidden fixed top-0 left-0 right-0 bg-slate-900 p-4 border-b border-blue-500/30">
-            <div className="flex items-center gap-3">
+          <div className="sm:hidden fixed top-0 left-0 right-0 h-20 bg-slate-900/95 backdrop-blur-xl border-b border-blue-900/30 shadow-lg shadow-black/10">
+            <div className="h-full flex items-center px-2">
               <button
                 onClick={() => {
                   setIsExpanded(false);
                   setQuery('');
                   setSuggestions([]);
                 }}
-                className="text-gray-400 hover:text-white p-2"
+                className="flex items-center justify-center w-10 h-10 text-gray-400 hover:text-white rounded-lg hover:bg-slate-700/50 transition-all duration-200"
                 aria-label="Close search"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
               </button>
-              <div className="flex-1 relative">
+              <div className="flex-1 px-2 relative">
                 {/* Search Icon */}
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 z-10">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute left-5 top-1/2 transform -translate-y-1/2 text-blue-400 z-10">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
@@ -381,17 +381,17 @@ export default function SearchBar({ lang }: SearchBarProps) {
                       setSuggestions([]);
                       inputRef.current?.focus();
                     }}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white active:text-blue-400 z-10 p-2"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white active:text-blue-400 z-10 p-1.5"
                     type="button"
                     aria-label="Clear search"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 )}
 
-                {/* Mobile Search Input */}
+                {/* Mobile Search Input - matches desktop search bar height */}
                 <input
                   ref={inputRef}
                   type="text"
@@ -401,7 +401,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setTimeout(() => setIsFocused(false), 100)}
                   placeholder={t('search.placeholder')}
-                  className="w-full h-14 pl-12 pr-12 rounded-2xl text-lg border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
+                  className="w-full h-12 pl-11 pr-10 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
                   autoComplete="off"
                   autoCorrect="off"
                   autoCapitalize="off"
@@ -469,7 +469,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
 
         {/* Search Suggestions */}
         {(isFocused || suggestions.length > 0) && suggestions.length > 0 && (
-          <div className={`${isExpanded ? 'fixed top-20 left-4 right-4' : 'absolute left-0 right-0 top-full mt-2 sm:mt-3'} bg-slate-800/98 sm:bg-slate-800/95 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-blue-800/40 shadow-2xl shadow-black/20 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200`}>
+          <div className={`${isExpanded ? 'fixed top-20 left-2 right-2 mt-2' : 'absolute left-0 right-0 top-full mt-2 sm:mt-3'} bg-slate-800/98 sm:bg-slate-800/95 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-blue-800/40 shadow-2xl shadow-black/20 overflow-hidden z-50 animate-in slide-in-from-top-2 duration-200`}>
           {/* Header gradient */}
           <div className="h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 via-sky-400 to-blue-500" />
           

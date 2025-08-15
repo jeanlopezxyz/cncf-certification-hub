@@ -67,12 +67,15 @@ export default function CertificationGrid({ lang }: CertificationGridProps) {
  */
 function CertificationHeader({ t }: { t: (key: string) => string }) {
   return (
-    <div className="text-center mb-12 animate-fade-in-up">
+    <div className="text-center mb-10 animate-fade-in-up">
       <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
         <span className="bg-gradient-to-r from-blue-400 to-sky-300 bg-clip-text text-transparent">
           {t('certifications.title')}
         </span>
       </h2>
+      <p className="text-sm md:text-base text-gray-300 max-w-3xl mx-auto">
+        {t('certifications.subtitle')}
+      </p>
     </div>
   );
 }

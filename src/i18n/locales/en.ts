@@ -122,6 +122,7 @@ export const en = {
 
   // Certifications
   'certifications.title': 'CNCF Certifications',
+  'certifications.subtitle': 'Explore all cloud native certifications and choose your path to expertise',
   'certifications.filter.all': 'All Levels',
   'certifications.filter.entry': 'Entry Level',
   'certifications.filter.intermediate': 'Intermediate',

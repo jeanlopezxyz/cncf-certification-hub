@@ -118,6 +118,7 @@ export const es = {
 
   // Certifications
   'certifications.title': 'Certificaciones CNCF',
+  'certifications.subtitle': 'Explora todas las certificaciones cloud native y elige tu camino hacia la experiencia',
   'certifications.filter.all': 'Todos los Niveles',
   'certifications.filter.entry': 'Nivel Básico',
   'certifications.filter.intermediate': 'Intermedio',

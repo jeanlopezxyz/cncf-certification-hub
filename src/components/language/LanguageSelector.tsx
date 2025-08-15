@@ -91,22 +91,30 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-600/10 to-blue-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
         
-        {/* Language code displayed prominently */}
-        <div className="relative z-10 flex flex-col items-center">
-          <span className="font-bold text-xs text-blue-300 group-hover:text-white transition-all duration-300 leading-tight">
-            {langCodes[currentLang]}
-          </span>
-          {/* Small dropdown indicator */}
-          <svg
-            className={`w-2.5 h-2.5 text-blue-400 transition-all duration-300 mt-0.5 ${
-              isOpen ? 'rotate-180 text-blue-300' : 'group-hover:text-blue-300'
-            }`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+        {/* World icon and language code layout */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full">
+          {/* World icon at the top */}
+          <div className="transition-transform duration-300 group-hover:scale-110 mb-0.5">
+            <WorldIcon className="w-3.5 h-3.5 text-blue-300 group-hover:text-white" />
+          </div>
+          
+          {/* Language code below */}
+          <div className="flex items-center gap-0.5">
+            <span className="font-bold text-[9px] text-blue-300 group-hover:text-white transition-all duration-300 leading-none">
+              {langCodes[currentLang]}
+            </span>
+            {/* Small dropdown indicator */}
+            <svg
+              className={`w-2 h-2 text-blue-400 transition-all duration-300 ${
+                isOpen ? 'rotate-180 text-blue-300' : 'group-hover:text-blue-300'
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
         </div>
       </button>
 

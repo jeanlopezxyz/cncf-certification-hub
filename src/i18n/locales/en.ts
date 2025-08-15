@@ -117,6 +117,8 @@ export const en = {
   'achievements.golden.howStep3Desc': 'Complete LFCS and claim Golden status',
   'achievements.golden.ctaText': 'Ready to start your certification journey?',
   'achievements.golden.ctaButton': 'Start Your Path',
+  'achievements.kubestronaut.requiresCka': 'Requires CKA',
+  'certifications.lfcs.name': 'Linux Foundation Certified System Administrator',
 
   // Certifications
   'certifications.title': 'CNCF Certifications',
@@ -143,6 +145,7 @@ export const en = {
   'certifications.requiredFor': 'Required for:',
   'certifications.card.duration': 'Duration',
   'certifications.card.minutes': 'minutes',
+  'certifications.card.min': 'min',
   'certifications.card.price': 'Price',
 
   // Certification Levels

@@ -112,6 +112,8 @@ export const pt = {
   'achievements.golden.howStep3Desc': 'Complete LFCS e reivindique o status Golden',
   'achievements.golden.ctaText': 'Pronto para começar sua jornada de certificação?',
   'achievements.golden.ctaButton': 'Iniciar Seu Caminho',
+  'achievements.kubestronaut.requiresCka': 'Requer CKA',
+  'certifications.lfcs.name': 'Administrador de Sistema Certificado Linux Foundation',
 
   // Certifications
   'certifications.title': 'Certificações CNCF',
@@ -137,6 +139,7 @@ export const pt = {
   'certifications.card.requiredFor': 'Necessárias para',
   'certifications.card.duration': 'Duração',
   'certifications.card.minutes': 'minutos',
+  'certifications.card.min': 'min',
   'certifications.card.price': 'Preço',
 
   // Certification Levels

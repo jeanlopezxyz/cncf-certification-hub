@@ -97,7 +97,7 @@ export default function CertificationCard({
 
             {/* Duration - On new line if needed */}
             <span className="text-xs bg-slate-900/40 px-3 py-1.5 rounded-full text-slate-200 border border-slate-700/50 font-medium whitespace-nowrap">
-              {cert.duration}m
+              {cert.duration} {t('certifications.card.min')}
             </span>
           </div>
         </div>

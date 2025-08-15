@@ -167,7 +167,7 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
                         {isCKS && (
                           <div class="flex justify-center">
                             <div class="text-xs font-medium px-2 py-1 rounded-md bg-orange-600/20 text-orange-200 border border-orange-500/40">
-                              Requires CKA
+                              {t('achievements.kubestronaut.requiresCka')}
                             </div>
                           </div>
                         )}
@@ -190,7 +190,7 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
                         {/* Duration badge without emoji */}
                         <div class="flex justify-center">
                           <div class="text-xs font-medium px-2 py-1 rounded-md bg-slate-700/50 text-slate-300 border border-slate-600/50">
-                            {cert?.duration} min
+                            {cert?.duration} {t('certifications.card.min')}
                           </div>
                         </div>
                       </div>

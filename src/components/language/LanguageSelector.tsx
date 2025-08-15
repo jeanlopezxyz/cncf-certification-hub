@@ -85,7 +85,7 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative group flex items-center justify-center w-16 h-10 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 transition-all duration-300 border border-slate-700 hover:border-slate-600 hover:scale-105 active:scale-95 overflow-hidden"
+        className="relative group flex items-center justify-center w-16 h-12 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 transition-all duration-300 border border-slate-700 hover:border-slate-600 hover:scale-105 active:scale-95 overflow-hidden"
         aria-label={t('aria.selectLanguage')}
       >
         {/* Animated background gradient */}

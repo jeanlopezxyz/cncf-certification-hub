@@ -335,7 +335,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
           setIsExpanded(true);
           setTimeout(() => inputRef.current?.focus(), 100);
         }}
-        className="sm:hidden flex items-center justify-center w-10 h-10 bg-slate-800/80 border border-slate-700 rounded-lg hover:bg-slate-700/80 transition-all duration-300"
+        className="sm:hidden flex items-center justify-center w-12 h-12 bg-slate-800/80 border border-slate-700 rounded-lg hover:bg-slate-700/80 transition-all duration-300"
         aria-label={t('aria.search')}
       >
         <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

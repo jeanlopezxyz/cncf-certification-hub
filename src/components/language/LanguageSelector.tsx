@@ -85,35 +85,35 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative group flex items-center justify-center w-10 h-10 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 transition-all duration-300 border border-slate-700 hover:border-slate-600 hover:scale-105 active:scale-95 overflow-hidden"
+        className="relative group flex items-center justify-center w-16 h-10 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 transition-all duration-300 border border-slate-700 hover:border-slate-600 hover:scale-105 active:scale-95 overflow-hidden"
         aria-label={t('aria.selectLanguage')}
       >
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-600/10 to-blue-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
         
-        {/* Clean centered layout with world icon and language */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-full w-full">
-          {/* World icon at the top */}
-          <div className="transition-transform duration-300 group-hover:scale-110 mb-1">
+        {/* Horizontal layout with proper spacing */}
+        <div className="relative z-10 flex items-center justify-center h-full w-full gap-2 px-2">
+          {/* World icon on the left */}
+          <div className="transition-transform duration-300 group-hover:scale-110">
             <WorldIcon className="w-4 h-4 text-blue-300 group-hover:text-white" />
           </div>
           
-          {/* Language code at the bottom with dropdown indicator */}
-          <div className="flex items-center gap-1">
-            <span className="font-bold text-[10px] text-blue-300 group-hover:text-white transition-all duration-300 leading-none">
-              {langCodes[currentLang]}
-            </span>
-            <svg
-              className={`w-2 h-2 text-blue-400 transition-all duration-300 ${
-                isOpen ? 'rotate-180 text-blue-300' : 'group-hover:text-blue-300'
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
+          {/* Language code in the center */}
+          <span className="font-bold text-xs text-blue-300 group-hover:text-white transition-all duration-300 leading-none">
+            {langCodes[currentLang]}
+          </span>
+          
+          {/* Dropdown indicator on the right */}
+          <svg
+            className={`w-3 h-3 text-blue-400 transition-all duration-300 ${
+              isOpen ? 'rotate-180 text-blue-300' : 'group-hover:text-blue-300'
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
       </button>
 

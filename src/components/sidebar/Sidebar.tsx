@@ -85,7 +85,35 @@ export default function Sidebar({ lang }: SidebarProps) {
     setCurrentPath(path);
     const homePagePattern = /^\/(cncf-certification-hub)?(\/?(es|pt)?)?$/;
     setIsHomePage(homePagePattern.test(path));
-  }, []);
+    
+    // Ensure state is maintained when language changes
+    // Re-restore state from localStorage to ensure consistency
+    if (isHydrated) {
+      const savedSections = localStorage.getItem('sidebarOpenSections');
+      if (savedSections) {
+        try {
+          const parsed = JSON.parse(savedSections);
+          if (Array.isArray(parsed)) {
+            setOpenSections(parsed);
+          }
+        } catch (e) {
+          // Keep current state if parsing fails
+        }
+      }
+      
+      const savedCategories = localStorage.getItem('sidebarOpenCategories');
+      if (savedCategories) {
+        try {
+          const parsed = JSON.parse(savedCategories);
+          if (Array.isArray(parsed)) {
+            setOpenCategories(parsed);
+          }
+        } catch (e) {
+          // Keep current state if parsing fails
+        }
+      }
+    }
+  }, [isHydrated]); // Re-run when hydrated state or navigation changes
 
   // Close mobile sidebar on route change
   useEffect(() => {

@@ -49,7 +49,7 @@ export const es = {
   'achievements.golden.required': 'Las 5 de Kubernetes + LFCS + 9 certificaciones CNCF adicionales',
   'achievements.kubestronaut.requirements': 'Requisitos',
   'achievements.kubestronaut.benefits': 'Beneficios',
-  'achievements.kubestronaut.requiredCerts': 'Certificaciones Requeridas',
+  'achievements.kubestronaut.requiredCerts': 'Ruta de Certificación Recomendada',
   'achievements.kubestronaut.note': 'Nota:',
   'achievements.kubestronaut.cksNote':
     'Completa las certificaciones en el orden que mejor se adapte a tu ruta de aprendizaje',
@@ -427,7 +427,8 @@ export const es = {
   'aria.selectLanguage': 'Seleccionar idioma',
   'aria.toggleMobileSidebar': 'Alternar barra lateral móvil',
   'aria.toggleSidebarCollapse': 'Alternar colapso de barra lateral',
-  'aria.search': 'Buscar certificaciones, logros y consejos',
+  'aria.search': 'Buscar',
+  'search.placeholder': 'Buscar certificaciones',
 
   // Error Boundary
   'error.somethingWentWrong': 'Algo salió mal',

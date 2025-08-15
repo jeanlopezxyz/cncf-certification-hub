@@ -44,7 +44,7 @@ export const en = {
   'achievements.kubestronaut.required': 'Required: CKA, CKAD, CKS, KCNA, KCSA',
   'achievements.kubestronaut.requirements': 'Requirements',
   'achievements.kubestronaut.benefits': 'Benefits',
-  'achievements.kubestronaut.requiredCerts': 'Required Certifications',
+  'achievements.kubestronaut.requiredCerts': 'Recommended Certification Path',
   'achievements.kubestronaut.note': 'Note:',
   'achievements.kubestronaut.cksNote':
     'Complete certifications in any order that suits your learning path',
@@ -423,7 +423,8 @@ export const en = {
   'aria.selectLanguage': 'Select language',
   'aria.toggleMobileSidebar': 'Toggle mobile sidebar',
   'aria.toggleSidebarCollapse': 'Toggle sidebar collapse',
-  'aria.search': 'Search certifications, achievements, and tips',
+  'aria.search': 'Search',
+  'search.placeholder': 'Search certifications',
 
   // Error Boundary
   'error.somethingWentWrong': 'Something went wrong',

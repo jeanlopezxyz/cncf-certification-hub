@@ -49,7 +49,7 @@ export const pt = {
   'achievements.golden.required': 'Certificações CNCF + LFCS',
   'achievements.kubestronaut.requirements': 'Requisitos',
   'achievements.kubestronaut.benefits': 'Benefícios',
-  'achievements.kubestronaut.requiredCerts': 'Certificações Necessárias',
+  'achievements.kubestronaut.requiredCerts': 'Caminho de Certificação Recomendado',
   'achievements.kubestronaut.note': 'Nota:',
   'achievements.kubestronaut.cksNote':
     'Complete as certificações na ordem que melhor se adeque ao seu caminho de aprendizado',
@@ -549,7 +549,8 @@ export const pt = {
   'aria.selectLanguage': 'Selecionar idioma',
   'aria.toggleMobileSidebar': 'Alternar barra lateral móvel',
   'aria.toggleSidebarCollapse': 'Alternar colapso da barra lateral',
-  'aria.search': 'Pesquisar certificações, conquistas e dicas',
+  'aria.search': 'Pesquisar',
+  'search.placeholder': 'Pesquisar certificações',
 
   // Error Boundary
   'error.somethingWentWrong': 'Algo deu errado',

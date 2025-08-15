@@ -43,7 +43,7 @@ export default function SidebarSection({
           <div className={`transition-all duration-300 text-lg ${isOpen ? 'text-blue-400 scale-110 rotate-3' : 'text-gray-500'} group-hover:text-blue-400 group-hover:scale-110`}>
             {icon}
           </div>
-          <span className={`text-[15px] font-semibold tracking-wide transition-all duration-300 ${isOpen ? 'text-white' : 'text-gray-200'} group-hover:text-white group-hover:translate-x-1`}>
+          <span className={`text-base font-bold tracking-wide transition-all duration-300 ${isOpen ? 'text-white' : 'text-gray-200'} group-hover:text-white group-hover:translate-x-0.5`}>
             {title}
           </span>
         </div>

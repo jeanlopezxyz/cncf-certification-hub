@@ -28,7 +28,21 @@ export default function CertificationCard({
         animationDelay: `${index * ANIMATION_DELAYS.cardStagger}ms`,
       }}
     >
-      <div className="h-full bg-gradient-to-br from-blue-900/40 to-blue-950/50 border border-blue-700/50 rounded-xl p-5 sm:p-6 hover:border-blue-500/60 transition-all duration-300 relative hover:shadow-lg hover:shadow-blue-500/20 hover:scale-[1.02] flex flex-col">
+      <div 
+        className="h-full bg-gradient-to-br from-blue-900/40 to-blue-950/50 border border-blue-700/50 rounded-xl p-5 sm:p-6 hover:border-blue-500/60 hover:bg-gradient-to-br hover:from-blue-900/50 hover:to-blue-950/60 transition-all duration-300 relative flex flex-col group overflow-hidden"
+        style={{
+          transform: 'translateZ(0)', // Forces GPU acceleration
+          backfaceVisibility: 'hidden', // Prevents rendering issues
+        }}
+      >
+        {/* Glow effect on hover - no position change */}
+        <div 
+          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at center, transparent 0%, rgba(59, 130, 246, 0.1) 100%)',
+            boxShadow: '0 0 40px rgba(59, 130, 246, 0.3), inset 0 0 20px rgba(59, 130, 246, 0.05)',
+          }}
+        />
         {/* Prerequisite Badge - Top right corner with proper spacing */}
         {cert.prerequisite && (
           <div className="absolute top-3 right-3 z-10 max-w-[140px]">

@@ -53,11 +53,17 @@ export default function CertificationCategory({
         aria-expanded={isOpen}
         aria-label={`Toggle ${categoryName} category`}
       >
-        <span className="w-1 h-1 bg-purple-400 rounded-full flex-shrink-0 ml-2 transition-all duration-200 group-hover:bg-blue-400"></span>
-        <span className="flex-1 text-left font-semibold">{t(categoryName) || categoryName}</span>
+        <span className="w-1 h-1 bg-purple-400 rounded-full flex-shrink-0 ml-2 transition-all duration-200 group-hover:bg-blue-400 group-hover:scale-150"></span>
+        <span className={`flex-1 text-left font-bold text-gray-200 group-hover:text-white transition-colors duration-200 ${
+          isOpen ? 'text-white' : ''
+        }`}>{t(categoryName) || categoryName}</span>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 font-medium bg-slate-800/30 px-1.5 py-0.5 rounded-md">{certifications.length}</span>
-          <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-md transition-all duration-200 ${
+            isOpen 
+              ? 'bg-blue-500/20 text-blue-300' 
+              : 'bg-slate-800/30 text-gray-500'
+          }`}>{certifications.length}</span>
+          <div className={`transition-transform duration-300 text-gray-400 group-hover:text-blue-400 ${isOpen ? 'rotate-180' : ''}`}>
             <ChevronDownIcon className="w-4 h-4" />
           </div>
         </div>
@@ -82,9 +88,9 @@ export default function CertificationCategory({
               key={cert.id}
               href={certHref}
               onClick={onLinkClick}
-              className={`flex items-center gap-3 text-[13px] transition-all duration-200 py-2 pl-7 pr-2 rounded-lg group relative overflow-hidden ${
+              className={`flex items-center gap-3 text-sm transition-all duration-200 py-2.5 pl-7 pr-2 rounded-lg group relative overflow-hidden ${
                 isActive 
-                  ? 'text-purple-400 bg-purple-400/10 font-semibold' 
+                  ? 'text-purple-400 bg-purple-400/10 font-bold' 
                   : 'text-gray-400 hover:text-blue-400 hover:bg-slate-800/20'
               }`}
               style={{
@@ -101,8 +107,10 @@ export default function CertificationCategory({
                   ? 'bg-purple-400 w-1.5 h-1.5' 
                   : 'bg-gray-700 group-hover:bg-blue-400/50'
               }`}></span>
-              <span className={`font-medium tracking-wide transition-transform duration-200 ${
-                !isActive && 'group-hover:translate-x-1'
+              <span className={`font-semibold tracking-wide transition-all duration-200 ${
+                isActive 
+                  ? 'text-purple-400' 
+                  : 'text-gray-300 group-hover:text-blue-300 group-hover:translate-x-1'
               }`}>{cert.acronym}</span>
             </a>
           );

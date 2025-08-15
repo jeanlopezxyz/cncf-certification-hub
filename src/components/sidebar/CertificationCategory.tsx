@@ -37,6 +37,20 @@ export default function CertificationCategory({
 
   useEffect(() => {
     setCurrentPath(window.location.pathname);
+  }, [lang]); // Update when language changes
+  
+  // Also update on navigation
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    
+    // Listen for Astro page transitions
+    document.addEventListener('astro:page-load', handleRouteChange);
+    
+    return () => {
+      document.removeEventListener('astro:page-load', handleRouteChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -82,7 +96,8 @@ export default function CertificationCategory({
       >
         {certifications.map((cert, index) => {
           const certHref = `${basePath}/certifications/${cert.id}`;
-          const isActive = currentPath === certHref || currentPath.endsWith(`/certifications/${cert.id}`);
+          // More precise matching - only exact match
+          const isActive = currentPath === certHref;
           
           return (
             <a

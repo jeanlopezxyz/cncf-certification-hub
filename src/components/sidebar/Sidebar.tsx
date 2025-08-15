@@ -286,17 +286,17 @@ export default function Sidebar({ lang }: SidebarProps) {
                   onClick={closeMobileSidebar}
                   className={`flex items-center gap-3 text-sm font-semibold transition-all duration-200 py-2.5 px-3 rounded-lg group relative ${
                     isActive 
-                      ? 'text-amber-400 bg-amber-400/10 shadow-lg shadow-amber-400/20 font-bold' 
-                      : 'text-gray-300 hover:text-amber-300 hover:bg-slate-800/20'
+                      ? 'text-blue-400 bg-blue-400/10 shadow-lg shadow-blue-400/20 font-bold' 
+                      : 'text-gray-300 hover:text-blue-300 hover:bg-slate-800/20'
                   }`}
                 >
                   {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-amber-400 rounded-r-full shadow-lg shadow-amber-400/50" />
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-400 rounded-r-full shadow-lg shadow-blue-400/50" />
                   )}
                   <span className={`w-0.5 h-4 rounded-full flex-shrink-0 transition-all duration-200 ${
                     isActive 
-                      ? 'bg-amber-400 w-2 h-2 rounded-full shadow-md shadow-amber-400/50' 
-                      : 'bg-amber-400/40 group-hover:bg-amber-400 group-hover:h-5'
+                      ? 'bg-blue-400 w-2 h-2 rounded-full shadow-md shadow-blue-400/50' 
+                      : 'bg-blue-400/40 group-hover:bg-blue-400 group-hover:h-5'
                   }`}></span>
                   <span className={`tracking-wide transition-transform duration-200 ${
                     isActive ? 'font-semibold' : 'group-hover:translate-x-1'

@@ -423,6 +423,7 @@ export const en = {
   'aria.selectLanguage': 'Select language',
   'aria.toggleMobileSidebar': 'Toggle mobile sidebar',
   'aria.toggleSidebarCollapse': 'Toggle sidebar collapse',
+  'aria.search': 'Search certifications, achievements, and tips',
 
   // Error Boundary
   'error.somethingWentWrong': 'Something went wrong',
@@ -579,4 +580,8 @@ export const en = {
   'certification.values.ckaRequired': 'CKA certification required',
   'certification.values.notApplicableMultiple': 'Not applicable for multiple-choice exam',
   'certification.values.notApplicableSimulator': 'Not applicable - No hands-on simulator provided',
+
+  // Additional Study Tips translations
+  'certification.totalSections': 'Total Sections',
+  'certification.totalTips': 'Total Tips',
 } as const;

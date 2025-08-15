@@ -4,6 +4,7 @@ import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import { EXTERNAL_URLS } from '../config/app.config';
 import { APP_CONFIG } from '../constants/index';
 import LanguageSelector from '../components/language/LanguageSelector';
+import SearchBar from '../components/search/SearchBar';
 import Sidebar from '../components/sidebar/Sidebar';
 import { ViewTransitions } from 'astro:transitions';
 
@@ -72,8 +73,14 @@ const finalDescription = description || t('site.description');
               </div>
             </a>
           </div>
+          
+          {/* Search Bar - positioned in center, always visible */}
+          <div class="flex-1 max-w-md mx-auto px-4">
+            <SearchBar client:load lang={lang} />
+          </div>
+          
           <div
-            class="flex items-center space-x-2 sm:space-x-3 absolute right-2 sm:relative sm:right-auto"
+            class="flex items-center space-x-2 sm:space-x-3"
           >
             <LanguageSelector client:load currentLang={lang} />
             <a

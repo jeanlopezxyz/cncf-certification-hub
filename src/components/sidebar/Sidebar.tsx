@@ -32,6 +32,7 @@ export default function Sidebar({ lang }: SidebarProps) {
   const t = useTranslations(lang);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isHomePage, setIsHomePage] = useState(false);
+  const [currentPath, setCurrentPath] = useState('');
 
   // Initialize collapsed state from localStorage (avoid hydration mismatch)
   const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
@@ -51,9 +52,10 @@ export default function Sidebar({ lang }: SidebarProps) {
 
   const [openCategories, setOpenCategories] = useState<string[]>([]);
 
-  // Check if we're on the home page
+  // Check if we're on the home page and track current path
   useEffect(() => {
     const path = window.location.pathname;
+    setCurrentPath(path);
     const homePagePattern = /^\/(cncf-certification-hub)?(\/?(es|pt)?)?$/;
     setIsHomePage(homePagePattern.test(path));
   }, []);
@@ -222,7 +224,7 @@ export default function Sidebar({ lang }: SidebarProps) {
           transition-transform duration-300 ease-in-out
         `}
       >
-        <div className="p-6">
+        <div className="px-5 py-6">
           {/* Achievements Section */}
           <SidebarSection
             title={t('sidebar.achievements')}
@@ -231,18 +233,35 @@ export default function Sidebar({ lang }: SidebarProps) {
             onToggle={() => toggleSection('achievements')}
           >
             {ACHIEVEMENTS_ITEMS.map(item => {
-              // For relative paths starting with ./, just use them directly
-              const href = item.href.startsWith('./') ? item.href : `${APP_CONFIG.basePath}${lang === 'en' ? '' : '/' + lang}${item.href}`;
+              // Build the correct URL with base path and language
+              const basePath = APP_CONFIG.basePath || '';
+              const langPath = lang === 'en' ? '' : `/${lang}`;
+              // No slash before item.href since it doesn't start with /
+              const href = `${basePath}${langPath}/${item.href}`;
+              const isActive = currentPath === href || currentPath.includes(`/${item.href}`);
 
               return (
                 <a
                   key={item.id}
                   href={href}
                   onClick={closeMobileSidebar}
-                  className="flex items-center gap-3 text-sm text-gray-400 hover:text-blue-400 transition-all duration-200 py-2 px-2 rounded-lg hover:bg-slate-800/20"
+                  className={`flex items-center gap-3 text-[13px] font-medium transition-all duration-200 py-2.5 px-3 rounded-lg group relative ${
+                    isActive 
+                      ? 'text-amber-400 bg-amber-400/10 shadow-lg shadow-amber-400/20' 
+                      : 'text-gray-400 hover:text-blue-400 hover:bg-slate-800/20'
+                  }`}
                 >
-                  <span className="w-1 h-1 bg-amber-400 rounded-full flex-shrink-0 ml-2"></span>
-                  <span>{t(item.translationKey)}</span>
+                  {isActive && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-amber-400 rounded-r-full shadow-lg shadow-amber-400/50" />
+                  )}
+                  <span className={`w-0.5 h-4 rounded-full flex-shrink-0 transition-all duration-200 ${
+                    isActive 
+                      ? 'bg-amber-400 w-2 h-2 rounded-full shadow-md shadow-amber-400/50' 
+                      : 'bg-amber-400/40 group-hover:bg-amber-400 group-hover:h-5'
+                  }`}></span>
+                  <span className={`tracking-wide transition-transform duration-200 ${
+                    isActive ? 'font-semibold' : 'group-hover:translate-x-1'
+                  }`}>{t(item.translationKey)}</span>
                 </a>
               );
             })}
@@ -282,16 +301,30 @@ export default function Sidebar({ lang }: SidebarProps) {
               const basePath = APP_CONFIG.basePath || '';
               const langPath = lang === 'en' ? '' : `/${lang}`;
               const fullHref = `${basePath}${langPath}/tips/${item.id}`;
+              const isActive = currentPath === fullHref || currentPath.includes(`/tips/${item.id}`);
 
               return (
                 <a
                   key={item.id}
                   href={fullHref}
                   onClick={closeMobileSidebar}
-                  className="flex items-center gap-3 text-sm text-gray-400 hover:text-blue-400 transition-all duration-200 py-2 px-2 rounded-lg hover:bg-slate-800/20"
+                  className={`flex items-center gap-3 text-[13px] font-medium transition-all duration-200 py-2.5 px-3 rounded-lg group relative ${
+                    isActive 
+                      ? 'text-blue-400 bg-blue-400/10 shadow-lg shadow-blue-400/20' 
+                      : 'text-gray-400 hover:text-blue-400 hover:bg-slate-800/20'
+                  }`}
                 >
-                  <span className="w-1 h-1 bg-blue-400 rounded-full flex-shrink-0 ml-2"></span>
-                  <span>{t(item.translationKey)}</span>
+                  {isActive && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-400 rounded-r-full shadow-lg shadow-blue-400/50" />
+                  )}
+                  <span className={`w-0.5 h-4 rounded-full flex-shrink-0 transition-all duration-200 ${
+                    isActive 
+                      ? 'bg-blue-400 w-2 h-2 rounded-full shadow-md shadow-blue-400/50' 
+                      : 'bg-blue-400/40 group-hover:bg-blue-400 group-hover:h-5'
+                  }`}></span>
+                  <span className={`tracking-wide transition-transform duration-200 ${
+                    isActive ? 'font-semibold' : 'group-hover:translate-x-1'
+                  }`}>{t(item.translationKey)}</span>
                 </a>
               );
             })}
@@ -311,10 +344,14 @@ export default function Sidebar({ lang }: SidebarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={closeMobileSidebar}
-                className="flex items-center gap-3 text-sm text-gray-400 hover:text-blue-400 transition-all duration-200 py-2 px-2 rounded-lg hover:bg-slate-800/20"
+                className="flex items-center gap-3 text-[13px] font-medium text-gray-400 hover:text-blue-400 transition-all duration-200 py-2.5 px-3 rounded-lg hover:bg-slate-800/20 group"
               >
-                <span className="w-1 h-1 bg-green-400 rounded-full flex-shrink-0 ml-2"></span>
-                <span>{t(item.translationKey)}</span>
+                <span className="w-0.5 h-4 bg-green-400/40 rounded-full flex-shrink-0 group-hover:bg-green-400 group-hover:h-5 transition-all duration-200"></span>
+                <span className="tracking-wide group-hover:translate-x-1 transition-transform duration-200">{t(item.translationKey)}</span>
+                <svg className="w-3 h-3 ml-auto opacity-0 group-hover:opacity-50 transition-opacity duration-200" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
+                  <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
+                </svg>
               </a>
             ))}
           </SidebarSection>

@@ -427,6 +427,7 @@ export const es = {
   'aria.selectLanguage': 'Seleccionar idioma',
   'aria.toggleMobileSidebar': 'Alternar barra lateral móvil',
   'aria.toggleSidebarCollapse': 'Alternar colapso de barra lateral',
+  'aria.search': 'Buscar certificaciones, logros y consejos',
 
   // Error Boundary
   'error.somethingWentWrong': 'Algo salió mal',

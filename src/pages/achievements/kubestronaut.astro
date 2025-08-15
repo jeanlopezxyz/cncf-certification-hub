@@ -3,12 +3,25 @@ import Layout from '../../layouts/Layout.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { certifications } from '../../data/certifications';
 import { APP_CONFIG } from '../../constants';
+import { getCertificationIcon, ProgressIndicator } from '../../components/icons/CertificationIcons';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const basePath = `${APP_CONFIG.basePath}${lang === 'en' ? '' : '/' + lang}`;
 
 const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
+
+// Mock progress data - in real app this would come from user data
+const getUserProgress = (certId: string) => {
+  const progressMap: Record<string, number> = {
+    'kcna': 85,
+    'kcsa': 65,
+    'cka': 45,
+    'ckad': 25,
+    'cks': 0
+  };
+  return progressMap[certId] || 0;
+};
 ---
 
 <Layout title={t('achievements.kubestronaut.title')} lang={lang} showSidebar={true}>
@@ -140,50 +153,93 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
           kubestronautCerts.map((certId, index) => {
             const cert = certifications.find(c => c.id === certId);
             const isCKS = certId === 'cks';
+            const progress = getUserProgress(certId);
 
             return (
               <>
                 <a href={`${basePath}/certifications/${certId}`} class="group lg:flex-1">
-                  <div class="h-full min-h-[180px] p-4 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br from-blue-900/90 to-blue-950/95 border-blue-700/70 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-850/95 hover:to-blue-900/100 hover:shadow-lg hover:shadow-blue-500/50 flex">
-                    <div class="w-full h-full flex flex-col text-center">
-                      {/* Acronym - Fixed height */}
-                      <div class="h-[3rem] flex items-center justify-center">
-                        <div class="text-2xl sm:text-3xl font-bold text-blue-100 group-hover:text-white transition-colors">
+                  <div class="h-full min-h-[220px] p-4 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br from-blue-900/90 to-blue-950/95 border-blue-700/70 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-850/95 hover:to-blue-900/100 hover:shadow-lg hover:shadow-blue-500/50 flex relative overflow-hidden">
+                    {/* Progress indicator background */}
+                    {progress > 0 && (
+                      <div 
+                        class="absolute inset-0 bg-gradient-to-r from-green-600/10 to-transparent"
+                        style={`width: ${progress}%; transition: width 0.5s ease-out;`}
+                      />
+                    )}
+                    
+                    <div class="w-full h-full flex flex-col text-center relative z-10">
+                      {/* Icon + Acronym Section - Enhanced hierarchy */}
+                      <div class="flex flex-col items-center gap-2 mb-3">
+                        {/* Technology Icon */}
+                        <div class="text-blue-300 group-hover:text-blue-200 transition-colors">
+                          {getCertificationIcon(certId, "w-8 h-8")}
+                        </div>
+                        
+                        {/* Acronym - More prominent */}
+                        <div class="text-2xl sm:text-3xl lg:text-2xl xl:text-3xl font-black text-white group-hover:text-blue-100 transition-all duration-200 tracking-tight">
                           {cert?.acronym}
                         </div>
                       </div>
 
-                      {/* Name - Fixed height with top alignment */}
-                      <div class="h-[4rem] px-2 pt-2">
-                        <div class="text-xs sm:text-sm text-gray-300 text-center leading-tight">
+                      {/* Name with intelligent truncation */}
+                      <div class="flex-1 px-2 mb-3">
+                        <div 
+                          class="text-xs sm:text-sm lg:text-xs xl:text-sm text-gray-300 group-hover:text-gray-200 leading-tight transition-colors"
+                          title={cert?.name}
+                          style="
+                            display: -webkit-box;
+                            -webkit-line-clamp: 3;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                          "
+                        >
                           {cert?.name}
                         </div>
                       </div>
 
-                      {/* Prerequisites - Fixed height */}
-                      <div class="h-[1.5rem] flex items-center justify-center">
-                        {isCKS ? (
-                          <div class="text-xs text-amber-300">
-                            {t('certifications.card.requires')} CKA
+                      {/* Enhanced badges section */}
+                      <div class="space-y-2 mb-3">
+                        {/* Level badge - more prominent */}
+                        <div class="flex justify-center">
+                          <div
+                            class={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all duration-200 ${
+                              cert?.level === 'entry'
+                                ? 'bg-emerald-500/20 text-emerald-200 border-emerald-400/40 group-hover:bg-emerald-500/30'
+                                : cert?.level === 'intermediate'
+                                  ? 'bg-amber-500/20 text-amber-200 border-amber-400/40 group-hover:bg-amber-500/30'
+                                  : 'bg-red-500/20 text-red-200 border-red-400/40 group-hover:bg-red-500/30'
+                            }`}
+                          >
+                            {t(`certifications.level.${cert?.level}`)}
                           </div>
-                        ) : (
-                          <div />
+                        </div>
+
+                        {/* Duration badge */}
+                        <div class="flex justify-center">
+                          <div class="text-xs font-medium px-2 py-1 rounded-md bg-slate-700/50 text-slate-300 border border-slate-600/50">
+                            ⏱️ {cert?.duration}min
+                          </div>
+                        </div>
+
+                        {/* Prerequisites badge */}
+                        {isCKS && (
+                          <div class="flex justify-center">
+                            <div class="text-xs font-medium px-2 py-1 rounded-md bg-orange-600/20 text-orange-200 border border-orange-500/40">
+                              ⚠️ Requires CKA
+                            </div>
+                          </div>
                         )}
                       </div>
 
-                      {/* Level - Fixed position at bottom */}
-                      <div class="h-[1.5rem] flex items-center justify-center">
-                        <div
-                          class={`text-xs font-medium px-2 py-1 rounded-full ${
-                            cert?.level === 'entry'
-                              ? 'bg-blue-400/20 text-blue-200'
-                              : cert?.level === 'intermediate'
-                                ? 'bg-sky-400/20 text-sky-200'
-                                : 'bg-indigo-400/20 text-indigo-200'
-                          }`}
-                        >
-                          {t(`certifications.level.${cert?.level}`)}
-                        </div>
+                      {/* Progress indicator */}
+                      <div class="mt-auto">
+                        <ProgressIndicator 
+                          progress={progress} 
+                          className="w-full h-1.5" 
+                          showPercentage={progress > 0}
+                          client:load
+                        />
                       </div>
                     </div>
                   </div>

@@ -549,6 +549,7 @@ export const pt = {
   'aria.selectLanguage': 'Selecionar idioma',
   'aria.toggleMobileSidebar': 'Alternar barra lateral móvel',
   'aria.toggleSidebarCollapse': 'Alternar colapso da barra lateral',
+  'aria.search': 'Pesquisar certificações, conquistas e dicas',
 
   // Error Boundary
   'error.somethingWentWrong': 'Algo deu errado',

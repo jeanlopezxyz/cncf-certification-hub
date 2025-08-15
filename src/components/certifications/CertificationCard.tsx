@@ -28,36 +28,36 @@ export default function CertificationCard({
         animationDelay: `${index * ANIMATION_DELAYS.cardStagger}ms`,
       }}
     >
-      <div className="h-full bg-gradient-to-br from-blue-900/40 to-blue-950/50 border border-blue-700/50 rounded-xl p-6 lg:p-7 hover:border-blue-500/60 transition-all duration-300 relative hover:shadow-lg hover:shadow-blue-500/20 hover:scale-[1.02] flex flex-col min-h-[340px]">
-        {/* Prerequisite Badge */}
+      <div className="h-full bg-gradient-to-br from-blue-900/40 to-blue-950/50 border border-blue-700/50 rounded-xl p-5 sm:p-6 hover:border-blue-500/60 transition-all duration-300 relative hover:shadow-lg hover:shadow-blue-500/20 hover:scale-[1.02] flex flex-col">
+        {/* Prerequisite Badge - Top right corner with proper spacing */}
         {cert.prerequisite && (
-          <div className="absolute top-4 right-4">
-            <span className="text-xs bg-gradient-to-r from-orange-900/40 to-amber-900/40 text-orange-200 px-2.5 py-1 rounded-full border border-orange-700/50 font-semibold">
+          <div className="absolute top-3 right-3 z-10 max-w-[140px]">
+            <span className="text-[10px] sm:text-xs bg-gradient-to-r from-orange-900/40 to-amber-900/40 text-orange-200 px-2 py-1 rounded-full border border-orange-700/50 font-semibold inline-block">
               {translateCertificationValue(cert.prerequisite, lang)}
             </span>
           </div>
         )}
 
-        {/* Header - Fixed Height Section */}
-        <div className="mb-6 min-h-[80px] flex flex-col justify-start">
+        {/* Header Section - Flexible height */}
+        <div className="mb-4">
           <div className="flex items-start justify-between">
-            <div className="flex-1 pr-4">
-              <span className="text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent block leading-none">
+            <div className="flex-1" style={{ paddingRight: cert.prerequisite ? '150px' : '20px' }}>
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent block leading-tight">
                 {cert.acronym}
               </span>
-              <h3 className="text-sm lg:text-base text-gray-300 mt-3 line-clamp-2 leading-relaxed min-h-[40px] flex items-start">
+              <h3 className="text-xs sm:text-sm lg:text-base text-gray-300 mt-2 line-clamp-2 leading-relaxed min-h-[2.5rem]">
                 {cert.name}
               </h3>
             </div>
           </div>
         </div>
 
-        {/* Primary Tags - Fixed Height Section */}
-        <div className="mb-5 min-h-[60px] flex flex-col justify-start">
-          <div className="flex flex-wrap gap-2.5">
+        {/* Primary Tags Section - Responsive layout */}
+        <div className="mb-4">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {/* Level */}
             <span
-              className={`text-xs px-3 py-1.5 rounded-full font-medium ${
+              className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded-full font-medium whitespace-nowrap ${
                 cert.level === 'entry'
                   ? 'bg-green-900/40 text-green-200 border border-green-700/50'
                   : cert.level === 'intermediate'
@@ -68,9 +68,9 @@ export default function CertificationCard({
               {t(`certifications.level.${cert.level}`)}
             </span>
 
-            {/* Exam Type */}
+            {/* Exam Type - Hide on very small screens if needed */}
             <span
-              className={`text-xs px-3 py-1.5 rounded-full font-medium ${
+              className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded-full font-medium whitespace-nowrap ${
                 cert.type === 'performance'
                   ? 'bg-purple-900/40 text-purple-200 border border-purple-700/50'
                   : 'bg-blue-900/40 text-blue-200 border border-blue-700/50'
@@ -81,38 +81,38 @@ export default function CertificationCard({
               )}
             </span>
 
-            {/* Duration */}
-            <span className="text-xs bg-slate-900/40 px-3 py-1.5 rounded-full text-slate-200 border border-slate-700/50 font-medium">
+            {/* Duration - On new line if needed */}
+            <span className="text-[10px] sm:text-xs bg-slate-900/40 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-slate-200 border border-slate-700/50 font-medium whitespace-nowrap">
               {cert.duration}m
             </span>
           </div>
         </div>
 
-        {/* Achievement Badges - Fixed Height Section */}
-        <div className="mb-4 min-h-[80px] flex flex-col justify-start">
+        {/* Achievement Badges Section - Flexible with minimum height */}
+        <div className="mb-4 min-h-[60px] flex-1">
           {cert.requiredFor && cert.requiredFor.length > 0 ? (
             <>
-              <div className="text-xs text-gray-400 mb-2 font-medium">
+              <div className="text-[10px] sm:text-xs text-gray-400 mb-1.5 font-medium">
                 {t('certifications.requiredFor')}
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {cert.requiredFor.map((badge: string) => (
                   <span
                     key={badge}
-                    className={`text-xs px-3 py-1.5 rounded-full font-medium inline-flex items-center gap-1 ${
+                    className={`text-[10px] sm:text-xs px-2 sm:px-3 py-1 sm:py-1.5 rounded-full font-medium inline-flex items-center gap-1 ${
                       badge === 'Kubestronaut'
                         ? 'bg-blue-900/40 text-blue-200 border border-blue-700/50'
                         : 'bg-amber-900/40 text-amber-200 border border-amber-700/50'
                     }`}
                   >
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-2.5 sm:w-3 h-2.5 sm:h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
                         clipRule="evenodd"
                       />
                     </svg>
-                    {translateCertificationValue(badge, lang)}
+                    <span className="whitespace-nowrap">{translateCertificationValue(badge, lang)}</span>
                   </span>
                 ))}
               </div>

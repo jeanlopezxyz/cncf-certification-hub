@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { certifications } from '../../data/certifications';
 import { APP_CONFIG } from '../../constants';
+import { getCertificationIcon, ProgressIndicator } from '../../components/icons/CertificationIcons';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -16,6 +17,16 @@ const lfcs = {
   acronym: 'LFCS',
   name: 'Linux Foundation Certified System Administrator',
   level: 'advanced',
+};
+
+// Mock progress data
+const getUserProgress = (certId: string) => {
+  const progressMap: Record<string, number> = {
+    'kcna': 100, 'kcsa': 90, 'cka': 85, 'ckad': 70, 'cks': 45,
+    'pca': 60, 'ica': 35, 'cca': 20, 'capa': 15, 'cgoa': 10,
+    'lfcs': 80, 'kca': 25, 'otca': 30, 'cba': 5, 'cnpa': 0
+  };
+  return progressMap[certId] || 0;
 };
 ---
 
@@ -162,47 +173,46 @@ const lfcs = {
           {t('achievements.golden.step1Title')}
         </h3>
         <div
-          class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:flex xl:items-stretch gap-3 lg:gap-4 xl:gap-2"
+          class="flex flex-wrap sm:flex-nowrap gap-2 sm:gap-3 lg:gap-4"
         >
           {
             kubestronautCerts.map((certId, index) => {
               const cert = certifications.find(c => c.id === certId);
               const isCKS = certId === 'cks';
+              const progress = getUserProgress(certId);
 
               return (
                 <>
-                  <a href={`${basePath}/certifications/${certId}`} class="group lg:flex-1">
-                    <div class="h-full min-h-[180px] p-4 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br from-blue-900/90 to-blue-950/95 border-blue-700/70 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-850/95 hover:to-blue-900/100 hover:shadow-lg hover:shadow-blue-500/50 flex">
-                      <div class="w-full h-full flex flex-col text-center">
-                        {/* Acronym - Fixed height */}
-                        <div class="h-[3rem] flex items-center justify-center">
-                          <div class="text-2xl sm:text-3xl font-bold text-blue-100 group-hover:text-white transition-colors">
+                  <a href={`${basePath}/certifications/${certId}`} class="group flex-1 min-w-[45%] sm:min-w-0">
+                    <div class="h-full min-h-[140px] sm:min-h-[150px] md:min-h-[160px] p-2 sm:p-3 md:p-4 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br from-blue-900/90 to-blue-950/95 border-blue-700/70 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-850/95 hover:to-blue-900/100 hover:shadow-lg hover:shadow-blue-500/50 flex">
+                      <div class="w-full flex flex-col text-center justify-between">
+                        {/* Acronym - Responsive */}
+                        <div class="mb-1 sm:mb-2">
+                          <div class="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-blue-100 group-hover:text-white transition-colors">
                             {cert?.acronym}
                           </div>
                         </div>
 
-                        {/* Name - Fixed height with top alignment */}
-                        <div class="h-[4rem] px-2 pt-2">
-                          <div class="text-xs sm:text-sm text-gray-300 text-center leading-tight">
+                        {/* Name - Flexible with breaks for mobile */}
+                        <div class="flex-1 min-h-[2.5rem] sm:min-h-[3rem] px-1 mb-1 sm:mb-2">
+                          <div class="text-[9px] sm:text-[10px] md:text-[11px] lg:text-xs xl:text-sm text-gray-300 text-center leading-tight sm:leading-relaxed break-words">
                             {cert?.name}
                           </div>
                         </div>
 
-                        {/* Prerequisites - Fixed height */}
-                        <div class="h-[1.5rem] flex items-center justify-center">
-                          {isCKS ? (
-                            <div class="text-xs text-amber-300">
+                        {/* Prerequisites - Only show if exists */}
+                        {isCKS && (
+                          <div class="mb-1 sm:mb-2">
+                            <div class="text-[9px] sm:text-[10px] md:text-xs text-amber-300">
                               {t('achievements.golden.requiresCka')}
                             </div>
-                          ) : (
-                            <div />
-                          )}
-                        </div>
+                          </div>
+                        )}
 
-                        {/* Level - Fixed position at bottom */}
-                        <div class="h-[1.5rem] flex items-center justify-center">
+                        {/* Level - At bottom, hidden on very small screens */}
+                        <div class="mt-auto">
                           <div
-                            class={`text-xs font-medium px-2 py-1 rounded-full ${
+                            class={`hidden sm:inline-block text-[9px] md:text-[10px] lg:text-xs font-medium px-1.5 md:px-2 py-0.5 rounded-full whitespace-nowrap ${
                               cert?.level === 'entry'
                                 ? 'bg-blue-400/20 text-blue-200'
                                 : cert?.level === 'intermediate'
@@ -217,9 +227,10 @@ const lfcs = {
                     </div>
                   </a>
 
+                  {/* Arrow between cards - only on larger screens */}
                   {index < kubestronautCerts.length - 1 && (
-                    <div class="hidden xl:flex items-center justify-center">
-                      <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="hidden lg:flex items-center justify-center">
+                      <svg class="w-4 h-4 xl:w-5 xl:h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                         <path
                           fill-rule="evenodd"
                           d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
@@ -241,34 +252,34 @@ const lfcs = {
           {t('achievements.golden.step2Title')}
         </h3>
         <div
-          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3"
         >
           {
             additionalCerts.map(certId => {
               const cert = certifications.find(c => c.id === certId);
 
               return (
-                <a href={`${basePath}/certifications/${certId}`} class="group">
-                  <div class="h-full min-h-[160px] p-3 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br from-blue-800/30 to-indigo-900/40 border-blue-700/40 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-700/40 hover:to-indigo-800/50 hover:shadow-lg hover:shadow-blue-500/20 flex">
-                    <div class="w-full h-full flex flex-col text-center">
-                      {/* Acronym - Fixed height */}
-                      <div class="h-[2.5rem] flex items-center justify-center">
-                        <div class="text-xl sm:text-2xl font-bold text-blue-300 group-hover:text-blue-200 transition-colors">
+                <a href={`${basePath}/certifications/${certId}`} class="group block">
+                  <div class="h-full min-h-[110px] sm:min-h-[130px] md:min-h-[140px] p-2 sm:p-3 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br from-blue-800/30 to-indigo-900/40 border-blue-700/40 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-700/40 hover:to-indigo-800/50 hover:shadow-lg hover:shadow-blue-500/20 flex">
+                    <div class="w-full flex flex-col text-center justify-between">
+                      {/* Acronym - Responsive */}
+                      <div class="mb-1">
+                        <div class="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold text-blue-300 group-hover:text-blue-200 transition-colors">
                           {cert?.acronym}
                         </div>
                       </div>
 
-                      {/* Name - Fixed height with top alignment */}
-                      <div class="h-[4rem] px-2 pt-2">
-                        <div class="text-xs sm:text-sm text-gray-400 text-center leading-tight">
+                      {/* Name - Flexible with breaks for mobile */}
+                      <div class="flex-1 min-h-[1.75rem] sm:min-h-[2rem] md:min-h-[2.5rem] px-1 mb-1 sm:mb-2">
+                        <div class="text-[9px] sm:text-[10px] md:text-[11px] lg:text-xs text-gray-400 text-center leading-tight break-words">
                           {cert?.name}
                         </div>
                       </div>
 
-                      {/* Level - Fixed height */}
-                      <div class="h-[2.5rem] flex items-center justify-center">
+                      {/* Level - At bottom */}
+                      <div class="mt-auto">
                         <div
-                          class={`text-xs font-medium px-2 py-1 rounded-full ${
+                          class={`text-[9px] sm:text-[10px] md:text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded-full inline-block ${
                             cert?.level === 'entry'
                               ? 'bg-blue-600/20 text-blue-400'
                               : cert?.level === 'intermediate'

@@ -7,6 +7,10 @@ interface AchievementProgramsProps {
 
 export default function AchievementPrograms({ lang }: AchievementProgramsProps) {
   const t = useTranslations(lang);
+  
+  // Build proper URLs that work both locally and on GitHub Pages
+  const basePath = APP_CONFIG.basePath || '';
+  const langPath = lang === 'en' ? '' : `/${lang}`;
 
   const programs = [
     {
@@ -14,7 +18,7 @@ export default function AchievementPrograms({ lang }: AchievementProgramsProps) 
       title: t('achievements.kubestronaut.title'),
       description: t('achievements.kubestronaut.description'),
       requirement: t('certifications.card.required'),
-      href: `./achievements/kubestronaut`,
+      href: `${basePath}${langPath}/achievements/kubestronaut`,
       gradient: 'from-blue-600 to-sky-600',
       borderColor: 'border-blue-500/30',
       iconSrc: `${APP_CONFIG.basePath}/kubestronaut-icon.svg`,
@@ -24,7 +28,7 @@ export default function AchievementPrograms({ lang }: AchievementProgramsProps) 
       title: t('achievements.golden.title'),
       description: t('achievements.golden.description'),
       requirement: t('certifications.card.required'),
-      href: `./achievements/golden-kubestronaut`,
+      href: `${basePath}${langPath}/achievements/golden-kubestronaut`,
       gradient: 'from-amber-600 to-yellow-600',
       borderColor: 'border-amber-500/30',
       iconSrc: `${APP_CONFIG.basePath}/golden-kubestronaut-icon.svg`,

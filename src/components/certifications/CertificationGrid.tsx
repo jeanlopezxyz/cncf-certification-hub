@@ -47,7 +47,7 @@ export default function CertificationGrid({ lang }: CertificationGridProps) {
 
         <div
           key={filter}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 lg:gap-8 mt-12 animate-fade-in"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mt-12 animate-fade-in auto-rows-fr"
         >
           {filteredCerts.map((cert, index) => (
             <CertificationCard key={cert.id} certification={cert} lang={lang} index={index} />

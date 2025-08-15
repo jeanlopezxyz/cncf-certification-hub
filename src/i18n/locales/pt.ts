@@ -554,6 +554,10 @@ export const pt = {
   'aria.toggleMobileSidebar': 'Alternar barra lateral móvel',
   'aria.toggleSidebarCollapse': 'Alternar colapso da barra lateral',
   'aria.search': 'Pesquisar',
+  'aria.closeSearch': 'Fechar pesquisa',
+  'aria.clearSearch': 'Limpar pesquisa',
+  'aria.toggleSection': 'Alternar seção %s',
+  'aria.toggleCategory': 'Alternar categoria %s',
   'search.placeholder': 'Pesquisar certificações',
 
   // Error Boundary

@@ -359,7 +359,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
                   setSuggestions([]);
                 }}
                 className="flex items-center justify-center w-10 h-10 text-gray-400 hover:text-white rounded-lg hover:bg-slate-700/50 transition-all duration-200"
-                aria-label="Close search"
+                aria-label={t('aria.closeSearch')}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -383,7 +383,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
                     }}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white active:text-blue-400 z-10 p-1.5"
                     type="button"
-                    aria-label="Clear search"
+                    aria-label={t('aria.clearSearch')}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

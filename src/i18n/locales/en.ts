@@ -428,6 +428,10 @@ export const en = {
   'aria.toggleMobileSidebar': 'Toggle mobile sidebar',
   'aria.toggleSidebarCollapse': 'Toggle sidebar collapse',
   'aria.search': 'Search',
+  'aria.closeSearch': 'Close search',
+  'aria.clearSearch': 'Clear search',
+  'aria.toggleSection': 'Toggle %s section',
+  'aria.toggleCategory': 'Toggle %s category',
   'search.placeholder': 'Search certifications',
 
   // Error Boundary

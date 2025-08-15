@@ -85,25 +85,20 @@ export default function LanguageSelector({ currentLang }: LanguageSelectorProps)
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative group flex items-center justify-center gap-2 w-10 h-10 sm:w-auto sm:h-auto sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl bg-slate-800/80 hover:bg-slate-700/80 transition-all duration-300 border border-slate-700 sm:border-blue-900/30 hover:border-slate-600 sm:hover:border-blue-800/50 sm:hover:scale-105 sm:active:scale-95 overflow-hidden"
+        className="relative group flex items-center justify-center gap-1 w-10 h-10 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 transition-all duration-300 border border-slate-700 hover:border-slate-600 hover:scale-105 active:scale-95 overflow-hidden"
         aria-label={t('aria.selectLanguage')}
       >
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-600/10 to-blue-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
         
         {/* World icon */}
-        <div className="text-lg relative z-10 transition-transform duration-300 group-hover:scale-110">
-          <WorldIcon className="w-5 h-5 text-blue-300 group-hover:text-white" />
+        <div className="relative z-10 transition-transform duration-300 group-hover:scale-110">
+          <WorldIcon className="w-4 h-4 text-blue-300 group-hover:text-white" />
         </div>
         
-        {/* Language code */}
-        <span className="font-semibold text-sm text-blue-300 group-hover:text-white hidden sm:inline relative z-10 transition-all duration-300">
-          {langCodes[currentLang]}
-        </span>
-        
-        {/* Dropdown chevron - hidden on mobile */}
+        {/* Dropdown chevron */}
         <svg
-          className={`w-4 h-4 text-blue-400 transition-all duration-300 relative z-10 hidden sm:block ${
+          className={`w-3 h-3 text-blue-400 transition-all duration-300 relative z-10 ${
             isOpen ? 'rotate-180 text-blue-300' : 'group-hover:text-blue-300'
           }`}
           fill="none"

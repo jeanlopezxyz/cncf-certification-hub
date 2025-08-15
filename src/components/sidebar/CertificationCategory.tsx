@@ -110,7 +110,7 @@ export default function CertificationCategory({
               }`}></span>
               <span className={`tracking-wide transition-transform duration-200 ${
                 isActive ? 'font-semibold' : 'group-hover:translate-x-1'
-              }`}>{cert.acronym} - {cert.name}</span>
+              }`}>{cert.acronym}</span>
             </a>
           );
         })}

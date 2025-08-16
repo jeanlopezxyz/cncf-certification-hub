@@ -30,7 +30,18 @@ export default function SearchBar({ lang }: SearchBarProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const desktopInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Fix autoCapitalize attribute on mount
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.setAttribute('autocapitalize', 'off');
+    }
+    if (desktopInputRef.current) {
+      desktopInputRef.current.setAttribute('autocapitalize', 'off');
+    }
+  }, []);
 
   // Close suggestions when clicking outside
   useEffect(() => {
@@ -441,6 +452,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
 
           {/* Desktop Search Input */}
           <input
+            ref={desktopInputRef}
             type="text"
             value={query}
             onChange={handleInputChange}

@@ -449,11 +449,6 @@ export default function SearchBar({ lang }: SearchBarProps) {
             onBlur={() => setTimeout(() => setIsFocused(false), 100)}
             placeholder={t('search.placeholder')}
             className="w-full h-12 pl-12 pr-4 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
-            style={{
-              boxShadow: isFocused 
-                ? '0 0 20px rgba(59, 130, 246, 0.2), 0 0 40px rgba(59, 130, 246, 0.1)' 
-                : '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-            }}
             aria-label={t('aria.search')}
             autoComplete="off"
             autoCorrect="off"

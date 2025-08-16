@@ -405,7 +405,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
                   autoComplete="off"
                   autoCorrect="off"
                   autoCapitalize="off"
-                  spellCheck="false"
+                  spellCheck={false}
                 />
               </div>
             </div>
@@ -453,7 +453,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
-            spellCheck="false"
+            spellCheck={false}
           />
 
           {/* Glow Effect on Focus */}

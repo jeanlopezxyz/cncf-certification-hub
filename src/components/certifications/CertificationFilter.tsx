@@ -12,10 +12,10 @@ export default function CertificationFilter({
   t,
 }: CertificationFilterProps) {
   const filters: Array<{ value: CertificationLevel | 'all'; label: string }> = [
-    { value: 'all', label: 'All Levels' },
-    { value: 'entry', label: 'Entry' },
-    { value: 'intermediate', label: 'Intermediate' },
-    { value: 'advanced', label: 'Advanced' },
+    { value: 'all', label: t('certifications.filter.all') },
+    { value: 'entry', label: t('certifications.filter.entry') },
+    { value: 'intermediate', label: t('certifications.filter.intermediate') },
+    { value: 'advanced', label: t('certifications.filter.advanced') },
   ];
 
   return (

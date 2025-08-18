@@ -502,13 +502,13 @@ export default function CertificationStudyGuide({
 
                               {/* Info Pills */}
                               <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-900/30 text-blue-300 text-xs rounded-full">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-900/30 text-blue-300 text-xs rounded-md">
                                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                                   </svg>
                                   {t('certification.weight')}: {domain.weight}%
                                 </span>
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-900/30 text-purple-300 text-xs rounded-full">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-900/30 text-purple-300 text-xs rounded-md">
                                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
                                   </svg>
@@ -726,13 +726,13 @@ export default function CertificationStudyGuide({
                                       )}
                                       <div className="flex flex-wrap items-center gap-2 mt-2">
                                         {getBooleanProperty(resource, 'isPaid') && (
-                                          <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-sm rounded">
+                                          <span className="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-sm rounded-md">
                                             {t('certification.paid')}
                                           </span>
                                         )}
                                         {getStringProperty(resource, 'difficulty') && (
                                           <span
-                                            className={`px-2 py-1 text-sm rounded ${
+                                            className={`px-2 py-1 text-sm rounded-md ${
                                               getStringProperty(resource, 'difficulty') ===
                                               'beginner'
                                                 ? 'bg-green-500/20 text-green-400'
@@ -847,7 +847,7 @@ export default function CertificationStudyGuide({
                                         {resource.title}
                                       </div>
                                       {getBooleanProperty(resource, 'isPaid') && (
-                                        <span className="inline-block mt-1 px-2 py-1 bg-yellow-500/20 text-yellow-400 text-sm rounded">
+                                        <span className="inline-block mt-1 px-2 py-1 bg-yellow-500/20 text-yellow-400 text-sm rounded-md">
                                           {t('certification.paid')}
                                         </span>
                                       )}

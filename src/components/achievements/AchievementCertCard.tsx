@@ -25,7 +25,7 @@ export default function AchievementCertCard({
 
   return (
     <>
-      <a href={`${basePath}/certifications/${certId}`} className="group flex-1 min-w-[45%] sm:min-w-0">
+      <a href={`${basePath}/certifications/${certId}`} className="group lg:flex-1">
         <div className={`h-full min-h-[240px] sm:min-h-[220px] p-4 sm:p-4 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br ${gradient} border-blue-700/70 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-850/95 hover:to-blue-900/100 hover:shadow-lg hover:shadow-blue-500/50 flex relative`}>
           {/* CKA Prerequisite Badge - Top Right */}
           {isCKS && (

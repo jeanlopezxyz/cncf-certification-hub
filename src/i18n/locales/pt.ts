@@ -141,6 +141,7 @@ export const pt = {
   'certifications.card.duration': 'Duração',
   'certifications.card.minutes': 'minutos',
   'certifications.card.min': 'min',
+  'currency.usd': 'USD',
   'certifications.card.price': 'Preço',
 
   // Certification Levels
@@ -284,6 +285,8 @@ export const pt = {
   'certification.level': 'Nível',
   'certification.prerequisites': 'Pré-requisitos',
   'certification.requiredFor': 'Necessária Para',
+  'certification.examFormat': 'Formato do Exame',
+  'certification.retakePolicy': 'Política de Repetição',
   'certification.quickStart': 'Início Rápido',
   'certification.registerExam': 'Registrar para o Exame',
   'certification.minutes': 'minutos',
@@ -570,6 +573,8 @@ export const pt = {
 
   // Missing hardcoded translations
   'certification.overallProgress': 'Progresso Geral',
+  'certification.markComplete': 'Marcar como concluído',
+  'certification.completed': '✓ Concluído',
   'certification.examDomains': 'Domínios do Exame',
   'certification.none': 'Nenhum',
   'certification.optional': 'Opcional',
@@ -585,4 +590,12 @@ export const pt = {
   'certification.values.notApplicableMultiple': 'Não aplicável para exame de múltipla escolha',
   'certification.values.notApplicableSimulator':
     'Não aplicável - Nenhum simulador prático fornecido',
+  'certification.values.notApplicable': 'Não aplicável',
+  'certification.values.noSimulatorMultiple': 'Sem simulador - Exame de múltipla escolha',
+  'certification.values.onlineProctoredMultiple60':
+    'Supervisionado online, exame de múltipla escolha com 60 questões',
+  'certification.values.onlineProctoredPerformanceTasks':
+    'Supervisionado online, prova prática resolvendo tarefas em linha de comando',
+  'certification.values.oneFreeRetakeIncluded': 'Uma nova tentativa gratuita incluída na inscrição',
+  'certification.values.twoAttempts36h': '2 tentativas (36 horas cada)',
 } as const;

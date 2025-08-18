@@ -148,6 +148,7 @@ export const en = {
   'certifications.card.minutes': 'minutes',
   'certifications.card.min': 'min',
   'certifications.card.price': 'Price',
+  'currency.usd': 'USD',
 
   // Certification Levels
   'certifications.level.entry': 'Entry',
@@ -290,6 +291,8 @@ export const en = {
   'certification.level': 'Level',
   'certification.prerequisites': 'Prerequisites',
   'certification.requiredFor': 'Required For',
+  'certification.examFormat': 'Exam Format',
+  'certification.retakePolicy': 'Retake Policy',
   'certification.quickStart': 'Quick Start',
   'certification.registerExam': 'Register for Exam',
   'certification.minutes': 'minutes',
@@ -575,6 +578,8 @@ export const en = {
 
   // Missing hardcoded translations
   'certification.overallProgress': 'Overall Progress',
+  'certification.markComplete': 'Mark Complete',
+  'certification.completed': '✓ Completed',
   'certification.examDomains': 'Exam Domains',
   'certification.none': 'None',
   'certification.optional': 'Optional',
@@ -589,6 +594,14 @@ export const en = {
   'certification.values.ckaRequired': 'CKA certification required',
   'certification.values.notApplicableMultiple': 'Not applicable for multiple-choice exam',
   'certification.values.notApplicableSimulator': 'Not applicable - No hands-on simulator provided',
+  'certification.values.notApplicable': 'Not applicable',
+  'certification.values.noSimulatorMultiple': 'No simulator - Multiple choice exam',
+  'certification.values.onlineProctoredMultiple60':
+    'Online proctored, multiple-choice test with 60 questions',
+  'certification.values.onlineProctoredPerformanceTasks':
+    'Online proctored, performance-based test requiring solving multiple command-line tasks',
+  'certification.values.oneFreeRetakeIncluded': 'One free retake included with registration cost',
+  'certification.values.twoAttempts36h': '2 attempts (36 hours each)',
 
   // Additional Study Tips translations
   'certification.totalSections': 'Total Sections',

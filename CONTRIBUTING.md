@@ -95,6 +95,15 @@ Want to add tutorials, documentation, or study materials for any certification? 
 - Use clear, concise descriptions
 - Check for duplicates before adding
 
+### Internationalization (i18n)
+- UI text must use translation keys: call `useTranslations(lang)` and `t('key')`.
+- Do not hardcode copy in components. Add keys in `src/i18n/locales/{en,es,pt}.ts`.
+- Pages: run `npm run sync-i18n` after adding new routes to generate locale variants.
+- Data files (`src/data/certifications`):
+  - External resource titles/links can stay as-is (original language).
+  - Labels like prerequisites, retake policy, or exam format should use translation keys or `translateCertificationValue()` mappings.
+  - Prefer consistent values (e.g., 'Not applicable') that map to i18n keys.
+
 ### Commit Messages
 Follow [Conventional Commits](https://conventionalcommits.org/):
 ```

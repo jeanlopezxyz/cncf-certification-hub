@@ -36,6 +36,24 @@ const finalDescription = description || t('site.description');
     <ViewTransitions />
   </head>
   <body class="bg-gray-950 text-gray-100 min-h-screen">
+    <script>
+      // Progressive enhancements by browser capability
+      try {
+        const ua = navigator.userAgent.toLowerCase();
+        const isFirefox = ua.includes('firefox');
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Smooth scroll on non-Firefox if user doesn't prefer reduced motion
+        if (!isFirefox && !prefersReduced) {
+          document.documentElement.classList.add('smooth-scroll');
+        }
+
+        // In Firefox, disable backdrop-filter to avoid APZ scroll-linked warnings
+        if (isFirefox) {
+          document.documentElement.classList.add('no-backdrop-filter');
+        }
+      } catch {}
+    </script>
     <nav
       class="fixed top-0 w-full z-50 bg-slate-900/95 backdrop-blur-xl border-b border-blue-900/30 shadow-lg shadow-black/10"
     >

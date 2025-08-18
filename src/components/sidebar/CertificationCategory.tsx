@@ -26,7 +26,7 @@ export default function CertificationCategory({
   lang,
   onLinkClick,
 }: CertificationCategoryProps) {
-  if (!certifications || certifications.length === 0) return null;
+  const hasCerts = !!(certifications && certifications.length > 0);
 
   const t = useTranslations(lang as 'en' | 'es' | 'pt');
   const basePath = `${APP_CONFIG.basePath}${lang === 'en' ? '' : '/' + lang}`;
@@ -58,6 +58,8 @@ export default function CertificationCategory({
       setHeight(contentRef.current.scrollHeight);
     }
   }, [certifications]);
+
+  if (!hasCerts) return null;
 
   return (
     <div className="mb-1">

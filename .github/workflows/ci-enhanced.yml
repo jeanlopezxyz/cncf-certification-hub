@@ -49,11 +49,13 @@ jobs:
       
       - run: npm ci
       
-      - name: Run Tests
-        run: npm test -- --run 2>/dev/null || echo "No tests configured yet"
+      - name: Run Unit Tests (Vitest)
+        run: npm run test:unit || echo "Unit tests optional for now"
+        continue-on-error: true
       
-      - name: Test Coverage
-        run: npm test -- --coverage 2>/dev/null || echo "No coverage configured yet"
+      - name: Test Coverage (optional)
+        run: npm run coverage || echo "Coverage optional for now"
+        continue-on-error: true
 
   # 3. Build con matrix
   build:

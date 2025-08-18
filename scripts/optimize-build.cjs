@@ -230,11 +230,25 @@ function main() {
     log('green', '✅ Generated service worker');
   }
   
-  // Calculate size reduction
-  log('blue', '\n📊 Calculating size reduction...');
-  const { execSync } = require('child_process');
-  const afterSize = execSync('du -sh dist', { encoding: 'utf8' }).split('\t')[0];
-  log('green', `📦 Final build size: ${afterSize}`);
+  // Calculate size (without shell, compatible with restricted environments)
+  log('blue', '\n📊 Calculating size...');
+  function getDirSizeBytes(dir) {
+    let total = 0;
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) total += getDirSizeBytes(full);
+      else if (entry.isFile()) total += fs.statSync(full).size;
+    }
+    return total;
+  }
+  try {
+    const bytes = getDirSizeBytes(distPath);
+    const mb = (bytes / (1024 * 1024)).toFixed(1);
+    log('green', `📦 Final build size: ${mb}M`);
+  } catch (e) {
+    log('yellow', '⚠️  Could not calculate build size in this environment');
+  }
   
   log('green', '\n🎉 Build optimization completed!');
 }

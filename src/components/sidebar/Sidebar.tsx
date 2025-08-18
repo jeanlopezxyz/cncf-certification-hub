@@ -273,8 +273,16 @@ export default function Sidebar({ lang }: SidebarProps) {
       {/* Mobile Backdrop */}
       {isMobileOpen && (
         <div
+          role="button"
+          tabIndex={0}
+          aria-label={t('aria.toggleMobileSidebar')}
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setIsMobileOpen(false)}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+              setIsMobileOpen(false);
+            }
+          }}
         />
       )}
 

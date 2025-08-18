@@ -309,7 +309,7 @@ export default function CertificationStudyGuide({
                             {t('certification.kubernetesVersion')}
                           </div>
                           <div className="font-semibold text-white bg-blue-900/30 rounded-lg px-3 py-2 border border-blue-700/30">
-                            {certification.kubernetesVersion}
+                            {translateCertificationValue(certification.kubernetesVersion, lang)}
                           </div>
                         </div>
                       )}
@@ -349,6 +349,26 @@ export default function CertificationStudyGuide({
                           </div>
                         </div>
                       )}
+                      {certification.examFormat && (
+                        <div>
+                          <div className="text-sm text-blue-300 font-medium mb-1">
+                            {t('certification.examFormat')}
+                          </div>
+                          <div className="font-semibold text-white bg-blue-900/30 rounded-lg px-3 py-2 border border-blue-700/30">
+                            {translateCertificationValue(certification.examFormat, lang)}
+                          </div>
+                        </div>
+                      )}
+                      {certification.retakePolicy && (
+                        <div>
+                          <div className="text-sm text-blue-300 font-medium mb-1">
+                            {t('certification.retakePolicy')}
+                          </div>
+                          <div className="font-semibold text-white bg-blue-900/30 rounded-lg px-3 py-2 border border-blue-700/30">
+                            {translateCertificationValue(certification.retakePolicy, lang)}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -382,7 +402,7 @@ export default function CertificationStudyGuide({
                       {certification.simulatorAccess && (
                         <div className="text-sm text-green-200 mt-2 bg-green-800/30 rounded px-3 py-2">
                           <span className="font-medium">{t('certification.access')}:</span>{' '}
-                          {certification.simulatorAccess}
+                          {translateCertificationValue(certification.simulatorAccess, lang)}
                         </div>
                       )}
                     </div>

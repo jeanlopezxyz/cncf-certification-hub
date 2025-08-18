@@ -74,20 +74,12 @@
     @apply bg-blue-500/30 text-white;
   }
 
-  /* Smooth scroll - Performance optimized */
-  html {
+  /* Smooth scroll opt-in via class to avoid Firefox warning */
+  html.smooth-scroll {
     scroll-behavior: smooth;
   }
-
-  /* Performance optimization for scroll effects */
-  @media (prefers-reduced-motion: no-preference) {
-    html {
-      scroll-behavior: smooth;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    html {
+    html.smooth-scroll {
       scroll-behavior: auto;
     }
   }
@@ -160,6 +152,14 @@
     .backdrop-blur-xl {
       background-color: rgba(17, 24, 39, 0.95);
     }
+  }
+
+  /* Disable backdrop-filter in Firefox to avoid APZ scroll-linked warnings */
+  html.no-backdrop-filter .backdrop-blur-xl,
+  html.no-backdrop-filter .backdrop-blur-sm,
+  html.no-backdrop-filter [class*="backdrop-blur-"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 
   /* 3D Card Flip Support */

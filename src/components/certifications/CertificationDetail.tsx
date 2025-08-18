@@ -85,7 +85,7 @@ export default function CertificationDetail({ certification, lang }: Certificati
             </div>
             <div className="text-right">
               <div className="text-3xl font-bold text-white">${certification.price}</div>
-              <div className="text-sm text-gray-400">USD</div>
+              <div className="text-sm text-gray-400">{t('currency.usd')}</div>
             </div>
           </div>
 
@@ -166,7 +166,9 @@ export default function CertificationDetail({ certification, lang }: Certificati
                             : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
                         }`}
                       >
-                        {completedDomains.includes(domain.name) ? '✓ Completed' : 'Mark Complete'}
+                        {completedDomains.includes(domain.name)
+                          ? t('certification.completed')
+                          : t('certification.markComplete')}
                       </button>
                     </div>
                   </div>

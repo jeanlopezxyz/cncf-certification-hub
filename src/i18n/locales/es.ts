@@ -143,6 +143,7 @@ export const es = {
   'certifications.card.minutes': 'minutos',
   'certifications.card.min': 'min',
   'certifications.card.price': 'Precio',
+  'currency.usd': 'USD',
 
   // Certification Levels
   'certifications.level.entry': 'Básico',
@@ -285,6 +286,8 @@ export const es = {
   'certification.level': 'Nivel',
   'certification.prerequisites': 'Prerrequisitos',
   'certification.requiredFor': 'Requerida Para',
+  'certification.examFormat': 'Formato del Examen',
+  'certification.retakePolicy': 'Política de Repetición',
   'certification.quickStart': 'Inicio Rápido',
   'certification.registerExam': 'Registrarse para el Examen',
   'certification.minutes': 'minutos',
@@ -558,6 +561,8 @@ export const es = {
 
   // Additional hardcoded translations
   'certification.overallProgress': 'Progreso General',
+  'certification.markComplete': 'Marcar como completado',
+  'certification.completed': '✓ Completado',
   'certification.examDomains': 'Dominios del Examen',
   'certification.none': 'Ninguno',
   'certification.optional': 'Opcional',
@@ -572,6 +577,14 @@ export const es = {
   'certification.values.ckaRequired': 'Se requiere certificación CKA',
   'certification.values.notApplicableMultiple': 'No aplica para examen de opción múltiple',
   'certification.values.notApplicableSimulator': 'No aplica - No se proporciona simulador práctico',
+  'certification.values.notApplicable': 'No aplica',
+  'certification.values.noSimulatorMultiple': 'Sin simulador - Examen de opción múltiple',
+  'certification.values.onlineProctoredMultiple60':
+    'Supervisión en línea, examen de opción múltiple con 60 preguntas',
+  'certification.values.onlineProctoredPerformanceTasks':
+    'Supervisión en línea, examen práctico resolviendo tareas en línea de comandos',
+  'certification.values.oneFreeRetakeIncluded': 'Un reintento gratuito incluido con el registro',
+  'certification.values.twoAttempts36h': '2 intentos (36 horas cada uno)',
 
   'studyPath.week1.focus': 'Enfoque: Fundamentos',
   'studyPath.week1.description':

@@ -37,9 +37,11 @@ export default function SearchBar({ lang }: SearchBarProps) {
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.setAttribute('autocapitalize', 'off');
+      inputRef.current.setAttribute('autocorrect', 'off');
     }
     if (desktopInputRef.current) {
       desktopInputRef.current.setAttribute('autocapitalize', 'off');
+      desktopInputRef.current.setAttribute('autocorrect', 'off');
     }
   }, []);
 
@@ -196,7 +198,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
           cat.certificationIds.includes(cert.id)
         );
         const categoryKey = categoryObj?.key || '';
-        const categoryName = categoryObj ? t(categoryObj.translationKey) : '';
+        const categoryName = categoryObj ? t(categoryObj.name) : '';
 
         // Translate description if it's a translation key
         const description = cert.description.startsWith('cert.') 
@@ -414,9 +416,8 @@ export default function SearchBar({ lang }: SearchBarProps) {
                   placeholder={t('search.placeholder')}
                   className="w-full h-12 pl-11 pr-10 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
                   autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
                   spellCheck={false}
+                  suppressHydrationWarning
                 />
               </div>
             </div>
@@ -463,9 +464,8 @@ export default function SearchBar({ lang }: SearchBarProps) {
             className="w-full h-12 pl-12 pr-4 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
             aria-label={t('aria.search')}
             autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
             spellCheck={false}
+            suppressHydrationWarning
           />
 
           {/* Glow Effect on Focus */}
@@ -566,12 +566,27 @@ export default function SearchBar({ lang }: SearchBarProps) {
 
         {/* Backdrop for mobile */}
         {isFocused && suggestions.length > 0 && !isExpanded && (
-          <div 
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label={t('aria.closeSearch')}
             className="fixed inset-0 bg-black/20 backdrop-blur-sm -z-20 lg:hidden"
             onClick={() => {
               setIsFocused(false);
               setSuggestions([]);
               setFocusedIndex(-1);
+            }}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                setIsFocused(false);
+                setSuggestions([]);
+                setFocusedIndex(-1);
+              }
+              if (e.key === 'Escape') {
+                setIsFocused(false);
+                setSuggestions([]);
+                setFocusedIndex(-1);
+              }
             }}
           />
         )}

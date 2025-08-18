@@ -338,7 +338,6 @@ export const es = {
   'certification.officialPracticeEnvironment':
     'Ambiente de práctica oficial incluido con tu registro al examen',
   'certification.importantPolicies': 'Políticas y Requisitos Importantes',
-  'certification.retakePolicy': 'Política de Re-examen',
   'certification.successTips': 'Consejos de Éxito',
 
   // Study Resources Sections

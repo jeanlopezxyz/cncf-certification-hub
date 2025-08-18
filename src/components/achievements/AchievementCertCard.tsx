@@ -55,12 +55,12 @@ export default function AchievementCertCard({
             <div className="mt-auto">
               <div className="flex justify-center">
                 <div
-                  className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all duration-200 inline-block ${
+                  className={`text-xs font-semibold px-2 py-1 rounded-md border transition-all duration-200 inline-block ${
                     cert?.level === 'entry'
-                      ? 'bg-emerald-500/20 text-emerald-200 border-emerald-400/40 group-hover:bg-emerald-500/30'
+                      ? 'bg-emerald-600/30 text-emerald-300 border-emerald-500/40'
                       : cert?.level === 'intermediate'
-                        ? 'bg-amber-500/20 text-amber-200 border-amber-400/40 group-hover:bg-amber-500/30'
-                        : 'bg-red-500/20 text-red-200 border-red-400/40 group-hover:bg-red-500/30'
+                        ? 'bg-amber-600/30 text-amber-300 border-amber-500/40'
+                        : 'bg-red-600/30 text-red-300 border-red-500/40'
                   }`}
                 >
                   {t(`certifications.level.${cert?.level}`)}

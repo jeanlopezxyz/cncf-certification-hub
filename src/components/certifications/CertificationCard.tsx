@@ -71,7 +71,7 @@ export default function CertificationCard({
           <div className="flex flex-wrap gap-2">
             {/* Level */}
             <span
-              className={`text-xs px-3 py-1.5 rounded-md font-medium whitespace-nowrap ${
+              className={`text-xs px-3 py-1.5 rounded-md font-semibold whitespace-nowrap ${
                 cert.level === 'entry'
                   ? 'bg-green-900/40 text-green-200 border border-green-700/50'
                   : cert.level === 'intermediate'
@@ -84,7 +84,7 @@ export default function CertificationCard({
 
             {/* Exam Type - Hide on very small screens if needed */}
             <span
-              className={`text-xs px-3 py-1.5 rounded-md font-medium whitespace-nowrap ${
+              className={`text-xs px-3 py-1.5 rounded-md font-semibold whitespace-nowrap ${
                 cert.type === 'performance'
                   ? 'bg-purple-900/40 text-purple-200 border border-purple-700/50'
                   : 'bg-blue-900/40 text-blue-200 border border-blue-700/50'
@@ -96,7 +96,7 @@ export default function CertificationCard({
             </span>
 
             {/* Duration - On new line if needed */}
-            <span className="text-xs bg-slate-900/40 px-3 py-1.5 rounded-md text-slate-200 border border-slate-700/50 font-medium whitespace-nowrap">
+            <span className="text-xs bg-slate-900/40 px-3 py-1.5 rounded-md text-slate-200 border border-slate-700/50 font-semibold whitespace-nowrap">
               {cert.duration} {t('certifications.card.min')}
             </span>
           </div>
@@ -113,7 +113,7 @@ export default function CertificationCard({
                 {cert.requiredFor.map((badge: string) => (
                   <span
                     key={badge}
-                    className={`text-xs px-3 py-1.5 rounded-md font-medium inline-flex items-center gap-1 ${
+                    className={`text-xs px-3 py-1.5 rounded-md font-semibold inline-flex items-center gap-1 ${
                       badge === 'Kubestronaut'
                         ? 'bg-blue-900/40 text-blue-200 border border-blue-700/50'
                         : 'bg-amber-900/40 text-amber-200 border border-amber-700/50'

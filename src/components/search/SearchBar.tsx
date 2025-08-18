@@ -519,12 +519,12 @@ export default function SearchBar({ lang }: SearchBarProps) {
                     {(suggestion.level || suggestion.category) && (
                       <div className="flex items-center gap-1 mt-1.5 flex-wrap">
                         {suggestion.level && (
-                          <span className="px-1.5 py-0.5 text-xs sm:text-xs bg-slate-700/50 text-gray-400 rounded-md">
+                          <span className="px-1.5 py-0.5 text-xs sm:text-xs font-semibold bg-slate-700/50 text-gray-400 rounded-md">
                             {t(`certifications.level.${suggestion.level}`)}
                           </span>
                         )}
                         {suggestion.category && (
-                          <span className="px-1.5 py-0.5 text-xs sm:text-xs bg-slate-700/50 text-gray-400 rounded-md">
+                          <span className="px-1.5 py-0.5 text-xs sm:text-xs font-semibold bg-slate-700/50 text-gray-400 rounded-md">
                             {suggestion.category}
                           </span>
                         )}

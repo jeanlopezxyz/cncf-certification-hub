@@ -37,6 +37,10 @@ export default function Sidebar({ lang }: SidebarProps) {
   // Initialize collapsed state from localStorage (avoid hydration mismatch)
   const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+  
+  // Mobile button visibility and scroll tracking
+  const [showMobileButton, setShowMobileButton] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Restore state after hydration
   useEffect(() => {
@@ -199,6 +203,33 @@ export default function Sidebar({ lang }: SidebarProps) {
     }
   }, [openCategories, isHydrated]);
 
+  // Handle scroll to auto-hide mobile button
+  useEffect(() => {
+    const handleScroll = () => {
+      if (typeof window === 'undefined') return;
+      
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY < 100) {
+        // Always show when near top
+        setShowMobileButton(true);
+      } else if (currentScrollY > lastScrollY + 10) {
+        // Hide when scrolling down
+        setShowMobileButton(false);
+      } else if (currentScrollY < lastScrollY - 10) {
+        // Show when scrolling up
+        setShowMobileButton(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [lastScrollY]);
+
   const toggleSection = (section: string) => {
     setOpenSections(prev => {
       const newSections = prev.includes(section)
@@ -228,21 +259,27 @@ export default function Sidebar({ lang }: SidebarProps) {
 
   return (
     <>
-      {/* Mobile Toggle Button - Show on all pages with sidebar */}
-      <div className="fixed bottom-6 right-6 z-50 lg:hidden">
-          {/* Pulse animation ring */}
-          {!isMobileOpen && (
-            <div className="absolute inset-0 rounded-full bg-blue-600 opacity-25 animate-ping" />
+      {/* Mobile Toggle Button - Bottom left, smaller, auto-hide */}
+      <div className={`fixed bottom-4 left-4 z-50 lg:hidden transition-all duration-300 ${
+        showMobileButton ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
+      }`}>
+          {/* Pulse animation ring - smaller */}
+          {!isMobileOpen && showMobileButton && (
+            <div className="absolute inset-0 rounded-full bg-blue-600 opacity-20 animate-ping" />
           )}
 
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className={`relative ${isMobileOpen ? 'bg-slate-800 hover:bg-slate-700' : 'bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700'} text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 active:scale-95 border-2 ${isMobileOpen ? 'border-slate-700' : 'border-blue-500/30'}`}
+            className={`relative ${
+              isMobileOpen 
+                ? 'bg-slate-800/90 hover:bg-slate-700/90' 
+                : 'bg-gradient-to-r from-blue-600/80 to-sky-600/80 hover:from-blue-700/90 hover:to-sky-700/90'
+            } text-white p-3 rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 transform hover:scale-105 active:scale-95 border border-white/20`}
             aria-label={t('aria.toggleMobileSidebar')}
           >
-            <div className="relative w-6 h-6">
+            <div className="relative w-5 h-5">
               {isMobileOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -252,7 +289,7 @@ export default function Sidebar({ lang }: SidebarProps) {
                 </svg>
               ) : (
                 <>
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -260,10 +297,12 @@ export default function Sidebar({ lang }: SidebarProps) {
                       d="M4 6h16M4 12h16m-7 6h7"
                     />
                   </svg>
-                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
-                  </span>
+                  {showMobileButton && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+                    </span>
+                  )}
                 </>
               )}
             </div>

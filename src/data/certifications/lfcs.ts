@@ -5,7 +5,7 @@ export const lfcs: Certification = {
   acronym: 'LFCS',
   name: 'Linux Foundation Certified System Administrator',
   description: 'Essential Linux system administration skills',
-  level: 'intermediate',
+  level: 'advanced',
   type: 'performance',
   duration: 120,
   price: 395,

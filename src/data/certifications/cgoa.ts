@@ -5,7 +5,7 @@ export const cgoa: Certification = {
   acronym: 'CGOA',
   name: 'Certified GitOps Associate',
   description: 'cert.cgoa.description',
-  level: 'intermediate',
+  level: 'entry',
   type: 'multiple-choice',
   duration: 90,
   price: 250,

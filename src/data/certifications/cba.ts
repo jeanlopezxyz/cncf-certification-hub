@@ -5,7 +5,7 @@ export const cba: Certification = {
   acronym: 'CBA',
   name: 'Certified Backstage Associate',
   description: 'cert.cba.description',
-  level: 'intermediate',
+  level: 'entry',
   type: 'multiple-choice',
   duration: 90,
   price: 250,

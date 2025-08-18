@@ -5,7 +5,7 @@ export const capa: Certification = {
   acronym: 'CAPA',
   name: 'Certified Argo Project Associate',
   description: 'cert.capa.description',
-  level: 'intermediate',
+  level: 'entry',
   type: 'multiple-choice',
   duration: 90,
   price: 250,

@@ -5,7 +5,7 @@ export const otca: Certification = {
   acronym: 'OTCA',
   name: 'OpenTelemetry Certified Associate',
   description: 'cert.otca.description',
-  level: 'intermediate',
+  level: 'entry',
   type: 'multiple-choice',
   duration: 90,
   price: 250,

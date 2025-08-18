@@ -5,7 +5,7 @@ export const cca: Certification = {
   acronym: 'CCA',
   name: 'Cilium Certified Associate',
   description: 'cert.cca.description',
-  level: 'intermediate',
+  level: 'entry',
   type: 'multiple-choice',
   duration: 90,
   price: 250,

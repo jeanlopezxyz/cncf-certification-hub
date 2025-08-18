@@ -5,7 +5,7 @@ export const cnpa: Certification = {
   acronym: 'CNPA',
   name: 'Cloud Native Platform Associate',
   description: 'cert.cnpa.description',
-  level: 'intermediate',
+  level: 'entry',
   type: 'multiple-choice',
   duration: 90,
   price: 250,

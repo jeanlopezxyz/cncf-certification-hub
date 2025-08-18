@@ -346,9 +346,6 @@ export default function Sidebar({ lang }: SidebarProps) {
                       : 'text-gray-300 hover:text-blue-300 hover:bg-slate-800/20'
                   }`}
                 >
-                  {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-400 rounded-r-full" />
-                  )}
                   <span className={`w-0.5 h-4 rounded-full flex-shrink-0 transition-all duration-200 ${
                     isActive 
                       ? 'bg-blue-400 w-2 h-2 rounded-full' 
@@ -410,9 +407,6 @@ export default function Sidebar({ lang }: SidebarProps) {
                       : 'text-gray-300 hover:text-blue-400 hover:bg-slate-800/20'
                   }`}
                 >
-                  {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-400 rounded-r-full" />
-                  )}
                   <span className={`w-0.5 h-4 rounded-full flex-shrink-0 transition-all duration-200 ${
                     isActive 
                       ? 'bg-blue-400 w-2 h-2 rounded-full' 

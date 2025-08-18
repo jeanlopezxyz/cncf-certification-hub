@@ -16,7 +16,7 @@ export default function AchievementCertCard({
   certId, 
   basePath, 
   lang, 
-  index, 
+  index: _index, 
   showArrow = false,
   gradient = 'from-blue-900/90 to-blue-950/95'
 }: AchievementCertCardProps) {
@@ -31,7 +31,7 @@ export default function AchievementCertCard({
           {isCKS && (
             <div className="absolute top-2 right-2 z-10">
               <span className="text-[10px] font-semibold px-2 py-1 rounded-md bg-orange-600/30 text-orange-300 border border-orange-500/40">
-                CKA
+                {t('achievements.kubestronaut.requiresCka').split(' ')[1]}
               </span>
             </div>
           )}

@@ -26,7 +26,16 @@ export default function AchievementCertCard({
   return (
     <>
       <a href={`${basePath}/certifications/${certId}`} className="group flex-1 min-w-[45%] sm:min-w-0">
-        <div className={`h-full min-h-[240px] sm:min-h-[220px] p-4 sm:p-4 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br ${gradient} border-blue-700/70 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-850/95 hover:to-blue-900/100 hover:shadow-lg hover:shadow-blue-500/50 flex`}>
+        <div className={`h-full min-h-[240px] sm:min-h-[220px] p-4 sm:p-4 rounded-xl border-2 transition-all duration-300 bg-gradient-to-br ${gradient} border-blue-700/70 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-850/95 hover:to-blue-900/100 hover:shadow-lg hover:shadow-blue-500/50 flex relative`}>
+          {/* CKA Prerequisite Badge - Top Right */}
+          {isCKS && (
+            <div className="absolute top-2 right-2 z-10">
+              <span className="text-[10px] font-semibold px-2 py-1 rounded-md bg-orange-600/30 text-orange-300 border border-orange-500/40">
+                CKA
+              </span>
+            </div>
+          )}
+          
           <div className="w-full flex flex-col text-center">
             {/* Acronym */}
             <div className="mb-3">
@@ -42,18 +51,8 @@ export default function AchievementCertCard({
               </div>
             </div>
 
-            {/* Prerequisites - Clean text only */}
-            {isCKS && (
-              <div className="mb-2">
-                <div className="text-xs font-medium px-2 py-1 rounded-md bg-orange-600/20 text-orange-200 border border-orange-500/40">
-                  {t('achievements.kubestronaut.requiresCka')}
-                </div>
-              </div>
-            )}
-
-            {/* Level and Duration */}
-            <div className="space-y-2 mt-auto">
-              {/* Level */}
+            {/* Level Only */}
+            <div className="mt-auto">
               <div className="flex justify-center">
                 <div
                   className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all duration-200 inline-block ${
@@ -65,13 +64,6 @@ export default function AchievementCertCard({
                   }`}
                 >
                   {t(`certifications.level.${cert?.level}`)}
-                </div>
-              </div>
-
-              {/* Duration */}
-              <div className="flex justify-center">
-                <div className="text-xs font-medium px-2 py-1 rounded-md bg-slate-700/50 text-slate-300 border border-slate-600/50">
-                  {cert?.duration} {t('certifications.card.min')}
                 </div>
               </div>
             </div>

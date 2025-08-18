@@ -258,19 +258,11 @@ const lfcs = certifications.find(c => c.id === 'lfcs');
                   </div>
                 </div>
 
-                {/* Level and Duration */}
-                <div class="space-y-2 mt-auto">
-                  {/* Level */}
+                {/* Level Only */}
+                <div class="mt-auto">
                   <div class="flex justify-center">
                     <div class="text-xs font-bold px-3 py-1.5 rounded-full border transition-all duration-200 inline-block bg-red-500/20 text-red-200 border-red-400/40 group-hover:bg-red-500/30">
                       {t(`certifications.level.${lfcs?.level}`)}
-                    </div>
-                  </div>
-
-                  {/* Duration */}
-                  <div class="flex justify-center">
-                    <div class="text-xs font-medium px-2 py-1 rounded-md bg-slate-700/50 text-slate-300 border border-slate-600/50">
-                      {lfcs?.duration} {t('certifications.card.min')}
                     </div>
                   </div>
                 </div>

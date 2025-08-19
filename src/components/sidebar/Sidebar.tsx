@@ -259,8 +259,8 @@ export default function Sidebar({ lang }: SidebarProps) {
 
   return (
     <>
-      {/* Mobile Toggle Button - Bottom left, smaller, auto-hide */}
-      <div className={`fixed bottom-4 left-4 z-50 lg:hidden transition-all duration-300 ${
+      {/* Mobile Toggle Button - Bottom right, smaller, auto-hide */}
+      <div className={`fixed bottom-4 right-4 z-50 lg:hidden transition-all duration-300 ${
         showMobileButton ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
       }`}>
           {/* Pulse animation ring - smaller */}

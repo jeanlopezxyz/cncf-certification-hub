@@ -338,7 +338,7 @@ export const en = {
     'Official practice environment included with your exam registration',
   'certification.access': 'Access',
   'certification.importantPoliciesRequirements': 'Important Policies & Requirements',
-  'certification.retakePolicy': 'Retake Policy',
+  // Note: retake policy key defined earlier, avoid duplication here
   'certification.examFormatDifficulty': 'Exam Format & Difficulty',
   'certification.format': 'Format',
   'certification.performanceBasedTest':

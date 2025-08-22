@@ -332,7 +332,7 @@ export const pt = {
     'Ambiente de prática oficial incluído com seu registro do exame',
   'certification.access': 'Acesso',
   'certification.importantPoliciesRequirements': 'Políticas e Requisitos Importantes',
-  'certification.retakePolicy': 'Política de Repetição',
+  // Nota: chave já definida acima; evitar duplicação aqui
   'certification.examFormatDifficulty': 'Formato e Dificuldade do Exame',
   'certification.format': 'Formato',
   'certification.performanceBasedTest':

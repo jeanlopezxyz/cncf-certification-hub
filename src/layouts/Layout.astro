@@ -28,12 +28,12 @@ const finalDescription = description || t('site.description');
     <meta charset="UTF-8" />
     <meta name="description" content={finalDescription} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href={`${APP_CONFIG.basePath}/favicon.svg`} />
-    <link rel="icon" type="image/png" sizes="32x32" href={`${APP_CONFIG.basePath}/favicon-32x32.png`} />
-    <link rel="icon" type="image/png" sizes="16x16" href={`${APP_CONFIG.basePath}/favicon-16x16.png`} />
-    <link rel="apple-touch-icon" sizes="180x180" href={`${APP_CONFIG.basePath}/apple-touch-icon.png`} />
-    <link rel="manifest" href={`${APP_CONFIG.basePath}/site.webmanifest`} />
-    <link rel="mask-icon" href={`${APP_CONFIG.basePath}/mask-icon.svg`} color="#0ea5e9" />
+    <link rel="icon" type="image/svg+xml" href={import.meta.env.BASE_URL + 'favicon.svg'} />
+    <link rel="icon" type="image/png" sizes="32x32" href={import.meta.env.BASE_URL + 'favicon-32x32.png'} />
+    <link rel="icon" type="image/png" sizes="16x16" href={import.meta.env.BASE_URL + 'favicon-16x16.png'} />
+    <link rel="apple-touch-icon" sizes="180x180" href={import.meta.env.BASE_URL + 'apple-touch-icon.png'} />
+    <link rel="manifest" href={import.meta.env.BASE_URL + 'site.webmanifest'} />
+    <link rel="mask-icon" href={import.meta.env.BASE_URL + 'mask-icon.svg'} color="#0ea5e9" />
     <meta name="theme-color" content="#0b1220" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | CNCF Certification Resources Hub</title>
@@ -148,10 +148,10 @@ const finalDescription = description || t('site.description');
           <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
         </div>
         
-        <div class="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32 py-12 sm:py-16">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 xl:gap-16">
+        <div class="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32 py-8 sm:py-12">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 xl:gap-16 items-start justify-items-center sm:justify-items-start">
             <!-- About Section -->
-            <div class="sm:col-span-2 lg:col-span-2">
+            <div class="sm:col-span-2 lg:col-span-2 min-w-0 text-center sm:text-left">
               <div class="mb-6">
                 <h3 class="font-bold text-xl mb-4 bg-gradient-to-r from-blue-400 to-sky-300 bg-clip-text text-transparent">
                   {t('footer.title')}
@@ -166,19 +166,19 @@ const finalDescription = description || t('site.description');
             </div>
             
             <!-- Study Resources -->
-            <div>
-              <h4 class="font-semibold mb-4 text-white flex items-center gap-2">
+            <div class="min-w-0">
+              <h4 class="font-semibold mb-4 text-white flex items-center gap-2 justify-center sm:justify-start">
                 <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
                 </svg>
                 {t('footer.studyResources')}
               </h4>
-              <ul class="space-y-3 text-sm">
+              <ul class="space-y-3 text-sm mx-auto sm:mx-0">
                 <li>
                   <a
                     href={EXTERNAL_URLS.kubernetes.docs}
                     target="_blank"
-                    class="group flex items-center gap-2 text-gray-400 hover:text-blue-300 transition-all duration-300 hover:translate-x-1"
+                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-blue-300 transition-all duration-300 hover:translate-x-1 break-words"
                   >
                     <svg class="w-4 h-4 text-blue-500 group-hover:text-blue-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
@@ -190,7 +190,7 @@ const finalDescription = description || t('site.description');
                   <a
                     href={EXTERNAL_URLS.learning.killerSh}
                     target="_blank"
-                    class="group flex items-center gap-2 text-gray-400 hover:text-blue-300 transition-all duration-300 hover:translate-x-1"
+                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-blue-300 transition-all duration-300 hover:translate-x-1 break-words"
                   >
                     <svg class="w-4 h-4 text-green-500 group-hover:text-green-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -202,7 +202,7 @@ const finalDescription = description || t('site.description');
                   <a
                     href={EXTERNAL_URLS.githubCNCF}
                     target="_blank"
-                    class="group flex items-center gap-2 text-gray-400 hover:text-blue-300 transition-all duration-300 hover:translate-x-1"
+                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-blue-300 transition-all duration-300 hover:translate-x-1 break-words"
                   >
                     <svg class="w-4 h-4 text-sky-500 group-hover:text-sky-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
@@ -214,19 +214,19 @@ const finalDescription = description || t('site.description');
             </div>
             
             <!-- Community Section -->
-            <div>
-              <h4 class="font-semibold mb-4 text-white flex items-center gap-2">
+            <div class="min-w-0">
+              <h4 class="font-semibold mb-4 text-white flex items-center gap-2 justify-center sm:justify-start">
                 <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
                 </svg>
                 {t('footer.community')}
               </h4>
-              <ul class="space-y-3 text-sm">
+              <ul class="space-y-3 text-sm mx-auto sm:mx-0">
                 <li>
                   <a
                     href={EXTERNAL_URLS.kubernetes.slack}
                     target="_blank"
-                    class="group flex items-center gap-2 text-gray-400 hover:text-purple-300 transition-all duration-300 hover:translate-x-1"
+                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-purple-300 transition-all duration-300 hover:translate-x-1 break-words"
                   >
                     <svg class="w-4 h-4 text-purple-500 group-hover:text-purple-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
@@ -238,7 +238,7 @@ const finalDescription = description || t('site.description');
                   <a
                     href={EXTERNAL_URLS.kubernetes.discussion}
                     target="_blank"
-                    class="group flex items-center gap-2 text-gray-400 hover:text-green-300 transition-all duration-300 hover:translate-x-1"
+                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-green-300 transition-all duration-300 hover:translate-x-1 break-words"
                   >
                     <svg class="w-4 h-4 text-green-500 group-hover:text-green-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path>
@@ -250,7 +250,7 @@ const finalDescription = description || t('site.description');
                   <a
                     href={EXTERNAL_URLS.kubernetes.reddit}
                     target="_blank"
-                    class="group flex items-center gap-2 text-gray-400 hover:text-orange-300 transition-all duration-300 hover:translate-x-1"
+                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-orange-300 transition-all duration-300 hover:translate-x-1 break-words"
                   >
                     <svg class="w-4 h-4 text-orange-500 group-hover:text-orange-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                       <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"></path>
@@ -263,7 +263,7 @@ const finalDescription = description || t('site.description');
           </div>
           
           <!-- Bottom Section with improved styling -->
-          <div class="mt-12 pt-8 border-t border-gradient-to-r from-transparent via-gray-700/50 to-transparent">
+          <div class="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-gradient-to-r from-transparent via-gray-700/50 to-transparent">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div class="text-center sm:text-left">
                 <p class="text-gray-400 text-sm leading-relaxed">
@@ -272,7 +272,7 @@ const finalDescription = description || t('site.description');
               </div>
               
               <!-- Social Links -->
-              <div class="flex items-center gap-4">
+              <div class="flex items-center gap-3 sm:gap-4 flex-wrap justify-center sm:justify-end">
                 <a
                   href={EXTERNAL_URLS.github}
                   target="_blank"

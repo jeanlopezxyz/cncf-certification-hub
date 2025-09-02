@@ -20,7 +20,7 @@ export default function Logo({ className = '' }: Props) {
         {/* Visor */}
         <circle cx="12" cy="10" r="4" fill="currentColor" />
         {/* Shine */}
-        <ellipse cx="9.6" cy="7.9" rx="1.1" ry="1.6" fill="#ffffff" opacity="0.4" />
+        <ellipse cx="9.6" cy="7.9" rx="1.1" ry="1.6" fill="currentColor" opacity="0.4" />
         {/* Body */}
         <rect x="9.2" y="14.2" width="5.6" height="5.6" rx="2.8" fill="currentColor" />
         {/* Arms */}

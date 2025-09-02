@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
-import { EXTERNAL_URLS } from '../config/app.config';
+import { EXTERNAL_URLS, TYPOGRAPHY } from '../config/app.config';
 import { APP_CONFIG } from '../constants/index';
 import LanguageSelector from '../components/language/LanguageSelector';
 import Logo from '../components/Logo';
@@ -31,6 +31,14 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
     <meta charset="UTF-8" />
     <meta name="description" content={finalDescription} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src fonts.gstatic.com; img-src 'self' data:; connect-src 'self';" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+    
     <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
     <meta name="theme-color" content="#0b1220" />
     <meta name="generator" content={Astro.generator} />
@@ -39,8 +47,30 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
     <link rel="preconnect" href={EXTERNAL_URLS.fonts.gstatic} crossorigin />
     <link href={EXTERNAL_URLS.fonts.googleFontsCss} rel="stylesheet" />
     <ViewTransitions />
+    
+    <!-- Web Vitals Monitoring (No UI impact) -->
+    <script>
+      try {
+        import('../utils/webVitals.ts').then(module => {
+          if (module.webVitalsMonitor) {
+            module.webVitalsMonitor.init();
+          }
+        }).catch(err => console.debug('Web Vitals not available:', err));
+      } catch (error) {
+        console.debug('Web Vitals initialization skipped:', error);
+      }
+    </script>
   </head>
   <body class="bg-gray-950 text-gray-100 min-h-screen">
+    <!-- Skip link for accessibility -->
+    <a 
+      href="#main-content" 
+      class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50 rounded-br-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium"
+      tabindex="1"
+    >
+      {t('accessibility.skipToMain')}
+    </a>
+    
     <script>
       // Progressive enhancements by browser capability
       try {
@@ -79,19 +109,19 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
               <div class="hidden sm:block motion-safe:group-hover:drop-shadow-[0_1px_8px_rgba(56,189,248,0.25)]">
                 <!-- Short variant for small desktops/tablets (sm to <md) -->
                 <div
-                  class="block md:hidden font-black text-xl leading-tight tracking-[-0.01em] text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 motion-safe:group-hover:from-sky-300 motion-safe:group-hover:to-blue-500"
+                  class={`block md:hidden ${TYPOGRAPHY.weights.black} ${TYPOGRAPHY.sizes.xl} ${TYPOGRAPHY.lineHeights.tight} ${TYPOGRAPHY.tracking.tight} text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 motion-safe:group-hover:from-sky-300 motion-safe:group-hover:to-blue-500`}
                 >
-                  CNCF Cert Hub
+                  {t('site.titleShort')}
                 </div>
                 <!-- Short variant for md only -->
                 <div
-                  class="hidden md:block lg:hidden font-black text-xl leading-tight tracking-[-0.01em] text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 motion-safe:group-hover:from-sky-300 motion-safe:group-hover:to-blue-500"
+                  class={`hidden md:block lg:hidden ${TYPOGRAPHY.weights.black} ${TYPOGRAPHY.sizes.xl} ${TYPOGRAPHY.lineHeights.tight} ${TYPOGRAPHY.tracking.tight} text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 motion-safe:group-hover:from-sky-300 motion-safe:group-hover:to-blue-500`}
                 >
-                  CNCF Cert Hub
+                  {t('site.titleShort')}
                 </div>
                 <!-- Full variant for lg and up -->
                 <div
-                  class="hidden lg:block font-black text-2xl leading-tight tracking-[-0.01em] text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 motion-safe:group-hover:from-sky-300 motion-safe:group-hover:to-blue-500"
+                  class={`hidden lg:block ${TYPOGRAPHY.weights.black} ${TYPOGRAPHY.sizes['2xl']} ${TYPOGRAPHY.lineHeights.tight} ${TYPOGRAPHY.tracking.tight} text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 motion-safe:group-hover:from-sky-300 motion-safe:group-hover:to-blue-500`}
                 >
                   CNCF Certification Resources Hub
                 </div>
@@ -103,7 +133,7 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
           {/* Search Bar - Perfectly centered */}
           <div class="flex-1 flex justify-center px-4">
             <div class="w-full max-w-md">
-              <SearchBar client:load lang={lang} />
+              <SearchBar client:idle lang={lang} />
             </div>
           </div>
           
@@ -111,7 +141,7 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
           <div
             class="flex items-center justify-end space-x-2 sm:space-x-3 w-auto lg:w-[380px] flex-shrink-0"
           >
-            <LanguageSelector client:load currentLang={lang} />
+            <LanguageSelector client:idle currentLang={lang} />
             <a
               href={EXTERNAL_URLS.github}
               target="_blank"
@@ -129,7 +159,7 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
     </nav>
     {
       showSidebar && (
-        <Sidebar client:load lang={lang} transition:persist transition:name="sidebar" />
+        <Sidebar client:visible lang={lang} transition:persist transition:name="sidebar" />
       )
     }
     <div
@@ -137,7 +167,7 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
       id="main-wrapper"
       data-sidebar={showSidebar}
     >
-      <main class="flex-grow" id="main-content">
+      <main class="flex-grow" id="main-content" role="main" aria-label={t('accessibility.mainContent')}>
         <slot />
       </main>
       <footer class="relative bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 border-t border-gray-800/50 mt-20 overflow-hidden" id="footer">
@@ -151,13 +181,13 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
             <!-- About Section -->
             <div class="sm:col-span-2 lg:col-span-2 min-w-0 text-center sm:text-left">
               <div class="mb-6">
-                <h3 class="font-bold text-xl mb-4 bg-gradient-to-r from-blue-400 to-sky-300 bg-clip-text text-transparent">
+                <h3 class={`${TYPOGRAPHY.weights.bold} ${TYPOGRAPHY.sizes.footerTitle} bg-gradient-to-r from-blue-400 to-sky-300 bg-clip-text text-transparent`}>
                   {t('footer.title')}
                 </h3>
-                <p class="text-gray-400 text-sm mb-4 leading-relaxed max-w-md">
+                <p class={`text-gray-400 ${TYPOGRAPHY.sizes.footerText} mb-4 ${TYPOGRAPHY.lineHeights.relaxed} max-w-md`}>
                   {t('footer.built')}
                 </p>
-                <p class="text-gray-500 text-xs leading-relaxed max-w-lg">
+                <p class={`text-gray-500 ${TYPOGRAPHY.sizes.caption} ${TYPOGRAPHY.lineHeights.relaxed} max-w-lg`}>
                   {t('footer.disclaimer')}
                 </p>
               </div>
@@ -275,7 +305,7 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
                   href={EXTERNAL_URLS.github}
                   target="_blank"
                   class="group p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-slate-600 transition-all duration-300 hover:scale-110"
-                  aria-label="GitHub Repository"
+                  aria-label={t('accessibility.githubRepository')}
                 >
                   <svg class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
@@ -286,7 +316,7 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
                   href={EXTERNAL_URLS.kubernetes.slack}
                   target="_blank"
                   class="group p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-slate-600 transition-all duration-300 hover:scale-110"
-                  aria-label="Kubernetes Slack"
+                  aria-label={t('accessibility.kubernetesSlack')}
                 >
                   <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
@@ -313,7 +343,7 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
         if (w?.dataset.sidebar === 'true') {
           if (window.innerWidth >= 1024) {
             // Single localStorage read
-            const collapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            const collapsed = (localStorage.getItem('sidebarCollapsed') || '') === 'true';
             // Apply state immediately
             w.classList.add(collapsed ? 'lg:ml-0' : 'lg:ml-80');
 
@@ -332,7 +362,7 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
           if (wrapper?.dataset.sidebar !== 'true') return;
 
           // Single read from localStorage
-          const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+          const isCollapsed = (localStorage.getItem('sidebarCollapsed') || '') === 'true';
 
           if (window.innerWidth >= 1024) {
             // Batch DOM operations
@@ -351,7 +381,7 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
 
           if (hasSidebar && typeof window !== 'undefined') {
             // Check saved sidebar state
-            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            const sidebarCollapsed = (localStorage.getItem('sidebarCollapsed') || '') === 'true';
 
             // Apply initial state immediately
             if (window.innerWidth >= 1024) {

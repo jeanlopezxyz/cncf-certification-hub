@@ -24,14 +24,21 @@ npm run format:check     # Check formatting without changes
 npm run typecheck        # TypeScript type checking
 npm run check            # Run all checks (lint, format, types)
 
-# Testing & Security
-npm run security:full    # Complete security audit and checks
-npm run build:secure     # Security-verified production build
-npm run perf:full        # Full performance testing suite
-npm run test:complete    # Run all checks, security, build, and performance tests
+# Quality Control
+npm run check            # Run all checks (lint, format, types)
+npm run validate         # Alias for typecheck + lint + format:check
+npm run prepare-pr       # Full validation + build for PR preparation
 
-# Deployment
-npm run deploy:check     # Pre-deployment validation (checks + security + build)
+# Testing
+npm run test             # Placeholder (will be added soon)
+npm run test:unit        # Run unit tests with Vitest
+npm run test:watch       # Run tests in watch mode
+npm run coverage         # Generate test coverage report
+npm run test:ci-local    # Run local CI simulation
+npm run test:lighthouse  # Run Lighthouse performance tests
+
+# Development Utilities
+npm run sync-i18n        # Sync internationalization pages across languages
 ```
 
 ## Architecture
@@ -40,7 +47,7 @@ npm run deploy:check     # Pre-deployment validation (checks + security + build)
 
 - **Astro 5** - Static site generator with file-based routing
 - **React 19** - Interactive components with TypeScript
-- **Tailwind CSS 4** - Utility-first styling via Vite plugin
+- **Tailwind CSS 3** - Utility-first styling framework
 - **TypeScript** - Strict mode enabled
 - **Vitest** - Testing framework with 80% coverage thresholds
 
@@ -117,6 +124,20 @@ Special groups:
 
 - I18n pages auto-sync via `npm run sync-i18n`
 - Build optimization with `scripts/optimize-build.cjs`
-- Security checks integrated in build pipeline
-- Performance monitoring with Lighthouse and Web Vitals
+- Vite build configuration optimizes bundle splitting (React vendor chunks)
+- Asset optimization with custom file naming patterns
 - 15+ CNCF certifications with exam domains and study resources
+
+### Scripts and Automation
+
+Key utility scripts in `/scripts`:
+- `sync-i18n-pages.js` - Automatically syncs i18n page structure
+- `optimize-build.cjs` - Post-build optimization and asset cleanup
+- `test-ci-local.sh` - Local CI environment simulation
+- `test-lighthouse-local.sh` - Local Lighthouse testing
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.

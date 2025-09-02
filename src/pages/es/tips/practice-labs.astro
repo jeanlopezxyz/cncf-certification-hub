@@ -1,11 +1,12 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import StudyTipsGuide from '../../../components/study-tips/StudyTipsGuide';
-import { getLangFromUrl } from '../../../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<Layout title="Consejos de Laboratorios de Práctica" showSidebar={true}>
+<Layout title={t('studyTips.practiceLabs.title')} showSidebar={true}>
   <StudyTipsGuide client:load tipId="practice-labs" lang={lang} />
 </Layout>

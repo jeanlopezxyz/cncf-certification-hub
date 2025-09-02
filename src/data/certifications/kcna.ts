@@ -65,7 +65,7 @@ export const kcna: Certification = {
     },
   ],
   resources: {
-    official: 'https://www.cncf.io/certification/kcna/',
+    official: 'https://www.cncf.io/training/certification/kcna/',
     github: [
       'https://github.com/cncf/curriculum',
       'https://github.com/moabukar/KCNA-Kubernetes-and-Cloud-Native-Associate',
@@ -108,6 +108,36 @@ export const kcna: Certification = {
     ],
     courses: [
       {
+        title: 'Introduction to Kubernetes (LFS158)',
+        url: 'https://www.edx.org/learn/kubernetes/the-linux-foundation-introduction-to-kubernetes',
+        author: 'The Linux Foundation',
+        description: 'Comprehensive introduction to Kubernetes concepts, architecture, and deployment',
+        isPaid: false,
+        duration: '16 hours',
+        difficulty: 'beginner',
+        rating: 4.8,
+      },
+      {
+        title: 'Introduction to Cloud Infrastructure Technologies (LFS151)',
+        url: 'https://training.linuxfoundation.org/training/introduction-to-cloud-infrastructure-technologies/',
+        author: 'The Linux Foundation',
+        description: 'Comprehensive introduction to cloud technologies, containers, and Kubernetes',
+        isPaid: false,
+        duration: '12 hours',
+        difficulty: 'beginner',
+        rating: 4.7,
+      },
+      {
+        title: 'Introduction to Kubernetes on Edge with K3s (LFS156x)',
+        url: 'https://training.linuxfoundation.org/training/introduction-to-kubernetes-on-edge-with-k3s-lfs156x/',
+        author: 'The Linux Foundation',
+        description: 'Course on edge computing with Kubernetes and K3s',
+        isPaid: false,
+        duration: '15 hours',
+        difficulty: 'intermediate',
+        rating: 4.6,
+      },
+      {
         title: 'KCNA - Kubernetes and Cloud Native Associate',
         url: 'https://www.udemy.com/course/kubernetes-and-cloud-native-associate/',
         author: 'Andrew Brown',
@@ -118,21 +148,12 @@ export const kcna: Certification = {
         rating: 4.6,
       },
       {
-        title: 'Introduction to Kubernetes',
-        url: 'https://www.edx.org/course/introduction-to-kubernetes',
-        author: 'Linux Foundation',
-        description: 'Curso oficial de la Linux Foundation - Fundamentos de Kubernetes',
+        title: 'KCNA Study Guide',
+        url: 'https://github.com/walidshaari/Kubernetes-and-Cloud-Native-Associate',
+        author: 'Walid Shaari',
+        description: 'Comprehensive KCNA study guide with practice exercises and examples',
         isPaid: false,
-        duration: '14 semanas',
-        difficulty: 'beginner',
-      },
-      {
-        title: 'KCNA Exam Prep',
-        url: 'https://academy.tetrate.io/courses/kcna-exam-prep',
-        author: 'Tetrate Academy',
-        description: 'Preparación gratuita para KCNA con laboratorios interactivos',
-        isPaid: false,
-        duration: '8 horas',
+        duration: '6 hours',
         difficulty: 'beginner',
       },
     ],
@@ -242,6 +263,83 @@ export const kcna: Certification = {
       },
     ],
   },
+  questions: [
+    {
+      id: 'kcna-001',
+      domain: 'Kubernetes Fundamentals',
+      question: 'What is the primary purpose of Kubernetes?',
+      options: [
+        'To create virtual machines',
+        'To orchestrate and manage containerized applications',
+        'To build container images',
+        'To monitor network traffic'
+      ],
+      correctAnswer: 1,
+      explanation: 'Kubernetes is a container orchestration platform that automates the deployment, scaling, and management of containerized applications.',
+      difficulty: 'easy',
+      tags: ['basics', 'containers', 'orchestration']
+    },
+    {
+      id: 'kcna-002',
+      domain: 'Kubernetes Fundamentals',
+      question: 'Which component is responsible for storing cluster state in Kubernetes?',
+      options: [
+        'kube-apiserver',
+        'etcd',
+        'kube-controller-manager',
+        'kube-scheduler'
+      ],
+      correctAnswer: 1,
+      explanation: 'etcd is a distributed key-value store that serves as the backing store for all cluster data in Kubernetes.',
+      difficulty: 'medium',
+      tags: ['etcd', 'cluster-state', 'components']
+    },
+    {
+      id: 'kcna-003',
+      domain: 'Container Orchestration',
+      question: 'What is a Pod in Kubernetes?',
+      options: [
+        'A collection of containers that share storage and network',
+        'A single container running in isolation',
+        'A virtual machine running containers',
+        'A network interface for containers'
+      ],
+      correctAnswer: 0,
+      explanation: 'A Pod is the smallest deployable unit in Kubernetes and consists of one or more containers that share storage, network, and a specification for how to run the containers.',
+      difficulty: 'easy',
+      tags: ['pods', 'containers', 'workloads']
+    },
+    {
+      id: 'kcna-004',
+      domain: 'Cloud Native Architecture',
+      question: 'Which of the following is a principle of cloud native applications?',
+      options: [
+        'Monolithic architecture',
+        'Manual scaling',
+        'Microservices architecture',
+        'Single deployment environment'
+      ],
+      correctAnswer: 2,
+      explanation: 'Cloud native applications are typically built using microservices architecture, which allows for independent scaling, deployment, and maintenance of application components.',
+      difficulty: 'medium',
+      tags: ['cloud-native', 'microservices', 'architecture']
+    },
+    {
+      id: 'kcna-005',
+      domain: 'Kubernetes API and Access',
+      question: 'What is kubectl?',
+      options: [
+        'A Kubernetes dashboard',
+        'A container runtime',
+        'The command-line tool for interacting with Kubernetes',
+        'A monitoring tool'
+      ],
+      correctAnswer: 2,
+      explanation: 'kubectl is the command-line interface (CLI) tool that allows users to run commands against Kubernetes clusters.',
+      difficulty: 'easy',
+      tags: ['kubectl', 'cli', 'api']
+    }
+  ],
   studyTimeWeeks: 4,
   passingScore: 75,
   validity: 3,

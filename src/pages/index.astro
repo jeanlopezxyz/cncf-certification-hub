@@ -12,12 +12,12 @@ const t = useTranslations(lang);
 <Layout title={t('hero.title')} showSidebar={true}>
   <div class="space-y-8">
     <!-- Hero Section -->
-    <Hero client:load lang={lang} />
+    <Hero client:visible lang={lang} />
 
     <!-- Achievement Programs -->
-    <AchievementPrograms client:load lang={lang} />
+    <AchievementPrograms client:visible lang={lang} />
 
     <!-- Certifications Grid -->
-    <CertificationGrid client:load lang={lang} />
+    <CertificationGrid client:visible lang={lang} />
   </div>
 </Layout>

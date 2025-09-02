@@ -3,6 +3,7 @@
  */
 
 import type React from 'react';
+import type { Question } from './quiz';
 
 // ============================================================================
 // Core Types
@@ -115,6 +116,7 @@ export interface Certification {
   prerequisites?: string;
   domains: ExamDomain[];
   resources: CertificationResources;
+  questions?: Question[];
   icon?: string;
   color: string;
   // Additional properties found in data

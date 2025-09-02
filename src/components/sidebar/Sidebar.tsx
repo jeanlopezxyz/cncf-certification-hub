@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from '../../i18n/utils';
 import { certifications } from '../../data/certifications';
+import { useOptimizedStorage } from '../../utils/storage';
 import { APP_CONFIG, SIDEBAR_WIDTH } from '../../constants';
 import {
   CERTIFICATION_CATEGORIES,
@@ -30,6 +31,7 @@ interface SidebarProps {
  */
 export default function Sidebar({ lang }: SidebarProps) {
   const t = useTranslations(lang);
+  const storage = useOptimizedStorage();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isHomePage, setIsHomePage] = useState(false);
   const [currentPath, setCurrentPath] = useState('');
@@ -47,13 +49,13 @@ export default function Sidebar({ lang }: SidebarProps) {
     setIsHydrated(true);
     
     // Restore collapsed state
-    const savedCollapsed = localStorage.getItem('sidebarCollapsed');
+    const savedCollapsed = storage.getItem('sidebarCollapsed');
     if (savedCollapsed === 'true') {
       setIsDesktopCollapsed(true);
     }
     
     // Restore open sections if they exist
-    const savedSections = localStorage.getItem('sidebarOpenSections');
+    const savedSections = storage.getItem('sidebarOpenSections');
     if (savedSections) {
       try {
         const parsed = JSON.parse(savedSections);
@@ -66,7 +68,7 @@ export default function Sidebar({ lang }: SidebarProps) {
     }
     
     // Restore open categories if they exist
-    const savedCategories = localStorage.getItem('sidebarOpenCategories');
+    const savedCategories = storage.getItem('sidebarOpenCategories');
     if (savedCategories) {
       try {
         const parsed = JSON.parse(savedCategories);
@@ -113,7 +115,7 @@ export default function Sidebar({ lang }: SidebarProps) {
     if (!isHydrated) return;
     
     // Re-restore state from localStorage to ensure consistency
-    const savedSections = localStorage.getItem('sidebarOpenSections');
+    const savedSections = storage.getItem('sidebarOpenSections');
     if (savedSections) {
       try {
         const parsed = JSON.parse(savedSections);
@@ -125,7 +127,7 @@ export default function Sidebar({ lang }: SidebarProps) {
       }
     }
     
-    const savedCategories = localStorage.getItem('sidebarOpenCategories');
+    const savedCategories = storage.getItem('sidebarOpenCategories');
     if (savedCategories) {
       try {
         const parsed = JSON.parse(savedCategories);
@@ -164,7 +166,7 @@ export default function Sidebar({ lang }: SidebarProps) {
       const newValue = isDesktopCollapsed.toString();
 
       if (currentSaved !== newValue) {
-        localStorage.setItem('sidebarCollapsed', newValue);
+        storage.setItem('sidebarCollapsed', newValue);
       }
     }
   }, [isDesktopCollapsed, isHydrated]);
@@ -192,14 +194,14 @@ export default function Sidebar({ lang }: SidebarProps) {
   // Save open sections to localStorage when they change
   useEffect(() => {
     if (isHydrated) {
-      localStorage.setItem('sidebarOpenSections', JSON.stringify(openSections));
+      storage.setItem('sidebarOpenSections', JSON.stringify(openSections));
     }
   }, [openSections, isHydrated]);
 
   // Save open categories to localStorage when they change
   useEffect(() => {
     if (isHydrated) {
-      localStorage.setItem('sidebarOpenCategories', JSON.stringify(openCategories));
+      storage.setItem('sidebarOpenCategories', JSON.stringify(openCategories));
     }
   }, [openCategories, isHydrated]);
 

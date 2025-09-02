@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
+import path from 'path';
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,6 +21,19 @@ export default defineConfig({
     tailwind()
   ],
   vite: {
+    resolve: {
+      alias: {
+        '@': path.resolve('./src'),
+        '@/components': path.resolve('./src/components'),
+        '@/config': path.resolve('./src/config'),
+        '@/types': path.resolve('./src/types'),
+        '@/i18n': path.resolve('./src/i18n'),
+        '@/data': path.resolve('./src/data'),
+        '@/utils': path.resolve('./src/utils'),
+        '@/layouts': path.resolve('./src/layouts'),
+        '@/constants': path.resolve('./src/constants'),
+      },
+    },
     build: {
       sourcemap: false,
       minify: 'esbuild',
@@ -34,6 +48,7 @@ export default defineConfig({
               }
               return 'vendor';
             }
+            return undefined;
           },
           chunkFileNames: '_assets/[name]-[hash].js',
           entryFileNames: '_assets/[name]-[hash].js',

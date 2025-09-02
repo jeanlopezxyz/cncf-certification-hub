@@ -94,11 +94,29 @@ export const DIMENSIONS = {
   },
   card: {
     height: 'h-[420px]',
+    minHeight: {
+      mobile: 'min-h-[160px]',
+      tablet: 'sm:min-h-[180px]',
+      desktop: 'lg:min-h-[200px]',
+      large: 'xl:min-h-[220px]',
+    },
+    padding: {
+      mobile: 'p-2',
+      tablet: 'sm:p-3',
+      desktop: 'lg:p-4',
+    },
   },
   maxWidth: {
     container: 'max-w-7xl',
     content: 'max-w-3xl',
     narrow: 'max-w-2xl',
+    search: 'max-w-md',
+  },
+  breakpoints: {
+    mobile: 480,
+    tablet: 768,
+    desktop: 1024,
+    wide: 1280,
   },
 } as const;
 
@@ -108,6 +126,10 @@ export const ANIMATIONS = {
   normal: 300,
   slow: 500,
   verySlow: 600,
+  cardStagger: 100,
+  fadeInUp: 600,
+  scaleIn: 300,
+  slideIn: 500,
   spring: {
     type: 'spring',
     stiffness: 80,
@@ -135,12 +157,64 @@ export const TYPOGRAPHY = {
     sans: 'Plus Jakarta Sans',
     display: 'Space Grotesk',
   },
+  weights: {
+    light: 'font-light',
+    normal: 'font-normal',
+    medium: 'font-medium',
+    semibold: 'font-semibold',
+    bold: 'font-bold',
+    extrabold: 'font-extrabold',
+    black: 'font-black',
+  },
   sizes: {
+    // Base sizes
+    xs: 'text-xs',
+    sm: 'text-sm',
+    base: 'text-base',
+    lg: 'text-lg',
+    xl: 'text-xl',
+    '2xl': 'text-2xl',
+    '3xl': 'text-3xl',
+    '4xl': 'text-4xl',
+    '5xl': 'text-5xl',
+    '6xl': 'text-6xl',
+    
+    // Semantic responsive sizes
     hero: 'text-4xl md:text-6xl',
     title: 'text-4xl md:text-5xl',
-    subtitle: 'text-xl',
-    body: 'text-sm',
-    small: 'text-xs',
+    subtitle: 'text-xl md:text-2xl',
+    heading: 'text-2xl md:text-3xl',
+    subheading: 'text-lg md:text-xl',
+    body: 'text-base',
+    bodySmall: 'text-sm',
+    caption: 'text-xs',
+    micro: 'text-[10px]',
+    
+    // Component-specific responsive sizes
+    cardTitle: 'text-2xl md:text-3xl',
+    cardSubtitle: 'text-sm md:text-base',
+    badge: 'text-xs md:text-sm',
+    badgeSmall: 'text-[10px] md:text-xs',
+    button: 'text-sm md:text-base',
+    nav: 'text-sm',
+    footerTitle: 'text-lg md:text-xl',
+    footerText: 'text-sm',
+  },
+  lineHeights: {
+    none: 'leading-none',
+    tight: 'leading-tight',
+    snug: 'leading-snug',
+    normal: 'leading-normal',
+    relaxed: 'leading-relaxed',
+    loose: 'leading-loose',
+  },
+  tracking: {
+    tighter: 'tracking-tighter',
+    tight: 'tracking-tight',
+    normal: 'tracking-normal',
+    wide: 'tracking-wide',
+    wider: 'tracking-wider',
+    widest: 'tracking-widest',
   },
 } as const;
 

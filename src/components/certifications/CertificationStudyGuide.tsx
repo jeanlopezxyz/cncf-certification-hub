@@ -1,6 +1,7 @@
 import { useTranslations, translateCertificationValue } from '../../i18n/utils';
 import type { Certification } from '../../types';
 import { useState } from 'react';
+import SimpleQuestionSimulator from '../quiz/SimpleQuestionSimulator';
 
 interface CertificationStudyGuideProps {
   certification: Certification;
@@ -76,6 +77,14 @@ export default function CertificationStudyGuide({
       ],
     },
     {
+      id: 'linux-foundation',
+      title: 'Linux Foundation',
+      type: 'courses' as const,
+      resources: (certification.resources.courses || []).filter(course => 
+        (course.author === 'Linux Foundation' || course.author === 'The Linux Foundation') && !course.isPaid
+      ),
+    },
+    {
       id: 'books',
       title: t('certification.sections.books'),
       type: 'books' as const,
@@ -85,7 +94,9 @@ export default function CertificationStudyGuide({
       id: 'courses',
       title: t('certification.sections.courses'),
       type: 'courses' as const,
-      resources: certification.resources.courses || [],
+      resources: (certification.resources.courses || []).filter(course => 
+        course.author !== 'Linux Foundation' && course.author !== 'The Linux Foundation'
+      ),
     },
     {
       id: 'videos',
@@ -187,7 +198,7 @@ export default function CertificationStudyGuide({
   ];
 
   return (
-    <div className="min-h-screen">
+    <div>
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32 py-6 sm:py-8">
         {/* Header Section */}
         <div className="mb-6 sm:mb-8">
@@ -226,7 +237,7 @@ export default function CertificationStudyGuide({
               { id: 'overview', label: t('certification.overview') },
               { id: 'domains', label: t('certification.domains') },
               { id: 'resources', label: t('certification.studyResources') },
-              { id: 'path', label: t('certification.studyPath') },
+              { id: 'path', label: 'Practice Questions' },
             ].map(tab => (
               <button
                 key={tab.id}
@@ -650,11 +661,15 @@ export default function CertificationStudyGuide({
                 {activeResourceTab === 'essential' && (
                   <>
                     {studySections
-                      .filter(s => ['official', 'books', 'courses'].includes(s.id))
+                      .filter(s => ['linux-foundation', 'books', 'courses'].includes(s.id))
                       .map(section => (
                         <div
                           key={section.id}
-                          className="bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-xl border border-blue-700/50 overflow-hidden"
+                          className={`${
+                            section.id === 'linux-foundation' 
+                              ? 'bg-gradient-to-br from-green-900/40 to-emerald-950/50 border-green-700/50' 
+                              : 'bg-gradient-to-br from-blue-900/40 to-blue-950/50 border-blue-700/50'
+                          } rounded-xl border overflow-hidden`}
                         >
                           <button
                             onClick={() => toggleResourceCategory(section.id)}
@@ -1036,67 +1051,14 @@ export default function CertificationStudyGuide({
             </div>
           )}
 
-          {/* Study Path Tab */}
+          {/* Practice Questions Tab */}
           {activeTab === 'path' && (
-            <div className="space-y-3">
-              {studyPath.map((phase, index) => (
-                <div
-                  key={phase.week}
-                  className="bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-lg border border-blue-700/50 overflow-hidden"
-                >
-                  <button
-                    className="w-full p-4 hover:bg-slate-800/30 transition-colors text-left"
-                    onClick={() => toggleStudyPhase(phase.week)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-sm bg-gradient-to-r ${
-                            index === 0
-                              ? 'from-green-500 to-emerald-600'
-                              : index === 1
-                                ? 'from-blue-500 to-indigo-600'
-                                : 'from-purple-500 to-pink-600'
-                          }`}
-                        >
-                          {index + 1}
-                        </div>
-                        <div>
-                          <h3 className="text-base font-semibold text-white">{phase.title}</h3>
-                          <div className="text-sm text-gray-400">{phase.week}</div>
-                        </div>
-                      </div>
-                      <svg
-                        className={`w-4 h-4 text-gray-400 transition-transform ${expandedStudyPhases.includes(phase.week) ? 'rotate-180' : ''}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </div>
-                  </button>
-
-                  {expandedStudyPhases.includes(phase.week) && (
-                    <div className="border-t border-blue-700/50 px-4 pb-4">
-                      <ul className="space-y-2 mt-3">
-                        {phase.tasks.map((task, taskIndex) => (
-                          <li key={taskIndex} className="flex items-start gap-2">
-                            <span className="text-green-400 mt-0.5 text-sm">•</span>
-                            <span className="text-sm text-gray-300">{task}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <SimpleQuestionSimulator
+              questions={certification.questions || []}
+              examDuration={certification.duration}
+              certificationId={certification.id}
+              lang={lang}
+            />
           )}
         </div>
       </div>

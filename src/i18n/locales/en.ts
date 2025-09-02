@@ -40,6 +40,7 @@ export const en = {
   'achievements.kubestronaut.title': 'Kubestronaut',
   'achievements.kubestronaut.description':
     'A program that requires completing 5 Kubernetes certifications',
+  'achievements.kubestronaut.shortDesc': 'Master all 5 Kubernetes certifications',
   'achievements.kubestronaut.progress': 'Certifications Complete',
   'achievements.kubestronaut.required': 'Required: CKA, CKAD, CKS, KCNA, KCSA',
   'achievements.kubestronaut.requirements': 'Requirements',
@@ -73,6 +74,7 @@ export const en = {
   'achievements.golden.title': 'Golden Kubestronaut',
   'achievements.golden.description':
     'A complete journey through the cloud native ecosystem with 16 certifications',
+  'achievements.golden.shortDesc': 'Complete all 16 CNCF certifications',
   'achievements.golden.progress': 'Certifications Complete',
   'achievements.golden.required': 'CNCF certifications + LFCS',
   'achievements.golden.requirements': 'Requirements',
@@ -357,6 +359,7 @@ export const en = {
 
   // Study Resources Sections
   'certification.sections.official': 'Official Resources',
+  'certification.sections.linuxFoundation': 'Linux Foundation',
   'certification.sections.books': 'Recommended Books',
   'certification.sections.courses': 'Online Courses',
   'certification.sections.videos': 'Video Tutorials',
@@ -401,6 +404,7 @@ export const en = {
   'certification.studyPath.week3.task4': 'Final mock exams',
 
   // Exam Tips
+  'certification.tips': 'tips',
   'certification.tips.timeManagement': 'Time Management',
   'certification.tips.timeManagement.tip1': 'Read questions carefully',
   'certification.tips.timeManagement.tip2': 'Flag difficult questions for review',
@@ -416,6 +420,16 @@ export const en = {
   'certification.tips.duringExam.tip2': 'Use browser bookmarks effectively',
   'certification.tips.duringExam.tip3': 'Verify your answers',
   'certification.tips.duringExam.tip4': 'Manage your workspace',
+
+  // Accessibility
+  'accessibility.skipToMain': 'Skip to main content',
+  'accessibility.mainContent': 'Main content',
+  'accessibility.githubRepository': 'GitHub Repository',
+  'accessibility.kubernetesSlack': 'Kubernetes Slack',
+
+  // Site
+  'site.titleShort': 'CNCF Cert Hub',
+
 
   // Common
   'common.loading': 'Loading...',

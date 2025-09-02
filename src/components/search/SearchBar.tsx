@@ -4,6 +4,7 @@ import { CERTIFICATION_CATEGORIES, STUDY_TIPS_ITEMS, ACHIEVEMENTS_ITEMS } from '
 import { useTranslations } from '../../i18n/utils';
 import type { Certification } from '../../types';
 import { APP_CONFIG } from '../../constants';
+import { sanitizeSearchQuery, searchRateLimiter } from '../../utils/security';
 
 interface SearchBarProps {
   lang: 'en' | 'es' | 'pt';
@@ -256,13 +257,21 @@ export default function SearchBar({ lang }: SearchBarProps) {
   }, [query]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQuery(value);
+    const rawValue = e.target.value;
+    
+    // Apply security validation but maintain original functionality
+    if (!searchRateLimiter.isAllowed('search-input')) {
+      console.warn('Search rate limit exceeded');
+      return;
+    }
+    
+    const sanitizedValue = sanitizeSearchQuery(rawValue);
+    setQuery(sanitizedValue);
     
     // Immediate update for single character to show instant feedback
-    if (value.length === 1 || value.length === 0) {
-      if (value.trim()) {
-        setSuggestions(generateSuggestions(value));
+    if (sanitizedValue.length === 1 || sanitizedValue.length === 0) {
+      if (sanitizedValue.trim()) {
+        setSuggestions(generateSuggestions(sanitizedValue));
       } else {
         setSuggestions([]);
       }
@@ -443,7 +452,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
               }}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white z-10 p-1"
               type="button"
-              aria-label="Clear search"
+              aria-label={t('aria.clearSearch')}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

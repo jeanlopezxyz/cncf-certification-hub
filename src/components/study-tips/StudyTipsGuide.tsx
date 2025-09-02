@@ -183,55 +183,55 @@ export default function StudyTipsGuide({ tipId, lang }: StudyTipsGuideProps) {
       sections: [
         {
           id: 'week1',
-          title: t('studyPath.week1.title'),
+          title: t('certification.studyPath.week1.title'),
           icon: '1',
           color: 'from-blue-500 to-blue-600',
           content: [
-            t('studyPath.week1.item1'),
-            t('studyPath.week1.item2'),
-            t('studyPath.week1.item3'),
-            t('studyPath.week1.item4')
+            t('certification.studyPath.week1.item1'),
+            t('certification.studyPath.week1.item2'),
+            t('certification.studyPath.week1.item3'),
+            t('certification.studyPath.week1.item4')
           ],
           subsections: [
             {
-              title: t('studyPath.week1.focus'),
-              items: [t('studyPath.week1.description')]
+              title: t('certification.studyPath.week1.focus'),
+              items: [t('certification.studyPath.week1.description')]
             }
           ]
         },
         {
           id: 'week3',
-          title: t('studyPath.week3.title'),
+          title: t('certification.studyPath.week3.title'),
           icon: '2',
           color: 'from-green-500 to-green-600',
           content: [
-            t('studyPath.week3.item1'),
-            t('studyPath.week3.item2'),
-            t('studyPath.week3.item3'),
-            t('studyPath.week3.item4')
+            t('certification.studyPath.week3.item1'),
+            t('certification.studyPath.week3.item2'),
+            t('certification.studyPath.week3.item3'),
+            t('certification.studyPath.week3.item4')
           ],
           subsections: [
             {
-              title: t('studyPath.week3.focus'),
-              items: [t('studyPath.week3.description')]
+              title: t('certification.studyPath.week3.focus'),
+              items: [t('certification.studyPath.week3.description')]
             }
           ]
         },
         {
           id: 'week5',
-          title: t('studyPath.week5.title'),
+          title: t('certification.studyPath.week5.title'),
           icon: '3',
           color: 'from-purple-500 to-purple-600',
           content: [
-            t('studyPath.week5.item1'),
-            t('studyPath.week5.item2'),
-            t('studyPath.week5.item3'),
-            t('studyPath.week5.item4')
+            t('certification.studyPath.week5.item1'),
+            t('certification.studyPath.week5.item2'),
+            t('certification.studyPath.week5.item3'),
+            t('certification.studyPath.week5.item4')
           ],
           subsections: [
             {
-              title: t('studyPath.week5.focus'),
-              items: [t('studyPath.week5.description')]
+              title: t('certification.studyPath.week5.focus'),
+              items: [t('certification.studyPath.week5.description')]
             }
           ]
         },

@@ -59,18 +59,30 @@ export const STUDY_TIPS_ITEMS = [
   {
     id: 'exam-preparation',
     translationKey: 'sidebar.tips.exam',
+    descriptionKey: 'sidebar.tips.examDesc',
+    icon: '📝',
+    color: 'blue',
   },
   {
     id: 'study-path',
     translationKey: 'sidebar.tips.path',
+    descriptionKey: 'sidebar.tips.pathDesc',
+    icon: '🗺️',
+    color: 'sky',
   },
   {
     id: 'practice-labs',
     translationKey: 'sidebar.tips.practiceLabs',
+    descriptionKey: 'sidebar.tips.practiceLabsDesc',
+    icon: '🧪',
+    color: 'purple',
   },
   {
     id: 'time-management',
     translationKey: 'sidebar.tips.timeManagement',
+    descriptionKey: 'sidebar.tips.timeManagementDesc',
+    icon: '⏰',
+    color: 'emerald',
   },
 ];
 
@@ -78,12 +90,20 @@ export const ACHIEVEMENTS_ITEMS = [
   {
     id: 'kubestronaut',
     translationKey: 'achievements.kubestronaut.title',
+    descriptionKey: 'achievements.kubestronaut.shortDesc',
     href: 'achievements/kubestronaut', // Sin slash inicial para rutas relativas al base path
+    icon: '🚀',
+    color: 'blue',
+    requiredCerts: 5,
   },
   {
     id: 'golden-kubestronaut',
     translationKey: 'achievements.golden.title',
+    descriptionKey: 'achievements.golden.shortDesc',
     href: 'achievements/golden-kubestronaut', // Sin slash inicial para rutas relativas al base path
+    icon: '🏆',
+    color: 'amber',
+    requiredCerts: 16,
   },
 ];
 

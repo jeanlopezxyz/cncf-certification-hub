@@ -3,7 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 import { certifications } from '../../data/certifications';
 import { APP_CONFIG } from '../../constants';
-import AchievementCertCard from '../../components/achievements/AchievementCertCard';
+import { TYPOGRAPHY } from '../../config/app.config';
+import AchievementCertificationGrid from '../../components/achievements/AchievementCertificationGrid';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -43,11 +44,11 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
             </div>
             <div>
               <h1
-                class="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent"
+                class={`${TYPOGRAPHY.sizes.title} ${TYPOGRAPHY.weights.bold} bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent`}
               >
                 {t('achievements.kubestronaut.title')}
               </h1>
-              <p class="text-base sm:text-lg opacity-90 mt-1 text-blue-50">
+              <p class={`${TYPOGRAPHY.sizes.subheading} opacity-90 mt-1 text-blue-50`}>
                 {t('achievements.kubestronaut.description')}
               </p>
             </div>
@@ -58,11 +59,11 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
         <div
           class="flex flex-col items-center bg-gradient-to-br from-blue-800/50 to-sky-700/50 backdrop-blur-sm rounded-2xl px-6 sm:px-8 py-4 sm:py-6 border border-blue-400/30 shadow-xl"
         >
-          <div class="text-4xl sm:text-5xl font-bold mb-1 sm:mb-2 text-blue-100">5</div>
-          <div class="text-xs sm:text-sm text-blue-100">
+          <div class={`${TYPOGRAPHY.sizes['5xl']} ${TYPOGRAPHY.weights.bold} mb-1 sm:mb-2 text-blue-100`}>5</div>
+          <div class={`${TYPOGRAPHY.sizes.caption} sm:${TYPOGRAPHY.sizes.bodySmall} text-blue-100`}>
             {t('certifications.card.certifications')}
           </div>
-          <div class="text-xs sm:text-sm text-blue-200 font-semibold">
+          <div class={`${TYPOGRAPHY.sizes.caption} sm:${TYPOGRAPHY.sizes.bodySmall} text-blue-200 ${TYPOGRAPHY.weights.semibold}`}>
             {t('certifications.card.required')}
           </div>
         </div>
@@ -72,7 +73,7 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
     <!-- Certification Path -->
     <div class="mb-6 sm:mb-8">
       <h2
-        class="text-xl sm:text-2xl font-bold mb-3 flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 sm:gap-3 text-center sm:text-left"
+        class={`${TYPOGRAPHY.sizes.subheading} ${TYPOGRAPHY.weights.bold} mb-3 flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 sm:gap-3 text-center sm:text-left`}
       >
         <div
           class="w-8 h-8 bg-gradient-to-br from-sky-400 to-blue-600 rounded-lg flex items-center justify-center"
@@ -101,7 +102,7 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
                 clip-rule="evenodd"></path>
             </svg>
           </div>
-          <p class="text-sm text-blue-100 leading-relaxed">
+          <p class={`${TYPOGRAPHY.sizes.bodySmall} text-blue-100 ${TYPOGRAPHY.lineHeights.relaxed}`}>
             {t('achievements.kubestronaut.cksNote')}
           </p>
         </div>
@@ -138,35 +139,19 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
         </div>
       </div>
 
-      <div
-        class="grid [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))] gap-3 sm:gap-4"
-        role="list"
+      <AchievementCertificationGrid
+        certIds={kubestronautCerts}
+        certifications={certifications}
+        basePath={basePath}
+        lang={lang}
         aria-label={t('achievements.kubestronaut.requiredCerts')}
-      >
-        {
-          kubestronautCerts.map((certId, index) => {
-            const cert = certifications.find(c => c.id === certId);
-            const showArrow = index < kubestronautCerts.length - 1;
-
-            return (
-              <AchievementCertCard
-                cert={cert}
-                certId={certId}
-                basePath={basePath}
-                lang={lang}
-                index={index}
-                setSize={kubestronautCerts.length}
-                showArrow={showArrow}
-                client:load
-              />
-            );
-          })
-        }
-      </div>
+        variant="kubestronaut"
+        client:load
+      />
     </div>
 
     <!-- Info Cards Grid -->
-    <div class="grid md:grid-cols-2 xl:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-8">
+    <div class="grid md:grid-cols-2 xl:grid-cols-2 gap-2 sm:gap-3 mb-8">
       <!-- Requirements Card -->
       <div
         class="bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-2xl p-6 border border-blue-700/50 shadow-lg shadow-blue-800/30"

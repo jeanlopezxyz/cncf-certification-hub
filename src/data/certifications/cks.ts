@@ -88,7 +88,7 @@ export const cks: Certification = {
     },
   ],
   resources: {
-    official: 'https://www.cncf.io/certification/cks/',
+    official: 'https://www.cncf.io/training/certification/cks/',
     github: [
       'https://github.com/walidshaari/Certified-Kubernetes-Security-Specialist',
       'https://github.com/kodekloudhub/certified-kubernetes-security-specialist-cks-course',

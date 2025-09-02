@@ -77,10 +77,9 @@ export const pca: Certification = {
     },
   ],
   resources: {
-    official: 'https://www.cncf.io/certification/pca/',
+    official: 'https://www.cncf.io/training/certification/pca/',
     github: [
       'https://github.com/prometheus/prometheus',
-      'https://github.com/avinashdesireddy/PCA-Prometheus-Certified-Associate',
     ],
     practice: ['https://kodekloud.com/courses/prometheus-certified-associate-pca/'],
   },

@@ -1,7 +1,9 @@
 import { useTranslations, translateCertificationValue } from '../../i18n/utils';
 import { buildCertificationUrl } from '../../utils';
-import { ANIMATION_DELAYS } from '../../constants/animations';
 import type { Certification, Language } from '../../types';
+import { CardTitle, CardSubtitle } from '../ui/Typography';
+import { LevelBadge, PrerequisiteBadge } from '../ui/Badge';
+import { useFadeInUpStagger } from '../../hooks/useStaggeredAnimation';
 
 interface CertificationCardProps {
   certification: Certification;
@@ -19,14 +21,13 @@ export default function CertificationCard({
 }: CertificationCardProps) {
   const t = useTranslations(lang);
   const certUrl = buildCertificationUrl(cert.id, lang);
+  const animationProps = useFadeInUpStagger(index);
 
   return (
     <a
       href={certUrl}
-      className="block animate-fade-in-up group"
-      style={{
-        animationDelay: `${index * ANIMATION_DELAYS.cardStagger}ms`,
-      }}
+      className={`block group ${animationProps.className}`}
+      style={animationProps.style}
     >
       <div 
         className="h-full bg-gradient-to-br from-blue-900/40 to-blue-950/50 border border-blue-700/50 rounded-xl p-5 sm:p-6 hover:border-blue-500/60 hover:bg-gradient-to-br hover:from-blue-900/50 hover:to-blue-950/60 transition-all duration-300 relative flex flex-col group overflow-hidden"
@@ -46,9 +47,9 @@ export default function CertificationCard({
         {/* Prerequisite Badge - Top right corner with proper spacing */}
         {cert.prerequisite && (
           <div className="absolute top-3 right-3 z-10 max-w-[140px]">
-            <span className="text-xs bg-gradient-to-r from-orange-900/40 to-amber-900/40 text-orange-200 px-3 py-1.5 rounded-md border border-orange-700/50 font-semibold inline-block">
+            <PrerequisiteBadge size="normal">
               {translateCertificationValue(cert.prerequisite, lang)}
-            </span>
+            </PrerequisiteBadge>
           </div>
         )}
 
@@ -56,12 +57,12 @@ export default function CertificationCard({
         <div className="mb-4">
           <div className="flex items-start justify-between">
             <div className="flex-1" style={{ paddingRight: cert.prerequisite ? '150px' : '20px' }}>
-              <span className="text-3xl sm:text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent block leading-tight">
+              <CardTitle className="bg-gradient-to-r from-blue-400 to-sky-400 bg-clip-text text-transparent block">
                 {cert.acronym}
-              </span>
-              <h3 className="text-sm sm:text-sm lg:text-base text-gray-300 mt-2 line-clamp-2 leading-relaxed min-h-[2.5rem]">
+              </CardTitle>
+              <CardSubtitle className="mt-2 line-clamp-2 min-h-[2.5rem]">
                 {cert.name}
-              </h3>
+              </CardSubtitle>
             </div>
           </div>
         </div>
@@ -70,17 +71,9 @@ export default function CertificationCard({
         <div className="mb-4">
           <div className="flex flex-wrap gap-2">
             {/* Level */}
-            <span
-              className={`text-xs px-3 py-1.5 rounded-md font-semibold whitespace-nowrap ${
-                cert.level === 'entry'
-                  ? 'bg-green-900/40 text-green-200 border border-green-700/50'
-                  : cert.level === 'intermediate'
-                    ? 'bg-yellow-900/40 text-yellow-200 border border-yellow-700/50'
-                    : 'bg-red-900/40 text-red-200 border border-red-700/50'
-              }`}
-            >
+            <LevelBadge level={cert.level} size="normal" className="px-3 py-1.5 whitespace-nowrap">
               {t(`certifications.level.${cert.level}`)}
-            </span>
+            </LevelBadge>
 
             {/* Exam Type - Hide on very small screens if needed */}
             <span

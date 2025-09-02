@@ -40,11 +40,13 @@ export const pt = {
   'achievements.kubestronaut.title': 'Kubestronaut',
   'achievements.kubestronaut.description':
     'Um programa que requer completar 5 certificações de Kubernetes',
+  'achievements.kubestronaut.shortDesc': 'Domine as 5 certificações Kubernetes',
   'achievements.kubestronaut.progress': 'Certificações Completas',
   'achievements.kubestronaut.required': 'Necessárias: CKA, CKAD, CKS, KCNA, KCSA',
   'achievements.golden.title': 'Golden Kubestronaut',
   'achievements.golden.description':
     'Uma jornada completa pelo ecossistema cloud native com 16 certificações',
+  'achievements.golden.shortDesc': 'Complete todas as 16 certificações CNCF',
   'achievements.golden.progress': 'Certificações Completas',
   'achievements.golden.required': 'Certificações CNCF + LFCS',
   'achievements.kubestronaut.requirements': 'Requisitos',
@@ -350,6 +352,7 @@ export const pt = {
 
   // Study Resources Sections
   'certification.sections.official': 'Recursos Oficiais',
+  'certification.sections.linuxFoundation': 'Linux Foundation',
   'certification.sections.books': 'Livros Recomendados',
   'certification.sections.courses': 'Cursos Online',
   'certification.sections.videos': 'Tutoriais em Vídeo',
@@ -394,6 +397,7 @@ export const pt = {
   'certification.studyPath.week3.task4': 'Exames simulados finais',
 
   // Exam Tips
+  'certification.tips': 'dicas',
   'certification.tips.timeManagement': 'Gestão de Tempo',
   'certification.tips.timeManagement.tip1': 'Leia as perguntas cuidadosamente',
   'certification.tips.timeManagement.tip2': 'Marque perguntas difíceis para revisar',
@@ -542,6 +546,16 @@ export const pt = {
   'studyPath.week5.item2': 'Revise tópicos fracos identificados',
   'studyPath.week5.item3': 'Pratique com a documentação oficial',
   'studyPath.week5.item4': 'Prepare sua estratégia para o dia do exame',
+
+  // Accessibility
+  'accessibility.skipToMain': 'Pular para o conteúdo principal',
+  'accessibility.mainContent': 'Conteúdo principal',
+  'accessibility.githubRepository': 'Repositório GitHub',
+  'accessibility.kubernetesSlack': 'Slack do Kubernetes',
+
+  // Site
+  'site.titleShort': 'Centro Cert CNCF',
+
 
   // Common
   'common.loading': 'Carregando...',

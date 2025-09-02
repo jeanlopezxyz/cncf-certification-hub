@@ -78,7 +78,7 @@ export const cka: Certification = {
     },
   ],
   resources: {
-    official: 'https://www.cncf.io/certification/cka/',
+    official: 'https://www.cncf.io/training/certification/cka/',
     github: [
       'https://github.com/walidshaari/Kubernetes-Certified-Administrator',
       'https://github.com/kodekloudhub/certified-kubernetes-administrator-course',
@@ -122,6 +122,26 @@ export const cka: Certification = {
       },
     ],
     courses: [
+      {
+        title: 'Introduction to Kubernetes (LFS158)',
+        url: 'https://www.edx.org/learn/kubernetes/the-linux-foundation-introduction-to-kubernetes',
+        author: 'The Linux Foundation',
+        description: 'Foundational course covering Kubernetes basics and architecture',
+        isPaid: false,
+        duration: '16 hours',
+        difficulty: 'beginner',
+        rating: 4.8,
+      },
+      {
+        title: 'Introduction to Cloud Infrastructure Technologies (LFS151)',
+        url: 'https://training.linuxfoundation.org/training/introduction-to-cloud-infrastructure-technologies/',
+        author: 'The Linux Foundation',
+        description: 'Comprehensive introduction to cloud technologies and containers',
+        isPaid: false,
+        duration: '12 hours',
+        difficulty: 'beginner',
+        rating: 4.7,
+      },
       {
         title: 'CKA Certification Course',
         url: 'https://www.udemy.com/course/certified-kubernetes-administrator-with-practice-tests/',

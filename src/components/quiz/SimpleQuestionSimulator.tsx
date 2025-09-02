@@ -58,7 +58,7 @@ export default function SimpleQuestionSimulator({
         console.warn('Failed to load quiz state:', error);
       }
     }
-  }, []);
+  }, [certificationId, storage]);
 
   // Save state whenever it changes
   useEffect(() => {
@@ -132,16 +132,15 @@ export default function SimpleQuestionSimulator({
   if (!questions || questions.length === 0) {
     return (
       <div className="bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-2xl p-6 sm:p-8 border border-blue-700/50">
-          <div className="text-center py-12">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Practice Questions
-            </h2>
-            <div className="text-gray-300 mb-4">
-              Practice questions for this certification are coming soon!
-            </div>
-            <div className="text-sm text-gray-400">
-              Check back later for interactive practice questions.
-            </div>
+        <div className="text-center py-12">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Practice Questions
+          </h2>
+          <div className="text-gray-300 mb-4">
+            Practice questions for this certification are coming soon!
+          </div>
+          <div className="text-sm text-gray-400">
+            Check back later for interactive practice questions.
           </div>
         </div>
       </div>
@@ -152,62 +151,61 @@ export default function SimpleQuestionSimulator({
   if (!state.isActive && !state.showResults) {
     return (
       <div className="bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-2xl p-6 sm:p-8 border border-blue-700/50">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Practice Exam Simulator
-            </h2>
-            <p className="text-gray-300 text-lg">
-              Test your knowledge with {questions.length} practice questions
-            </p>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Practice Exam Simulator
+          </h2>
+          <p className="text-gray-300 text-lg">
+            Test your knowledge with {questions.length} practice questions
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="text-center p-6 bg-slate-800/50 rounded-xl">
+            <div className="text-2xl font-bold text-blue-400 mb-2">{questions.length}</div>
+            <div className="text-gray-300 text-sm">Questions Available</div>
+          </div>
+          <div className="text-center p-6 bg-slate-800/50 rounded-xl">
+            <div className="text-2xl font-bold text-blue-400 mb-2">{examDuration} min</div>
+            <div className="text-gray-300 text-sm">Suggested Duration</div>
+          </div>
+          <div className="text-center p-6 bg-slate-800/50 rounded-xl">
+            <div className="text-2xl font-bold text-blue-400 mb-2">75%</div>
+            <div className="text-gray-300 text-sm">Passing Score</div>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="p-6 bg-red-900/20 border border-red-700/40 rounded-xl flex flex-col">
+            <h4 className="text-lg font-semibold text-red-300 mb-3">Exam Mode</h4>
+            <ul className="text-sm text-gray-300 space-y-2 mb-4 flex-1">
+              <li>• Sequential questions (no going back)</li>
+              <li>• Must answer to proceed</li>
+              <li>• Simulates real exam conditions</li>
+              <li>• Results shown at the end</li>
+            </ul>
+            <button
+              onClick={() => startQuiz('exam')}
+              className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors mt-auto"
+            >
+              Start Exam Mode
+            </button>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <div className="text-center p-6 bg-slate-800/50 rounded-xl">
-              <div className="text-2xl font-bold text-blue-400 mb-2">{questions.length}</div>
-              <div className="text-gray-300 text-sm">Questions Available</div>
-            </div>
-            <div className="text-center p-6 bg-slate-800/50 rounded-xl">
-              <div className="text-2xl font-bold text-blue-400 mb-2">{examDuration} min</div>
-              <div className="text-gray-300 text-sm">Suggested Duration</div>
-            </div>
-            <div className="text-center p-6 bg-slate-800/50 rounded-xl">
-              <div className="text-2xl font-bold text-blue-400 mb-2">75%</div>
-              <div className="text-gray-300 text-sm">Passing Score</div>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-6 bg-red-900/20 border border-red-700/40 rounded-xl flex flex-col">
-              <h4 className="text-lg font-semibold text-red-300 mb-3">Exam Mode</h4>
-              <ul className="text-sm text-gray-300 space-y-2 mb-4 flex-1">
-                <li>• Sequential questions (no going back)</li>
-                <li>• Must answer to proceed</li>
-                <li>• Simulates real exam conditions</li>
-                <li>• Results shown at the end</li>
-              </ul>
-              <button
-                onClick={() => startQuiz('exam')}
-                className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors mt-auto"
-              >
-                Start Exam Mode
-              </button>
-            </div>
-
-            <div className="p-6 bg-green-900/20 border border-green-700/40 rounded-xl flex flex-col">
-              <h4 className="text-lg font-semibold text-green-300 mb-3">Study Mode</h4>
-              <ul className="text-sm text-gray-300 space-y-2 mb-4 flex-1">
-                <li>• Navigate freely between questions</li>
-                <li>• Immediate explanations</li>
-                <li>• Perfect for learning</li>
-                <li>• Review answers as you go</li>
-              </ul>
-              <button
-                onClick={() => startQuiz('study')}
-                className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors mt-auto"
-              >
-                Start Study Mode
-              </button>
-            </div>
+          <div className="p-6 bg-green-900/20 border border-green-700/40 rounded-xl flex flex-col">
+            <h4 className="text-lg font-semibold text-green-300 mb-3">Study Mode</h4>
+            <ul className="text-sm text-gray-300 space-y-2 mb-4 flex-1">
+              <li>• Navigate freely between questions</li>
+              <li>• Immediate explanations</li>
+              <li>• Perfect for learning</li>
+              <li>• Review answers as you go</li>
+            </ul>
+            <button
+              onClick={() => startQuiz('study')}
+              className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors mt-auto"
+            >
+              Start Study Mode
+            </button>
           </div>
         </div>
       </div>
@@ -222,49 +220,48 @@ export default function SimpleQuestionSimulator({
 
     return (
       <div className={`p-6 sm:p-8 rounded-2xl border-2 ${
-          passed
-            ? 'bg-gradient-to-br from-green-900/40 to-emerald-950/50 border-green-700/50'
-            : 'bg-gradient-to-br from-red-900/40 to-red-950/50 border-red-700/50'
-        }`}>
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-white mb-4">Quiz Complete!</h2>
-            <div className="text-5xl font-bold mb-4 text-blue-400">{score}%</div>
-            <div className={`text-xl font-semibold ${passed ? 'text-green-300' : 'text-red-300'}`}>
-              {passed ? 'PASSED' : 'FAILED'} (Threshold: 75%)
-            </div>
+        passed
+          ? 'bg-gradient-to-br from-green-900/40 to-emerald-950/50 border-green-700/50'
+          : 'bg-gradient-to-br from-red-900/40 to-red-950/50 border-red-700/50'
+      }`}>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-white mb-4">Quiz Complete!</h2>
+          <div className="text-5xl font-bold mb-4 text-blue-400">{score}%</div>
+          <div className={`text-xl font-semibold ${passed ? 'text-green-300' : 'text-red-300'}`}>
+            {passed ? 'PASSED' : 'FAILED'} (Threshold: 75%)
           </div>
+        </div>
 
-          <div className="grid md:grid-cols-3 gap-4 mb-8">
-            <div className="text-center p-4 bg-slate-800/50 rounded-lg">
-              <div className="text-2xl font-bold text-white">{correct}</div>
-              <div className="text-sm text-gray-300">Correct</div>
-            </div>
-            <div className="text-center p-4 bg-slate-800/50 rounded-lg">
-              <div className="text-2xl font-bold text-white">{questions.length - correct}</div>
-              <div className="text-sm text-gray-300">Incorrect</div>
-            </div>
-            <div className="text-center p-4 bg-slate-800/50 rounded-lg">
-              <div className="text-2xl font-bold text-white">
-                {state.startTime ? Math.floor((Date.now() - state.startTime) / 60000) : 0} min
-              </div>
-              <div className="text-sm text-gray-300">Time Used</div>
-            </div>
+        <div className="grid md:grid-cols-3 gap-4 mb-8">
+          <div className="text-center p-4 bg-slate-800/50 rounded-lg">
+            <div className="text-2xl font-bold text-white">{correct}</div>
+            <div className="text-sm text-gray-300">Correct</div>
           </div>
+          <div className="text-center p-4 bg-slate-800/50 rounded-lg">
+            <div className="text-2xl font-bold text-white">{questions.length - correct}</div>
+            <div className="text-sm text-gray-300">Incorrect</div>
+          </div>
+          <div className="text-center p-4 bg-slate-800/50 rounded-lg">
+            <div className="text-2xl font-bold text-white">
+              {state.startTime ? Math.floor((Date.now() - state.startTime) / 60000) : 0} min
+            </div>
+            <div className="text-sm text-gray-300">Time Used</div>
+          </div>
+        </div>
 
-          <div className="flex justify-center gap-4">
-            <button
-              onClick={resetQuiz}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-            >
-              Take Another Quiz
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors"
-            >
-              Print Results
-            </button>
-          </div>
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={resetQuiz}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+          >
+            Take Another Quiz
+          </button>
+          <button
+            onClick={() => window.print()}
+            className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors"
+          >
+            Print Results
+          </button>
         </div>
       </div>
     );

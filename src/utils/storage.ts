@@ -187,15 +187,8 @@ export const optimizedStorage = new OptimizedStorage();
 
 // React hook for optimized storage
 export function useOptimizedStorage() {
-  return {
-    getItem: (key: string) => optimizedStorage.getItem(key),
-    setItem: (key: string, value: string) => optimizedStorage.setBatched(key, value),
-    setItemImmediate: (key: string, value: string) => optimizedStorage.setItem(key, value),
-    removeItem: (key: string) => optimizedStorage.removeItem(key),
-    getMultiple: (keys: string[]) => optimizedStorage.getMultiple(keys),
-    setMultiple: (updates: Record<string, string>) => optimizedStorage.setMultiple(updates),
-    flush: () => optimizedStorage.flush(),
-  };
+  // Return the singleton instance directly to avoid creating new objects on every render
+  return optimizedStorage;
 }
 
 // Cleanup on page unload

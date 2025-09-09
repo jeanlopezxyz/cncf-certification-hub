@@ -79,7 +79,7 @@ export default function Sidebar({ lang }: SidebarProps) {
         // If parsing fails, keep default empty state
       }
     }
-  }, []);
+  }, [storage]);
 
   // Initialize state from localStorage or use defaults (empty arrays)
   const [openSections, setOpenSections] = useState<string[]>([]);
@@ -138,7 +138,7 @@ export default function Sidebar({ lang }: SidebarProps) {
         // Keep current state if parsing fails
       }
     }
-  }, [isHydrated, lang]); // Re-run when hydrated state or language changes
+  }, [isHydrated, lang, storage]); // Re-run when hydrated state, language, or storage changes
 
   // Close mobile sidebar on route change
   useEffect(() => {
@@ -166,10 +166,10 @@ export default function Sidebar({ lang }: SidebarProps) {
       const newValue = isDesktopCollapsed.toString();
 
       if (currentSaved !== newValue) {
-        storage.setItem('sidebarCollapsed', newValue);
+        storage.setBatched('sidebarCollapsed', newValue);
       }
     }
-  }, [isDesktopCollapsed, isHydrated]);
+  }, [isDesktopCollapsed, isHydrated, storage]);
 
   // Listen for logo click event to expand sidebar and collapse sections
   useEffect(() => {
@@ -194,16 +194,16 @@ export default function Sidebar({ lang }: SidebarProps) {
   // Save open sections to localStorage when they change
   useEffect(() => {
     if (isHydrated) {
-      storage.setItem('sidebarOpenSections', JSON.stringify(openSections));
+      storage.setBatched('sidebarOpenSections', JSON.stringify(openSections));
     }
-  }, [openSections, isHydrated]);
+  }, [openSections, isHydrated, storage]);
 
   // Save open categories to localStorage when they change
   useEffect(() => {
     if (isHydrated) {
-      storage.setItem('sidebarOpenCategories', JSON.stringify(openCategories));
+      storage.setBatched('sidebarOpenCategories', JSON.stringify(openCategories));
     }
-  }, [openCategories, isHydrated]);
+  }, [openCategories, isHydrated, storage]);
 
   // Handle scroll to auto-hide mobile button
   useEffect(() => {
@@ -327,38 +327,19 @@ export default function Sidebar({ lang }: SidebarProps) {
         />
       )}
 
-      {/* Desktop Collapse Toggle */}
-      <button
-        onClick={() => {
-          setIsDesktopCollapsed(!isDesktopCollapsed);
-          // Immediately update wrapper margins when button is clicked
-          const wrapper = document.getElementById('main-wrapper');
-          if (wrapper) {
-            const willCollapse = !isDesktopCollapsed;
-            wrapper.classList.toggle('lg:ml-0', willCollapse);
-            wrapper.classList.toggle('lg:ml-80', !willCollapse);
-          }
-        }}
-        className="hidden lg:flex fixed left-0 top-32 z-40 bg-slate-900 text-gray-400 hover:text-white p-2 rounded-r-lg shadow-lg transition-all duration-300 ease-in-out"
-        style={{ left: isDesktopCollapsed ? '0' : `${SIDEBAR_WIDTH.expanded}px` }}
-        aria-label={t('aria.toggleSidebarCollapse')}
-      >
-        {isDesktopCollapsed ? <ExpandIcon /> : <CollapseIcon />}
-      </button>
-
       {/* Sidebar */}
       <aside
         suppressHydrationWarning
         className={`
-          fixed left-0 top-20 h-[calc(100vh-5rem)] z-30
+          h-[calc(100vh-5rem)] z-30 relative
           bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950
           overflow-y-auto overflow-x-hidden shadow-2xl shadow-black/50
-          w-80
-          ${isMobileOpen ? 'translate-x-0 z-40' : '-translate-x-full'}
-          ${isDesktopCollapsed ? 'lg:-translate-x-full' : 'lg:translate-x-0'}
-          transition-transform duration-300 ease-in-out
+          ${isDesktopCollapsed ? 'lg:w-0 lg:overflow-hidden' : 'w-80'}
+          ${isMobileOpen ? 'fixed left-0 top-20 w-80 translate-x-0 z-40' : 'fixed left-0 top-20 -translate-x-full lg:static lg:translate-x-0'}
+          transition-all duration-300 ease-in-out
         `}
       >
+
         <div className="px-5 py-6">
           {/* Achievements Section */}
           <SidebarSection

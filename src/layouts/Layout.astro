@@ -157,16 +157,30 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
         </div>
       </div>
     </nav>
-    {
-      showSidebar && (
-        <Sidebar client:visible lang={lang} transition:persist transition:name="sidebar" />
-      )
-    }
-    <div
-      class="pt-20 flex flex-col min-h-screen relative"
-      id="main-wrapper"
-      data-sidebar={showSidebar}
-    >
+    <div class="pt-20 flex min-h-screen">
+      {
+        showSidebar && (
+          <Sidebar client:visible lang={lang} transition:persist transition:name="sidebar" />
+        )
+      }
+      
+      <!-- Ghostly-style Sidebar Toggle -->
+      {showSidebar && (
+        <button
+          id="sidebar-toggle"
+          class="hidden lg:flex fixed top-32 z-40 w-7 h-7 bg-white/10 text-slate-400 hover:text-white hover:bg-white/20 transition-all duration-200 items-center justify-center rounded-md backdrop-blur-sm border border-white/10"
+        >
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+      )}
+      
+      <div
+        class="flex-1 flex flex-col min-h-screen relative"
+        id="main-wrapper"
+        data-sidebar={showSidebar}
+      >
       <main class="flex-grow" id="main-content" role="main" aria-label={t('accessibility.mainContent')}>
         <slot />
       </main>
@@ -327,145 +341,70 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
           </div>
         </div>
       </footer>
+      </div>
     </div>
-    <style>
-      /* Custom transition for margin to match sidebar transform */
-      .transition-margin {
-        transition-property: margin-left;
-        transition-timing-function: ease-in-out;
-        transition-duration: 300ms;
-      }
-    </style>
     <script>
-      // Apply initial sidebar state immediately (optimized for performance)
-      (function () {
-        const w = document.getElementById('main-wrapper');
-        if (w?.dataset.sidebar === 'true') {
-          if (window.innerWidth >= 1024) {
-            // Single localStorage read
-            const collapsed = (localStorage.getItem('sidebarCollapsed') || '') === 'true';
-            // Apply state immediately
-            w.classList.add(collapsed ? 'lg:ml-0' : 'lg:ml-80');
-
-            // Add transition after paint with same timing as sidebar
-            setTimeout(() => {
-              w.classList.add('transition-margin', 'duration-300', 'ease-in-out');
-            }, 50);
-          }
-        }
-      })();
-
-      // Handle sidebar collapse state for main wrapper
-      if (typeof window !== 'undefined') {
-        const updateMargins = () => {
-          const wrapper = document.getElementById('main-wrapper');
-          if (wrapper?.dataset.sidebar !== 'true') return;
-
-          // Single read from localStorage
-          const isCollapsed = (localStorage.getItem('sidebarCollapsed') || '') === 'true';
-
-          if (window.innerWidth >= 1024) {
-            // Batch DOM operations
-            wrapper.classList.toggle('lg:ml-0', isCollapsed);
-            wrapper.classList.toggle('lg:ml-80', !isCollapsed);
-          } else {
-            // Mobile: remove both classes
-            wrapper.classList.remove('lg:ml-80', 'lg:ml-0');
-          }
-        };
-
-        // Initialize layout based on saved sidebar state
-        const initializeLayout = () => {
-          const wrapper = document.getElementById('main-wrapper');
-          const hasSidebar = wrapper?.dataset.sidebar === 'true';
-
-          if (hasSidebar && typeof window !== 'undefined') {
-            // Check saved sidebar state
-            const sidebarCollapsed = (localStorage.getItem('sidebarCollapsed') || '') === 'true';
-
-            // Apply initial state immediately
-            if (window.innerWidth >= 1024) {
-              wrapper.classList.remove('lg:ml-80', 'lg:ml-0');
-              if (sidebarCollapsed) {
-                wrapper.classList.add('lg:ml-0');
-              } else {
-                wrapper.classList.add('lg:ml-80');
-              }
+      // Ghostly-style sidebar toggle functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('sidebar-toggle');
+        const sidebar = document.querySelector('aside');
+        
+        if (toggleBtn && sidebar) {
+          let isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+          
+          const updateSidebarState = () => {
+            if (isCollapsed) {
+              // Collapsed state - button on the left, sidebar hidden
+              sidebar.style.width = '0';
+              sidebar.style.overflow = 'hidden';
+              toggleBtn.style.left = '12px';
+              toggleBtn.querySelector('svg').style.transform = 'rotate(0deg)';
+            } else {
+              // Expanded state - button attached to sidebar right edge
+              sidebar.style.width = '20rem';
+              sidebar.style.overflow = 'auto';
+              toggleBtn.style.left = 'calc(20rem - 14px)'; // 320px - 14px = button overlaps sidebar edge
+              toggleBtn.querySelector('svg').style.transform = 'rotate(180deg)';
             }
-          }
-
-          // Then run updateMargins to sync with actual sidebar state
-          setTimeout(updateMargins, 50);
-        };
-
-        // Run initialization immediately
-        initializeLayout();
-
-        // Wait for DOM to be ready before setting up observers
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', () => {
-            const sidebar = document.querySelector('aside');
-            if (sidebar) {
-              const observer = new MutationObserver(updateMargins);
-              observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
-            }
-            // Update margins after DOM is ready
-            updateMargins();
+          };
+          
+          updateSidebarState();
+          
+          toggleBtn.addEventListener('click', () => {
+            isCollapsed = !isCollapsed;
+            localStorage.setItem('sidebarCollapsed', isCollapsed.toString());
+            updateSidebarState();
+            
+            // Dispatch event for React components to sync state
+            const event = new CustomEvent('sidebarToggle', { detail: { collapsed: isCollapsed } });
+            document.dispatchEvent(event);
           });
-        } else {
-          // DOM is already ready
-          const sidebar = document.querySelector('aside');
-          if (sidebar) {
-            const observer = new MutationObserver(updateMargins);
-            observer.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
-          }
-          updateMargins();
         }
+      });
 
-        // Also monitor collapse button clicks
-        document.addEventListener('click', e => {
-          const button = e.target.closest('button[aria-label="Toggle sidebar collapse"]');
-          if (button) {
-            // Synchronize with sidebar transition (300ms)
-            requestAnimationFrame(() => {
-              updateMargins();
+      // Handle logo click to expand sidebar and collapse all sections
+      document.addEventListener('astro:page-load', () => {
+        const logoLink = document.getElementById('logo-link');
+        const wrapper = document.getElementById('main-wrapper');
+        const hasSidebar = wrapper?.dataset.sidebar === 'true';
+
+        if (logoLink && hasSidebar) {
+          logoLink.addEventListener('click', e => {
+            e.preventDefault();
+
+            // Dispatch custom event to expand sidebar and collapse sections
+            const event = new CustomEvent('expandSidebar', {
+              detail: { collapseAllSections: true },
             });
-          }
-        });
+            document.dispatchEvent(event);
 
-        // Run on Astro page navigation
-        document.addEventListener('astro:after-swap', () => {
-          initializeLayout();
-        });
-
-        // Handle resize events
-        window.addEventListener('resize', updateMargins);
-
-        // Handle logo click to expand sidebar and collapse all sections
-        // Use Astro page load event to ensure React components are mounted
-        document.addEventListener('astro:page-load', () => {
-          const logoLink = document.getElementById('logo-link');
-          const wrapper = document.getElementById('main-wrapper');
-          const hasSidebar = wrapper?.dataset.sidebar === 'true';
-
-          if (logoLink && hasSidebar) {
-            logoLink.addEventListener('click', e => {
-              e.preventDefault();
-
-              // Dispatch custom event to expand sidebar and collapse sections
-              const event = new CustomEvent('expandSidebar', {
-                detail: { collapseAllSections: true },
-              });
-              document.dispatchEvent(event);
-
-              // Navigate to home after a short delay
-              setTimeout(() => {
-                window.location.href = logoLink.href;
-              }, 200);
-            });
-          }
-        });
-      }
+            // Navigate to home after a short delay
+            setTimeout(() => {
+              window.location.href = logoLink.href;
+            }, 200);
+          });
+        }
+      });
     </script>
   </body>
 </html>

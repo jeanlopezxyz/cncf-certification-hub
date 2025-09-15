@@ -50,9 +50,9 @@
     "analyze:vitals": "node -e \"const monitor = require('./dist/_assets/webVitals.js').webVitalsMonitor; console.log('Web Vitals:', monitor?.getAverages?.() || 'No data');\""
   },
   "dependencies": {
-    "@astrojs/react": "^4.3.0",
+    "@astrojs/react": "^4.3.1",
     "@astrojs/tailwind": "^6.0.2",
-    "astro": "^5.12.8",
+    "astro": "^5.13.7",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
     "react": "^19.1.1",

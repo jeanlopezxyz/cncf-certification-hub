@@ -1,30 +1,33 @@
-# build output
+# Build output
 dist/
-# generated types
 .astro/
 
-# dependencies
+# Dependencies
 node_modules/
 
-# logs
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.pnpm-debug.log*
 
-# environment variables
+# Environment variables
 .env
-.env.production
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
-# macOS-specific files
+# OS-specific files
 .DS_Store
-
-# Windows-specific files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 Thumbs.db
 ehthumbs.db
+desktop.ini
 
 # IDE/Editor folders
 .idea/
@@ -33,22 +36,110 @@ ehthumbs.db
 *.sublime-workspace
 *.swp
 *.swo
+*.swn
+*.bak
 *~
+.project
+.classpath
+.settings/
 
-# Claude.ai specific
+# AI Tools
 .claude/
+.cursor/
+.github/copilot-instructions.md
 
 # Testing
 coverage/
 .nyc_output/
+*.lcov
+.coverage
+test-results/
+playwright-report/
+playwright/.cache/
 
 # Temporary files
 *.tmp
 *.temp
 .cache/
+.parcel-cache/
+.turbo/
 
-# Package manager locks (optional - uncomment if you don't want to track)
-# package-lock.json
-# yarn.lock
-# pnpm-lock.yaml
+# Build tools
+.eslintcache
+.stylelintcache
+*.pid
+*.seed
+*.pid.lock
+
+# Security
 .secrets
+*.pem
+*.key
+*.crt
+*.p12
+
+# Debugging
+.vscode/launch.json
+.vscode/tasks.json
+debug.log
+
+# Documentation build
+docs/_build/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
+# Miscellaneous
+*.backup
+*.orig
+.history/
+.svn/
+.hg/
+
+# Project specific - unnecessary files
+audit-resources.js
+github-actions-diagram.md
+setup-git-config.sh
+setupTests.js
+vitest.config.mjs
+AGENTS.md
+CLAUDE.md
+CONTRIBUTING.md
+LICENSE
+README.md
+terraform/
+lighthouserc.json
+scripts/debug-hydration.js
+scripts/generate-icons.cjs
+scripts/setup-branch-protection.sh
+scripts/test-ci-local.sh
+scripts/test-lighthouse-local.sh
+scripts/analyze-bundle.js
+tests/
+vitest.config.ts
+.gitconfig-personal
+.gitconfig-work
+.actrc
+.eslintrc.cjs
+.prettierrc
+.secrets.example
+
+# Lighthouse
+.lighthouseci/
+lighthouse-report/
+lighthouse-*.html
+lighthouse-*.json
+
+# Bundle analysis
+stats.html
+bundle-stats.json
+analyze-bundle.js
+bundle-analyzer/
+webpack-stats.json
+
+# Test artifacts
+test-results/
+playwright-report/
+playwright/.cache/
+cypress/
+cypress.json
+.nyc_output/

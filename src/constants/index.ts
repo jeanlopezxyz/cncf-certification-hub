@@ -17,5 +17,5 @@ export { ANIMATIONS as ANIMATION_DURATION } from '../config/app.config';
 // Re-export dimensions for backward compatibility
 export const SIDEBAR_WIDTH = {
   collapsed: 0,
-  expanded: 320, // 20rem = 320px
+  expanded: 256, // 16rem = 256px (w-64)
 } as const;

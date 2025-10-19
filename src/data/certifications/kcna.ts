@@ -23,45 +23,119 @@ export const kcna: Certification = {
       name: 'Kubernetes Fundamentals',
       weight: 46,
       topics: [
-        'Kubernetes Resources',
-        'Kubernetes Architecture',
-        'Kubernetes API',
-        'Containers',
-        'Scheduling',
+        {
+          name: 'Kubernetes Resources',
+          url: 'https://kubernetes.io/docs/concepts/overview/working-with-objects/kubernetes-objects/',
+        },
+        {
+          name: 'Kubernetes Architecture',
+          url: 'https://kubernetes.io/docs/concepts/architecture/',
+        },
+        {
+          name: 'Kubernetes API',
+          url: 'https://kubernetes.io/docs/concepts/overview/kubernetes-api/',
+        },
+        {
+          name: 'Containers',
+          url: 'https://kubernetes.io/docs/concepts/containers/',
+        },
+        {
+          name: 'Scheduling',
+          url: 'https://kubernetes.io/docs/concepts/scheduling-eviction/',
+        },
       ],
     },
     {
       name: 'Container Orchestration',
       weight: 22,
       topics: [
-        'Container Orchestration Fundamentals',
-        'Runtime',
-        'Security',
-        'Networking',
-        'Service Mesh',
-        'Storage',
+        {
+          name: 'Container Orchestration Fundamentals',
+          url: 'https://kubernetes.io/docs/concepts/workloads/',
+        },
+        {
+          name: 'Runtime',
+          url: 'https://kubernetes.io/docs/setup/production-environment/container-runtimes/',
+        },
+        {
+          name: 'Security',
+          url: 'https://kubernetes.io/docs/concepts/security/',
+        },
+        {
+          name: 'Networking',
+          url: 'https://kubernetes.io/docs/concepts/services-networking/',
+        },
+        {
+          name: 'Service Mesh',
+          url: 'https://kubernetes.io/docs/concepts/services-networking/service/',
+        },
+        {
+          name: 'Storage',
+          url: 'https://kubernetes.io/docs/concepts/storage/',
+        },
       ],
     },
     {
       name: 'Cloud Native Architecture',
       weight: 16,
       topics: [
-        'Autoscaling',
-        'Serverless',
-        'Community and Governance',
-        'Roles and Personas',
-        'Open Standards',
+        {
+          name: 'Autoscaling',
+          url: 'https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/',
+        },
+        {
+          name: 'Serverless',
+          url: 'https://www.cncf.io/whitepapers/serverless-overview/',
+        },
+        {
+          name: 'Community and Governance',
+          url: 'https://kubernetes.io/community/',
+        },
+        {
+          name: 'Roles and Personas',
+          url: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/',
+        },
+        {
+          name: 'Open Standards',
+          url: 'https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/',
+        },
       ],
     },
     {
       name: 'Cloud Native Observability',
       weight: 8,
-      topics: ['Telemetry & Observability', 'Prometheus', 'Cost Management'],
+      topics: [
+        {
+          name: 'Telemetry & Observability',
+          url: 'https://kubernetes.io/docs/concepts/cluster-administration/system-logs/',
+        },
+        {
+          name: 'Prometheus',
+          url: 'https://prometheus.io/docs/introduction/overview/',
+        },
+        {
+          name: 'Cost Management',
+          url: 'https://kubernetes.io/docs/concepts/policy/resource-quotas/',
+        },
+      ],
     },
     {
       name: 'Cloud Native Application Delivery',
       weight: 8,
-      topics: ['Application Delivery Fundamentals', 'GitOps', 'CI/CD'],
+      topics: [
+        {
+          name: 'Application Delivery Fundamentals',
+          url: 'https://kubernetes.io/docs/tutorials/kubernetes-basics/deploy-app/deploy-intro/',
+        },
+        {
+          name: 'GitOps',
+          url: 'https://opengitops.dev/',
+        },
+        {
+          name: 'CI/CD',
+          url: 'https://kubernetes.io/docs/tasks/manage-kubernetes-objects/declarative-config/',
+        },
+      ],
     },
   ],
   resources: {
@@ -69,6 +143,7 @@ export const kcna: Certification = {
     github: [
       'https://github.com/cncf/curriculum',
       'https://github.com/moabukar/KCNA-Kubernetes-and-Cloud-Native-Associate',
+      'https://github.com/walidshaari/Kubernetes-and-Cloud-Native-Associate',
     ],
     practice: [
       'https://kodekloud.com/courses/kubernetes-and-cloud-native-associate-kcna/',
@@ -136,25 +211,6 @@ export const kcna: Certification = {
         duration: '15 hours',
         difficulty: 'intermediate',
         rating: 4.6,
-      },
-      {
-        title: 'KCNA - Kubernetes and Cloud Native Associate',
-        url: 'https://www.udemy.com/course/kubernetes-and-cloud-native-associate/',
-        author: 'Andrew Brown',
-        description: 'Curso completo de preparación KCNA con exámenes de práctica',
-        isPaid: true,
-        duration: '13 horas',
-        difficulty: 'beginner',
-        rating: 4.6,
-      },
-      {
-        title: 'KCNA Study Guide',
-        url: 'https://github.com/walidshaari/Kubernetes-and-Cloud-Native-Associate',
-        author: 'Walid Shaari',
-        description: 'Comprehensive KCNA study guide with practice exercises and examples',
-        isPaid: false,
-        duration: '6 hours',
-        difficulty: 'beginner',
       },
     ],
     videos: [

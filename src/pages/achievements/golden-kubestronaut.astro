@@ -20,15 +20,20 @@ const lfcs = certifications.find(c => c.id === 'lfcs');
   <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32 py-6 sm:py-8">
     <!-- Hero Section with Progress -->
     <div
-      class="relative bg-gradient-to-br from-blue-700 via-blue-600 to-sky-600 rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 text-white shadow-2xl overflow-hidden"
+      class="relative bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 dark:from-[#D97706] dark:via-[#F59E0B] dark:to-[#EAB308] rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 text-white shadow-2xl overflow-hidden"
     >
-      <!-- Background pattern -->
-      <div class="absolute inset-0 opacity-10">
-        <div
-          class="absolute inset-0"
-          style={`background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');`}
-        >
-        </div>
+      <!-- Golden sparkle effect -->
+      <div class="absolute inset-0 opacity-20">
+        <div class="absolute top-4 left-4 w-2 h-2 bg-white rounded-full animate-ping"></div>
+        <div class="absolute top-12 right-8 w-1 h-1 bg-yellow-200 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+        <div class="absolute bottom-8 left-8 w-1.5 h-1.5 bg-white rounded-full animate-ping" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-4 right-4 w-1 h-1 bg-yellow-200 rounded-full animate-pulse" style="animation-delay: 1.5s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-1 h-1 bg-white rounded-full animate-ping" style="animation-delay: 2s;"></div>
+      </div>
+      
+      <!-- Animated golden shine effect -->
+      <div class="absolute inset-0 opacity-30">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 animate-pulse" style="animation-duration: 3s;"></div>
       </div>
 
       <div
@@ -92,70 +97,6 @@ const lfcs = certifications.find(c => c.id === 'lfcs');
         </span>
       </h2>
 
-      <!-- Path Notes -->
-      <div class="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-        <div class="bg-blue-900/30 border border-blue-600/40 rounded-lg p-3 text-center">
-          <div
-            class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2"
-          >
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
-                d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </div>
-          <p class="text-sm text-blue-100 leading-relaxed">
-            {t('achievements.kubestronaut.cksNote')}
-          </p>
-        </div>
-
-        <div class="bg-sky-900/30 border border-sky-600/40 rounded-lg p-3 text-center">
-          <div
-            class="w-8 h-8 bg-sky-500 rounded-full flex items-center justify-center mx-auto mb-2"
-          >
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
-              ></path>
-            </svg>
-          </div>
-          <p class="text-sm text-sky-100 leading-relaxed">
-            {t('achievements.kubestronaut.difficultyNote')}
-          </p>
-        </div>
-
-        <div class="bg-indigo-900/30 border border-indigo-600/40 rounded-lg p-3 text-center">
-          <div
-            class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-2"
-          >
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
-                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </div>
-          <p class="text-sm text-indigo-100 leading-relaxed">
-            {t('achievements.kubestronaut.prerequisiteNote')}
-          </p>
-        </div>
-
-        <div class="bg-purple-900/30 border border-purple-600/40 rounded-lg p-3 text-center">
-          <div
-            class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2"
-          >
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-              ></path>
-            </svg>
-          </div>
-          <p class="text-sm text-purple-100 leading-relaxed">
-            {t('achievements.golden.pathNote4')}
-          </p>
-        </div>
-      </div>
 
       <!-- Kubestronaut Certifications (Required Base) -->
       <div class="mb-6">
@@ -227,85 +168,6 @@ const lfcs = certifications.find(c => c.id === 'lfcs');
       </div>
     </div>
 
-    <!-- Info Cards Grid -->
-    <div class="grid md:grid-cols-2 xl:grid-cols-2 gap-2 sm:gap-3 mb-8">
-      <!-- Requirements Card -->
-      <div
-        class="bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-2xl p-6 border border-blue-700/50 shadow-lg shadow-blue-800/30"
-      >
-        <h3 class="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
-          <svg class="w-5 h-5 text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-              clip-rule="evenodd"></path>
-          </svg>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600">{t('achievements.golden.requirements')}</span>
-        </h3>
-        <ul class="space-y-3">
-          <li class="flex items-start">
-            <span class="text-blue-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.req1')}</span>
-          </li>
-          <li class="flex items-start">
-            <span class="text-blue-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.req2')}</span>
-          </li>
-          <li class="flex items-start">
-            <span class="text-blue-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.req3')}</span>
-          </li>
-          <li class="flex items-start">
-            <span class="text-blue-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.req4')}</span>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Benefits Card -->
-      <div
-        class="bg-gradient-to-br from-sky-900/40 to-sky-950/50 rounded-2xl p-6 border border-sky-700/50 shadow-lg shadow-sky-800/30"
-      >
-        <h3 class="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2">
-          <svg class="w-5 h-5 text-sky-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-            ></path>
-          </svg>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600">{t('achievements.golden.benefits')}</span>
-        </h3>
-        <ul class="space-y-3">
-          <li class="flex items-start">
-            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.benefit1')}</span>
-          </li>
-          <li class="flex items-start">
-            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.benefit2')}</span>
-          </li>
-          <li class="flex items-start">
-            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.benefit3')}</span>
-          </li>
-          <li class="flex items-start">
-            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.benefit4')}</span>
-          </li>
-          <li class="flex items-start">
-            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.benefit5')}</span>
-          </li>
-          <li class="flex items-start">
-            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.benefit6')}</span>
-          </li>
-          <li class="flex items-start">
-            <span class="text-sky-400 mr-2 leading-5 flex-shrink-0">•</span>
-            <span class="text-gray-300 text-sm leading-5">{t('achievements.golden.benefit7')}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
 
     <!-- How to Get Started -->
     <div

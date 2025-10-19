@@ -23,79 +23,208 @@ export const kcsa: Certification = {
       name: 'Overview of Cloud Native Security',
       weight: 14,
       topics: [
-        'The 4Cs of Cloud Native Security',
-        'Cloud Provider and Infrastructure Security',
-        'Controls and Frameworks',
-        'Isolation Techniques',
-        'Artifact Repository and Image Security',
-        'Workload and Application Code Security',
+        {
+          name: 'The 4Cs of Cloud Native Security',
+          url: 'https://kubernetes.io/es/docs/concepts/security/overview/#las-4c-de-seguridad-en-cloud-native',
+        },
+        {
+          name: 'Cloud Provider and Infrastructure Security',
+          url: 'https://kubernetes.io/docs/concepts/security/overview/#cloud',
+        },
+        {
+          name: 'Controls and Frameworks',
+          url: 'https://kubernetes.io/docs/concepts/security/security-checklist/',
+        },
+        {
+          name: 'Isolation Techniques',
+          url: 'https://kubernetes.io/docs/concepts/security/multi-tenancy/',
+        },
+        {
+          name: 'Artifact Repository and Image Security',
+          url: 'https://kubernetes.io/docs/concepts/security/supply-chain-security/',
+        },
+        {
+          name: 'Workload and Application Code Security',
+          url: 'https://kubernetes.io/docs/concepts/security/pod-security-standards/',
+        },
       ],
     },
     {
       name: 'Kubernetes Cluster Component Security',
       weight: 22,
       topics: [
-        'API Server',
-        'Controller Manager',
-        'Scheduler',
-        'Kubelet',
-        'Container Runtime',
-        'KubeProxy',
-        'Pod',
-        'Etcd',
-        'Container Networking',
-        'Client Security',
-        'Storage',
+        {
+          name: 'API Server',
+          url: 'https://kubernetes.io/docs/concepts/overview/components/#kube-apiserver',
+        },
+        {
+          name: 'Controller Manager',
+          url: 'https://kubernetes.io/docs/concepts/overview/components/#kube-controller-manager',
+        },
+        {
+          name: 'Scheduler',
+          url: 'https://kubernetes.io/docs/concepts/overview/components/#kube-scheduler',
+        },
+        {
+          name: 'Kubelet',
+          url: 'https://kubernetes.io/docs/concepts/overview/components/#kubelet',
+        },
+        {
+          name: 'Container Runtime',
+          url: 'https://kubernetes.io/docs/setup/production-environment/container-runtimes/',
+        },
+        {
+          name: 'KubeProxy',
+          url: 'https://kubernetes.io/docs/concepts/overview/components/#kube-proxy',
+        },
+        {
+          name: 'Pod',
+          url: 'https://kubernetes.io/docs/concepts/workloads/pods/',
+        },
+        {
+          name: 'Etcd',
+          url: 'https://kubernetes.io/docs/concepts/overview/components/#etcd',
+        },
+        {
+          name: 'Container Networking',
+          url: 'https://kubernetes.io/docs/concepts/services-networking/',
+        },
+        {
+          name: 'Client Security',
+          url: 'https://kubernetes.io/docs/reference/access-authn-authz/authentication/',
+        },
+        {
+          name: 'Storage',
+          url: 'https://kubernetes.io/docs/concepts/storage/',
+        },
       ],
     },
     {
       name: 'Kubernetes Security Fundamentals',
       weight: 22,
       topics: [
-        'Pod Security Standards',
-        'Pod Security Admissions',
-        'Authentication',
-        'Authorization',
-        'Secrets',
-        'Isolation and Segmentation',
-        'Audit Logging',
-        'Network Policy',
+        {
+          name: 'Pod Security Standards',
+          url: 'https://kubernetes.io/docs/concepts/security/pod-security-standards/',
+        },
+        {
+          name: 'Pod Security Admission',
+          url: 'https://kubernetes.io/docs/concepts/security/pod-security-admission/',
+        },
+        {
+          name: 'Authentication',
+          url: 'https://kubernetes.io/docs/reference/access-authn-authz/authentication/',
+        },
+        {
+          name: 'Authorization',
+          url: 'https://kubernetes.io/docs/reference/access-authn-authz/authorization/',
+        },
+        {
+          name: 'Secrets',
+          url: 'https://kubernetes.io/docs/concepts/configuration/secret/',
+        },
+        {
+          name: 'Isolation and Segmentation',
+          url: 'https://kubernetes.io/docs/concepts/security/multi-tenancy/',
+        },
+        {
+          name: 'Audit Logging',
+          url: 'https://kubernetes.io/docs/tasks/debug-application-cluster/audit/',
+        },
+        {
+          name: 'Network Policy',
+          url: 'https://kubernetes.io/docs/concepts/services-networking/network-policies/',
+        },
       ],
     },
     {
       name: 'Kubernetes Threat Model',
       weight: 16,
       topics: [
-        'Kubernetes Trust Boundaries and Data Flow',
-        'Persistence',
-        'Denial of Service',
-        'Malicious Code Execution and Compromised Applications in Containers',
-        'Attacker on the Network',
-        'Access to Sensitive Data',
-        'Privilege Escalation',
+        {
+          name: 'Kubernetes Trust Boundaries and Data Flow',
+          url: 'https://kubernetes.io/docs/concepts/security/',
+        },
+        {
+          name: 'Persistence',
+          url: 'https://kubernetes.io/docs/concepts/storage/persistent-volumes/',
+        },
+        {
+          name: 'Denial of Service',
+          url: 'https://kubernetes.io/docs/concepts/policy/resource-quotas/',
+        },
+        {
+          name: 'Malicious Code Execution and Compromised Applications in Containers',
+          url: 'https://kubernetes.io/docs/concepts/security/pod-security-standards/',
+        },
+        {
+          name: 'Attacker on the Network',
+          url: 'https://kubernetes.io/docs/concepts/services-networking/network-policies/',
+        },
+        {
+          name: 'Access to Sensitive Data',
+          url: 'https://kubernetes.io/docs/concepts/configuration/secret/',
+        },
+        {
+          name: 'Privilege Escalation',
+          url: 'https://kubernetes.io/docs/reference/access-authn-authz/rbac/',
+        },
       ],
     },
     {
       name: 'Platform Security',
       weight: 16,
       topics: [
-        'Supply Chain Security',
-        'Image Repository',
-        'Observability',
-        'Service Mesh',
-        'PKI',
-        'Connectivity',
-        'Admission Control',
+        {
+          name: 'Supply Chain Security',
+          url: 'https://kubernetes.io/docs/concepts/security/supply-chain-security/',
+        },
+        {
+          name: 'Image Repository',
+          url: 'https://kubernetes.io/docs/concepts/containers/images/',
+        },
+        {
+          name: 'Observability',
+          url: 'https://kubernetes.io/docs/tasks/debug-application-cluster/resource-usage-monitoring/',
+        },
+        {
+          name: 'Service Mesh',
+          url: 'https://kubernetes.io/docs/concepts/services-networking/service/',
+        },
+        {
+          name: 'PKI',
+          url: 'https://kubernetes.io/docs/setup/best-practices/certificates/',
+        },
+        {
+          name: 'Connectivity',
+          url: 'https://kubernetes.io/docs/concepts/services-networking/',
+        },
+        {
+          name: 'Admission Control',
+          url: 'https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/',
+        },
       ],
     },
     {
       name: 'Compliance and Security Frameworks',
       weight: 10,
       topics: [
-        'Compliance Frameworks',
-        'Threat Modelling Frameworks',
-        'Supply Chain Compliance',
-        'Automation and Tooling',
+        {
+          name: 'Compliance Frameworks',
+          url: 'https://kubernetes.io/docs/concepts/security/security-checklist/',
+        },
+        {
+          name: 'Threat Modelling Frameworks',
+          url: 'https://kubernetes.io/docs/concepts/security/',
+        },
+        {
+          name: 'Supply Chain Compliance',
+          url: 'https://kubernetes.io/docs/concepts/security/supply-chain-security/',
+        },
+        {
+          name: 'Automation and Tooling',
+          url: 'https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/',
+        },
       ],
     },
   ],

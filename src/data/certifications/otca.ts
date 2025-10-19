@@ -65,6 +65,28 @@ export const otca: Certification = {
       'https://killercoda.com/opentelemetry',
       'https://opentelemetry.io/docs/getting-started/',
     ],
+    courses: [
+      {
+        title: 'Getting Started with OpenTelemetry (LFS148)',
+        url: 'https://training.linuxfoundation.org/training/getting-started-with-opentelemetry-lfs148/',
+        author: 'The Linux Foundation',
+        description: 'Free course to learn OpenTelemetry fundamentals and unified observability',
+        isPaid: false,
+        duration: '10 hours',
+        difficulty: 'beginner',
+        rating: 4.7,
+      },
+      {
+        title: 'Introduction to Kubernetes (LFS158)',
+        url: 'https://www.edx.org/learn/kubernetes/the-linux-foundation-introduction-to-kubernetes',
+        author: 'The Linux Foundation',
+        description: 'Essential Kubernetes foundation for cloud-native observability',
+        isPaid: false,
+        duration: '16 hours',
+        difficulty: 'beginner',
+        rating: 4.8,
+      },
+    ],
     books: [
       {
         title: 'Learning OpenTelemetry',
@@ -86,8 +108,6 @@ export const otca: Certification = {
         year: 2022,
         difficulty: 'advanced',
       },
-    ],
-    courses: [
       {
         title: 'OpenTelemetry Fundamentals',
         url: 'https://opentelemetry.io/docs/getting-started/',

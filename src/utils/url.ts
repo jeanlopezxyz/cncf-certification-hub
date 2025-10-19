@@ -11,7 +11,7 @@ import type { Language } from '../types';
  */
 export function buildBasePath(lang: Language): string {
   const langPath = lang === 'en' ? '' : `/${lang}`;
-  return `${APP_CONFIG.basePath}${langPath}`;
+  return `${APP_CONFIG.basePath || ''}${langPath}`;
 }
 
 /**
@@ -62,10 +62,10 @@ export function extractLanguageFromUrl(url: string): Language {
   const segments = pathname.split('/').filter(Boolean);
   
   // Remove base path segments
-  const baseSegments = APP_CONFIG.basePath.split('/').filter(Boolean);
+  const baseSegments = (APP_CONFIG.basePath || '').split('/').filter(Boolean);
   const pathSegments = segments.slice(baseSegments.length);
   
-  const lang = pathSegments[0];
+  const lang = pathSegments[0] || '';
   return ['es', 'pt'].includes(lang) ? lang as Language : 'en';
 }
 
@@ -76,7 +76,7 @@ export function isInternalUrl(url: string): boolean {
   try {
     const urlObj = new URL(url, window.location.origin);
     return urlObj.origin === window.location.origin && 
-           urlObj.pathname.startsWith(APP_CONFIG.basePath);
+           urlObj.pathname.startsWith(APP_CONFIG.basePath || '');
   } catch {
     return false;
   }

@@ -60,7 +60,7 @@ export function sanitizeSearchQuery(query: string): string {
 
   // Allow only alphanumeric, spaces, hyphens, and dots for search
   const cleaned = query
-    .replace(/[^a-zA-Z0-9\s\-\.]/g, '')
+    .replace(/[^a-zA-Z0-9\s\-.]/g, '')
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, INPUT_LIMITS.SEARCH_QUERY);
@@ -82,7 +82,7 @@ export function validateUrlPath(path: string): boolean {
   }
 
   // Ensure path starts with expected pattern
-  const validPathPattern = /^\/[a-zA-Z0-9\-\/]*$/;
+  const validPathPattern = /^\/[a-zA-Z0-9\-/]*$/;
   return validPathPattern.test(path) && path.length <= INPUT_LIMITS.URL_PATH;
 }
 

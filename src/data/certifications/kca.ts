@@ -100,6 +100,16 @@ export const kca: Certification = {
     ],
     courses: [
       {
+        title: 'Introduction to Kubernetes (LFS158)',
+        url: 'https://www.edx.org/learn/kubernetes/the-linux-foundation-introduction-to-kubernetes',
+        author: 'The Linux Foundation',
+        description: 'Essential Kubernetes foundation for policy management and security',
+        isPaid: false,
+        duration: '16 hours',
+        difficulty: 'beginner',
+        rating: 4.8,
+      },
+      {
         title: 'Kyverno Fundamentals',
         url: 'https://kyverno.io/docs/introduction/',
         author: 'Kyverno Community',

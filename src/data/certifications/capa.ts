@@ -107,6 +107,16 @@ export const capa: Certification = {
         rating: 4.7,
       },
       {
+        title: 'DevOps and Workflow Management with Argo (LFS256)',
+        url: 'https://training.linuxfoundation.org/training/devops-and-workflow-management-with-argo-lfs256/',
+        author: 'The Linux Foundation',
+        description: 'Comprehensive paid course specifically designed for CAPA preparation',
+        isPaid: true,
+        duration: '35 hours',
+        difficulty: 'intermediate',
+        rating: 4.8,
+      },
+      {
         title: 'GitOps Fundamentals with Argo CD',
         url: 'https://www.udemy.com/course/gitops-argocd-kubernetes/',
         author: 'GitOps Expert',

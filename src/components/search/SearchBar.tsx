@@ -162,12 +162,14 @@ export default function SearchBar({ lang }: SearchBarProps) {
         name: calculateFuzzyScore(cert.name, query) * 2.5,
         description: calculateFuzzyScore(cert.description, query) * 1.5,
         level: calculateFuzzyScore(cert.level, query) * 2,
-        domains: Math.max(...cert.domains.map(d => 
-          Math.max(
-            calculateFuzzyScore(d.name, query) * 2,
-            ...d.topics.map(t => calculateFuzzyScore(t, query))
+        domains: Math.max(
+          ...cert.domains.map(d =>
+            Math.max(
+              calculateFuzzyScore(d.name, query) * 2,
+              ...d.topics.map(t => calculateFuzzyScore(typeof t === 'string' ? t : t.name, query))
+            )
           )
-        ))
+        )
       };
 
       maxScore = Math.max(...Object.values(scores));
@@ -292,7 +294,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
         break;
       case 'Enter':
         e.preventDefault();
-        if (focusedIndex >= 0) {
+        if (focusedIndex >= 0 && suggestions[focusedIndex]) {
           window.location.pathname = suggestions[focusedIndex].url;
         }
         break;
@@ -357,10 +359,10 @@ export default function SearchBar({ lang }: SearchBarProps) {
           setIsExpanded(true);
           setTimeout(() => inputRef.current?.focus(), 100);
         }}
-        className="sm:hidden flex items-center justify-center w-12 h-12 bg-slate-800/80 border border-slate-700 rounded-lg hover:bg-slate-700/80 transition-all duration-300"
+        className="sm:hidden flex items-center justify-center w-12 h-12 bg-blue-200 dark:bg-[#242145] border border-blue-300 dark:border-purple-700 rounded-lg hover:bg-blue-300 dark:hover:bg-[#2D1F4F] transition-all duration-300"
         aria-label={t('aria.search')}
       >
-        <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-5 h-5 text-blue-700 dark:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
       </button>
@@ -423,7 +425,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setTimeout(() => setIsFocused(false), 100)}
                   placeholder={t('search.placeholder')}
-                  className="w-full h-12 pl-11 pr-10 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
+                  className="w-full h-12 pl-11 pr-10 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-blue-100 dark:bg-[#242145] border-blue-300 dark:border-purple-600 text-blue-900 dark:text-white placeholder-blue-600 dark:placeholder-purple-300 shadow-lg focus:border-blue-500 dark:focus:border-purple-400 focus:shadow-xl"
                   autoComplete="off"
                   spellCheck={false}
                   suppressHydrationWarning
@@ -470,7 +472,7 @@ export default function SearchBar({ lang }: SearchBarProps) {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setTimeout(() => setIsFocused(false), 100)}
             placeholder={t('search.placeholder')}
-            className="w-full h-12 pl-12 pr-4 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-slate-800/80 border-blue-500/50 text-white placeholder-gray-400 shadow-lg shadow-blue-500/20 focus:border-blue-400 focus:shadow-blue-400/30 focus:bg-slate-800/90 focus:shadow-xl"
+            className="w-full h-12 pl-12 pr-4 rounded-xl text-sm border-2 outline-none transition-all duration-300 bg-blue-100 dark:bg-[#242145] border-blue-300 dark:border-purple-600 text-blue-900 dark:text-white placeholder-blue-600 dark:placeholder-purple-300 shadow-lg focus:border-blue-500 dark:focus:border-purple-400 focus:shadow-xl"
             aria-label={t('aria.search')}
             autoComplete="off"
             spellCheck={false}

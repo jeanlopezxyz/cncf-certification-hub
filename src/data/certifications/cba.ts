@@ -89,6 +89,16 @@ export const cba: Certification = {
     ],
     courses: [
       {
+        title: 'Introduction to Backstage: Developer Portals Made Easy (LFS142)',
+        url: 'https://training.linuxfoundation.org/training/introduction-to-backstage-lfs142/',
+        author: 'The Linux Foundation',
+        description: 'Free course to learn Backstage fundamentals and developer portal creation',
+        isPaid: false,
+        duration: '8 hours',
+        difficulty: 'beginner',
+        rating: 4.6,
+      },
+      {
         title: 'Introduction to Backstage',
         url: 'https://backstage.io/docs/getting-started/',
         author: 'Backstage Community',

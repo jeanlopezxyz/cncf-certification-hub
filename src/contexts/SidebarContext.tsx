@@ -3,7 +3,8 @@
  * Centralizes sidebar state and navigation logic
  */
 
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext } from 'react';
+import type { ReactNode } from 'react';
 import type { Language } from '../types';
 
 interface SidebarContextType {

@@ -3,7 +3,8 @@
  * Eliminates duplicate height tracking logic in sidebar components
  */
 
-import { useRef, useState, useEffect, RefObject } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import type { RefObject } from 'react';
 
 interface UseAutoHeightOptions {
   initialHeight?: number;
@@ -16,7 +17,7 @@ export function useAutoHeight(
   dependencies: unknown[] = [],
   options: UseAutoHeightOptions = {}
 ): {
-  contentRef: RefObject<HTMLDivElement>;
+  contentRef: RefObject<HTMLDivElement | null>;
   height: number;
   style: { height: string; overflow: string };
 } {
@@ -79,7 +80,7 @@ export function useCollapsibleHeight(
   isExpanded: boolean,
   dependencies: unknown[] = []
 ): {
-  contentRef: RefObject<HTMLDivElement>;
+  contentRef: RefObject<HTMLDivElement | null>;
   wrapperStyle: React.CSSProperties;
   isAnimating: boolean;
 } {
@@ -92,6 +93,7 @@ export function useCollapsibleHeight(
       const timer = setTimeout(() => setIsAnimating(false), 300);
       return () => clearTimeout(timer);
     }
+    return () => {}; // No-op cleanup function
   }, [isExpanded]);
 
   return {
@@ -109,7 +111,7 @@ export function useCollapsibleHeight(
  * Hook for measuring element dimensions
  */
 export function useElementDimensions(): {
-  ref: RefObject<HTMLDivElement>;
+  ref: RefObject<HTMLDivElement | null>;
   dimensions: { width: number; height: number };
 } {
   const ref = useRef<HTMLDivElement>(null);

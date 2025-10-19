@@ -40,9 +40,10 @@ export default function CertificationStudyGuide({
   const [expandedDomains, setExpandedDomains] = useState<string[]>([]);
   const [expandedResourceCategories, setExpandedResourceCategories] = useState<string[]>([]);
   const [activeResourceTab, setActiveResourceTab] = useState<
-    'essential' | 'practice' | 'learning' | 'community'
-  >('essential');
+    'fundamentals' | 'courses' | 'practice' | 'additional'
+  >('fundamentals');
   const [expandedStudyPhases, setExpandedStudyPhases] = useState<string[]>([]);
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const toggleExpandDomain = (domainName: string) => {
     setExpandedDomains(prev =>
@@ -62,52 +63,80 @@ export default function CertificationStudyGuide({
     );
   };
 
-  // Study sections with organized resources
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev =>
+      prev.includes(sectionId) ? prev.filter(s => s !== sectionId) : [...prev, sectionId]
+    );
+  };
+
+  // New organized study sections structure
   const studySections = [
+    // FUNDAMENTALS TAB
+    {
+      id: 'linux-foundation',
+      title: 'Linux Foundation',
+      type: 'courses' as const,
+      tab: 'fundamentals',
+      resources: (certification.resources.courses || []).filter(course => 
+        (course.author === 'Linux Foundation' || course.author === 'The Linux Foundation') && !course.isPaid
+      ),
+    },
     {
       id: 'official',
       title: t('certification.sections.official'),
       type: 'official' as const,
+      tab: 'fundamentals',
       resources: [
         {
           title: t('certification.resource.officialPage'),
           url: certification.resources.official,
           description: t('certification.resource.officialDesc'),
         },
+        {
+          title: t('certification.resource.cncfLandscape'),
+          url: 'https://landscape.cncf.io/',
+          description: t('certification.resource.cncfLandscapeDesc'),
+        },
+        {
+          title: t('certification.resource.cloudNativeGlossary'),
+          url: 'https://glossary.cncf.io/',
+          description: t('certification.resource.cloudNativeGlossaryDesc'),
+        },
+        ...(certification.resources.documentation || [])
+          .filter(doc => !doc.url.includes('landscape.cncf.io') && !doc.url.includes('glossary.cncf.io'))
+          .map(doc => ({
+            title: doc.title || t('certification.resource.projectDocs'),
+            url: doc.url,
+            description: doc.description || t('certification.resource.projectDocsDesc'),
+            type: 'documentation' as const,
+          })),
       ],
     },
+    
+    // COURSES TAB
     {
-      id: 'linux-foundation',
-      title: 'Linux Foundation',
+      id: 'paid-courses',
+      title: t('certification.sections.courses'),
       type: 'courses' as const,
+      tab: 'courses',
       resources: (certification.resources.courses || []).filter(course => 
-        (course.author === 'Linux Foundation' || course.author === 'The Linux Foundation') && !course.isPaid
+        course.author !== 'Linux Foundation' && course.author !== 'The Linux Foundation'
       ),
     },
     {
       id: 'books',
       title: t('certification.sections.books'),
       type: 'books' as const,
+      tab: 'courses',
       resources: certification.resources.books || [],
     },
+    
+    // PRACTICE TAB
     {
-      id: 'courses',
-      title: t('certification.sections.courses'),
-      type: 'courses' as const,
-      resources: (certification.resources.courses || []).filter(course => 
-        course.author !== 'Linux Foundation' && course.author !== 'The Linux Foundation'
-      ),
-    },
-    {
-      id: 'videos',
-      title: t('certification.sections.videos'),
-      type: 'videos' as const,
-      resources: certification.resources.videos || [],
-    },
-    {
-      id: 'practice',
+      id: 'simulators',
       title: t('certification.sections.practice'),
       type: 'practice' as const,
+      tab: 'practice',
       resources: certification.resources.practice.map(url => ({
         title: url.includes('killer')
           ? t('certification.resource.killersh')
@@ -131,35 +160,53 @@ export default function CertificationStudyGuide({
       id: 'github',
       title: t('certification.sections.github'),
       type: 'github' as const,
+      tab: 'practice',
       resources: certification.resources.github.map(url => ({
         title: url.split('/').slice(-2).join('/'),
         url,
         description: t('certification.resource.githubDesc'),
       })),
     },
+    
+    // ADDITIONAL TAB
+    {
+      id: 'videos',
+      title: t('certification.sections.videos'),
+      type: 'videos' as const,
+      tab: 'additional',
+      resources: certification.resources.videos || [],
+    },
     {
       id: 'blogs',
       title: t('certification.sections.blogs'),
       type: 'blogs',
+      tab: 'additional',
       resources: certification.resources.blogs || [],
-    },
-    {
-      id: 'documentation',
-      title: t('certification.sections.documentation'),
-      type: 'documentation',
-      resources: certification.resources.documentation || [],
-    },
-    {
-      id: 'tools',
-      title: t('certification.sections.tools'),
-      type: 'tools',
-      resources: certification.resources.tools || [],
     },
     {
       id: 'communities',
       title: t('certification.sections.communities'),
       type: 'communities',
+      tab: 'additional',
       resources: certification.resources.communities || [],
+    },
+    {
+      id: 'tools',
+      title: t('certification.sections.tools'),
+      type: 'tools',
+      tab: 'additional',
+      resources: certification.resources.tools || [],
+    },
+    {
+      id: 'additional-docs',
+      title: t('certification.sections.documentation'),
+      type: 'documentation',
+      tab: 'additional',
+      resources: (certification.resources.documentation || []).filter(doc => 
+        !['Documentación Oficial de Kubernetes', 'Kubernetes Official Documentation', 'Documentação Oficial do Kubernetes'].includes(doc.title || '') &&
+        !doc.url.includes('landscape.cncf.io') && 
+        !doc.url.includes('glossary.cncf.io')
+      ),
     },
   ].filter(section => section.resources.length > 0); // Only show sections with resources
 
@@ -572,17 +619,33 @@ export default function CertificationStudyGuide({
                     {expandedDomains.includes(domain.name) && (
                       <div className="border-t border-blue-700/50 bg-blue-900/30 px-5 py-4">
                         <div className="grid gap-2.5">
-                          {domain.topics.map((topic, topicIndex) => (
-                            <div
-                              key={topicIndex}
-                              className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-slate-800/30 transition-colors"
-                            >
-                              <div className="w-6 h-6 rounded-full bg-blue-900/30 border border-blue-700/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <span className="text-xs text-blue-400">{topicIndex + 1}</span>
+                          {domain.topics.map((topic, topicIndex) => {
+                            const topicName = typeof topic === 'string' ? topic : topic.name;
+                            const topicUrl = typeof topic === 'object' ? topic.url : undefined;
+                            
+                            return (
+                              <div
+                                key={topicIndex}
+                                className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-slate-800/30 transition-colors"
+                              >
+                                <div className="w-6 h-6 rounded-full bg-blue-900/30 border border-blue-700/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                  <span className="text-xs text-blue-400">{topicIndex + 1}</span>
+                                </div>
+                                {topicUrl ? (
+                                  <a
+                                    href={topicUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-sm text-gray-300 hover:text-blue-300 leading-relaxed transition-colors underline-offset-2 hover:underline"
+                                  >
+                                    {topicName}
+                                  </a>
+                                ) : (
+                                  <span className="text-sm text-gray-300 leading-relaxed">{topicName}</span>
+                                )}
                               </div>
-                              <span className="text-sm text-gray-300 leading-relaxed">{topic}</span>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -611,17 +674,27 @@ export default function CertificationStudyGuide({
           {/* Resources Tab */}
           {activeTab === 'resources' && (
             <div>
-              {/* Sub-tabs for Resources */}
+              {/* New 4-Category Resource Tabs */}
               <div className="flex flex-wrap gap-2 mb-6 bg-slate-900/50 rounded-lg p-2">
                 <button
-                  onClick={() => setActiveResourceTab('essential')}
+                  onClick={() => setActiveResourceTab('fundamentals')}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                    activeResourceTab === 'essential'
+                    activeResourceTab === 'fundamentals'
                       ? 'bg-blue-600 text-white'
                       : 'text-gray-400 hover:text-white hover:bg-slate-800'
                   }`}
                 >
-                  {t('certification.essential')}
+                  {t('certification.fundamentals')}
+                </button>
+                <button
+                  onClick={() => setActiveResourceTab('courses')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    activeResourceTab === 'courses'
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-400 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  {t('certification.courses')}
                 </button>
                 <button
                   onClick={() => setActiveResourceTab('practice')}
@@ -634,34 +707,24 @@ export default function CertificationStudyGuide({
                   {t('certification.practice')}
                 </button>
                 <button
-                  onClick={() => setActiveResourceTab('learning')}
+                  onClick={() => setActiveResourceTab('additional')}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                    activeResourceTab === 'learning'
+                    activeResourceTab === 'additional'
                       ? 'bg-blue-600 text-white'
                       : 'text-gray-400 hover:text-white hover:bg-slate-800'
                   }`}
                 >
-                  {t('certification.learning')}
-                </button>
-                <button
-                  onClick={() => setActiveResourceTab('community')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                    activeResourceTab === 'community'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-400 hover:text-white hover:bg-slate-800'
-                  }`}
-                >
-                  {t('certification.community')}
+                  {t('certification.additional')}
                 </button>
               </div>
 
               {/* Resource Content by Tab */}
               <div className="space-y-4">
-                {/* Essential Resources Tab */}
-                {activeResourceTab === 'essential' && (
+                {/* Fundamentals Tab */}
+                {activeResourceTab === 'fundamentals' && (
                   <>
                     {studySections
-                      .filter(s => ['linux-foundation', 'books', 'courses'].includes(s.id))
+                      .filter(s => s.tab === 'fundamentals')
                       .map(section => (
                         <div
                           key={section.id}
@@ -701,7 +764,10 @@ export default function CertificationStudyGuide({
                           {expandedResourceCategories.includes(section.id) && (
                             <div className="border-t border-blue-700/50 p-4">
                               <div className="grid gap-3">
-                                {section.resources.slice(0, 3).map((resource, index) => (
+                                {(expandedSections.includes(section.id) 
+                                  ? section.resources 
+                                  : section.resources.slice(0, 3)
+                                ).map((resource, index) => (
                                   <a
                                     key={index}
                                     href={resource.url}
@@ -773,14 +839,119 @@ export default function CertificationStudyGuide({
                                     </svg>
                                   </a>
                                 ))}
-                                {section.resources.length > 3 && (
+                                {section.resources.length > 3 && !expandedSections.includes(section.id) && (
                                   <div className="text-center pt-2">
-                                    <button className="text-sm text-blue-400 hover:text-blue-300">
+                                    <button 
+                                      onClick={() => toggleSection(section.id)}
+                                      className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                                    >
                                       {t('certification.showMore')} {section.resources.length - 3}
                                       ...
                                     </button>
                                   </div>
                                 )}
+                                {expandedSections.includes(section.id) && section.resources.length > 3 && (
+                                  <div className="text-center pt-2">
+                                    <button 
+                                      onClick={() => toggleSection(section.id)}
+                                      className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                                    >
+                                      {t('certification.showLess')}
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </>
+                )}
+
+                {/* Courses Tab */}
+                {activeResourceTab === 'courses' && (
+                  <>
+                    {studySections
+                      .filter(s => s.tab === 'courses')
+                      .map(section => (
+                        <div
+                          key={section.id}
+                          className="bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-xl border border-blue-700/50 overflow-hidden"
+                        >
+                          <button
+                            onClick={() => toggleResourceCategory(section.id)}
+                            className="w-full p-4 flex items-center justify-between hover:bg-slate-800/50 transition-colors"
+                          >
+                            <h4 className="text-lg font-semibold text-white flex items-center gap-3">
+                              {section.title}
+                              <span className="text-base text-gray-400 font-normal">
+                                ({section.resources.length})
+                              </span>
+                            </h4>
+                            <svg
+                              className={`w-5 h-5 text-gray-400 transition-transform ${
+                                expandedResourceCategories.includes(section.id) ? 'rotate-180' : ''
+                              }`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 9l-7 7-7-7"
+                              />
+                            </svg>
+                          </button>
+
+                          {expandedResourceCategories.includes(section.id) && (
+                            <div className="border-t border-blue-700/50 p-4">
+                              <div className="grid gap-3">
+                                {section.resources.map((resource, index) => (
+                                  <a
+                                    key={index}
+                                    href={resource.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex items-start gap-3 p-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg transition-all"
+                                  >
+                                    <div className="flex-1">
+                                      <div className="text-base font-medium text-white group-hover:text-blue-400 transition-colors">
+                                        {resource.title}
+                                      </div>
+                                      {getStringProperty(resource, 'author') && (
+                                        <div className="text-sm text-gray-500 mt-0.5">
+                                          {t('certification.by')}{' '}
+                                          {getStringProperty(resource, 'author')}
+                                        </div>
+                                      )}
+                                      {getBooleanProperty(resource, 'isPaid') && (
+                                        <span className="inline-block mt-1 px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs font-semibold rounded-md">
+                                          {t('certification.paid')}
+                                        </span>
+                                      )}
+                                      {resource.description && (
+                                        <p className="text-sm text-gray-400 mt-2">
+                                          {resource.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <svg
+                                      className="w-4 h-4 text-gray-400 group-hover:text-blue-400 flex-shrink-0 mt-1 transition-colors"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                      />
+                                    </svg>
+                                  </a>
+                                ))}
                               </div>
                             </div>
                           )}
@@ -793,7 +964,7 @@ export default function CertificationStudyGuide({
                 {activeResourceTab === 'practice' && (
                   <>
                     {studySections
-                      .filter(s => ['practice', 'github'].includes(s.id))
+                      .filter(s => s.tab === 'practice')
                       .map(section => (
                         <div
                           key={section.id}
@@ -875,11 +1046,11 @@ export default function CertificationStudyGuide({
                   </>
                 )}
 
-                {/* Learning Tab */}
-                {activeResourceTab === 'learning' && (
+                {/* Additional Resources Tab */}
+                {activeResourceTab === 'additional' && (
                   <>
                     {studySections
-                      .filter(s => ['videos', 'blogs', 'documentation'].includes(s.id))
+                      .filter(s => s.tab === 'additional')
                       .map(section => (
                         <div
                           key={section.id}
@@ -938,87 +1109,6 @@ export default function CertificationStudyGuide({
                                           {getStringProperty(resource, 'duration')}
                                         </span>
                                       )}
-                                      {resource.description && (
-                                        <p className="text-sm text-gray-400 mt-2">
-                                          {resource.description}
-                                        </p>
-                                      )}
-                                    </div>
-                                    <svg
-                                      className="w-4 h-4 text-gray-400 group-hover:text-blue-400 flex-shrink-0 mt-1 transition-colors"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                      />
-                                    </svg>
-                                  </a>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                  </>
-                )}
-
-                {/* Community Tab */}
-                {activeResourceTab === 'community' && (
-                  <>
-                    {studySections
-                      .filter(s => ['communities', 'tools'].includes(s.id))
-                      .map(section => (
-                        <div
-                          key={section.id}
-                          className="bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-xl border border-blue-700/50 overflow-hidden"
-                        >
-                          <button
-                            onClick={() => toggleResourceCategory(section.id)}
-                            className="w-full p-4 flex items-center justify-between hover:bg-slate-800/50 transition-colors"
-                          >
-                            <h4 className="text-lg font-semibold text-white flex items-center gap-3">
-                              {section.title}
-                              <span className="text-base text-gray-400 font-normal">
-                                ({section.resources.length})
-                              </span>
-                            </h4>
-                            <svg
-                              className={`w-5 h-5 text-gray-400 transition-transform ${
-                                expandedResourceCategories.includes(section.id) ? 'rotate-180' : ''
-                              }`}
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 9l-7 7-7-7"
-                              />
-                            </svg>
-                          </button>
-
-                          {expandedResourceCategories.includes(section.id) && (
-                            <div className="border-t border-blue-700/50 p-4">
-                              <div className="grid gap-3">
-                                {section.resources.map((resource, index) => (
-                                  <a
-                                    key={index}
-                                    href={resource.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group flex items-start gap-3 p-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg transition-all"
-                                  >
-                                    <div className="flex-1">
-                                      <div className="text-base font-medium text-white group-hover:text-blue-400 transition-colors">
-                                        {resource.title}
-                                      </div>
                                       {resource.description && (
                                         <p className="text-sm text-gray-400 mt-2">
                                           {resource.description}

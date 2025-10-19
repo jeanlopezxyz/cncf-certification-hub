@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/hero/Hero';
 import AchievementPrograms from '../components/achievements/AchievementPrograms';
 import CertificationGrid from '../components/certifications/CertificationGrid';
+import InstantNavigation from '../components/ui/InstantNavigation';
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
@@ -12,12 +13,14 @@ const t = useTranslations(lang);
 <Layout title={t('hero.title')} showSidebar={true}>
   <div class="space-y-8">
     <!-- Hero Section -->
-    <Hero client:visible lang={lang} />
+    <Hero client:load lang={lang} />
 
     <!-- Achievement Programs -->
-    <AchievementPrograms client:visible lang={lang} />
+    <AchievementPrograms client:load lang={lang} />
 
     <!-- Certifications Grid -->
-    <CertificationGrid client:visible lang={lang} />
+    <CertificationGrid client:load lang={lang} />
   </div>
+
+  <InstantNavigation client:load />
 </Layout>

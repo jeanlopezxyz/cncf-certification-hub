@@ -107,6 +107,17 @@ export const ACHIEVEMENTS_ITEMS = [
   },
 ];
 
+export const INTERNAL_PAGES_ITEMS = [
+  {
+    id: 'architecture',
+    translationKey: 'sidebar.architecture',
+    descriptionKey: 'sidebar.architectureDesc',
+    href: 'cncf-architecture',
+    icon: '🏗️',
+    color: 'blue',
+  },
+];
+
 export const QUICK_LINKS_ITEMS = [
   {
     id: 'curriculum',

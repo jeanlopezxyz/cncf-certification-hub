@@ -16,7 +16,7 @@ interface BaseCardProps {
   gradient?: string;
   className?: string;
   children: React.ReactNode;
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   onClick?: () => void;
 }
 

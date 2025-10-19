@@ -143,6 +143,16 @@ export const cka: Certification = {
         rating: 4.7,
       },
       {
+        title: 'Kubernetes Fundamentals (LFS258)',
+        url: 'https://training.linuxfoundation.org/training/kubernetes-fundamentals/',
+        author: 'The Linux Foundation',
+        description: 'Comprehensive paid course specifically designed for CKA preparation',
+        isPaid: true,
+        duration: '40 hours',
+        difficulty: 'intermediate',
+        rating: 4.9,
+      },
+      {
         title: 'CKA Certification Course',
         url: 'https://www.udemy.com/course/certified-kubernetes-administrator-with-practice-tests/',
         author: 'Mumshad Mannambeth',

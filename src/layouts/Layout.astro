@@ -1,5 +1,4 @@
 ---
-import '../styles/global.css';
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import { EXTERNAL_URLS, TYPOGRAPHY } from '../config/app.config';
 import { APP_CONFIG } from '../constants/index';
@@ -7,7 +6,7 @@ import LanguageSelector from '../components/language/LanguageSelector';
 import Logo from '../components/Logo';
 import SearchBar from '../components/search/SearchBar';
 import Sidebar from '../components/sidebar/Sidebar';
-import { ViewTransitions } from 'astro:transitions';
+import ThemeToggle from '../components/theme/ThemeToggle';
 
 export interface Props {
   title: string;
@@ -26,43 +25,45 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
 ---
 
 <!doctype html>
-<html lang={lang} class="dark">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={finalDescription} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src fonts.gstatic.com; img-src 'self' data:; connect-src 'self';" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
-    
     <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
-    <meta name="theme-color" content="#0b1220" />
+    <meta name="theme-color" content="#1E50D9" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | CNCF Certification Resources Hub</title>
+    
+    <!-- Preconnect and preload hints for performance -->
     <link rel="preconnect" href={EXTERNAL_URLS.fonts.googleapis} />
     <link rel="preconnect" href={EXTERNAL_URLS.fonts.gstatic} crossorigin />
+    <link rel="preload" href={EXTERNAL_URLS.fonts.googleFontsCss} as="style" />
     <link href={EXTERNAL_URLS.fonts.googleFontsCss} rel="stylesheet" />
-    <ViewTransitions />
     
-    <!-- Web Vitals Monitoring (No UI impact) -->
+    <!-- Preload critical JS -->
+    <link rel="modulepreload" href="/src/components/theme/ThemeToggle.tsx" />
+    <!-- ViewTransitions disabled to prevent flash -->
+    
+    <!-- Critical anti-flash CSS - INLINE AND COMPLETE -->
+    <style>html{visibility:hidden;opacity:0;transition:none!important}:root{color-scheme:dark;--bg-primary:#fff;--bg-secondary:#f8fafc;--bg-tertiary:#f1f5f9;--text-primary:#111827;--text-secondary:#374151;--border:#e5e7eb}.dark{--bg-primary:#0a0b1e;--bg-secondary:#141328;--bg-tertiary:#1e1b3a;--text-primary:#f8fafc;--text-secondary:#e2e8f0;--border:#334155}body{background-color:var(--bg-primary)!important;color:var(--text-primary)!important;transition:none!important;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}html.visible{visibility:visible;opacity:1;transition:opacity .15s ease-in}html.dark:not(.visible),html.light:not(.visible){visibility:visible!important;opacity:1!important}</style>
+
+  <!-- Load global.css asynchronously to prevent flash -->
+    <link rel="preload" href="/src/styles/global.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="/src/styles/global.css" /></noscript>
+
+  <!-- Enhanced theme initialization with CSS load detection -->
     <script>
-      try {
-        import('../utils/webVitals.ts').then(module => {
-          if (module.webVitalsMonitor) {
-            module.webVitalsMonitor.init();
-          }
-        }).catch(err => console.debug('Web Vitals not available:', err));
-      } catch (error) {
-        console.debug('Web Vitals initialization skipped:', error);
-      }
-    </script>
+!function(){"use strict";let themeApplied=!1;function applyTheme(){if(themeApplied)return;themeApplied=!0;try{const t=localStorage.getItem("theme")||"",e=window.matchMedia("(prefers-color-scheme: dark)").matches,o=t==="dark"||!t&&e;document.documentElement.classList.remove("light","dark"),document.documentElement.classList.add(o?"dark":"light");const s=document.documentElement,r={"--bg-primary":o?"#0a0b1e":"#fff","--text-primary":o?"#f8fafc":"#111827","--bg-secondary":o?"#141328":"#f8fafc","--bg-tertiary":o?"#1e1b3a":"#f1f5f9","--border":o?"#334155":"#e5e7eb"};Object.entries(r).forEach((([t,e])=>{s.style.setProperty(t,e)}))}catch(t){console.error("Theme error:",t)}}
+function showContent(){document.documentElement.classList.add("visible")}
+function init(){applyTheme(),setTimeout(showContent,50)}
+init(),document.addEventListener("DOMContentLoaded",showContent),window.addEventListener("load",showContent);
+const cssLink=document.querySelector('link[href*="global.css"]');cssLink&&cssLink.addEventListener("load",showContent);
+}();
+</script>
   </head>
-  <body class="bg-gray-950 text-gray-100 min-h-screen">
-    <!-- Skip link for accessibility -->
+  <body class="min-h-screen transition-none" style="background-color: var(--bg-primary); color: var(--text-primary);">
     <a 
       href="#main-content" 
       class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50 rounded-br-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium"
@@ -71,340 +72,125 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
       {t('accessibility.skipToMain')}
     </a>
     
-    <script>
-      // Progressive enhancements by browser capability
-      try {
-        const ua = navigator.userAgent.toLowerCase();
-        const isFirefox = ua.includes('firefox');
-        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        // Smooth scroll on non-Firefox if user doesn't prefer reduced motion
-        if (!isFirefox && !prefersReduced) {
-          document.documentElement.classList.add('smooth-scroll');
-        }
-
-        // In Firefox, disable backdrop-filter to avoid APZ scroll-linked warnings
-        if (isFirefox) {
-          document.documentElement.classList.add('no-backdrop-filter');
-        }
-      } catch {}
-    </script>
     <nav
-      class="fixed top-0 w-full z-50 bg-slate-900/95 backdrop-blur-xl border-b border-blue-900/30 shadow-lg shadow-black/10"
+      class="fixed top-0 z-50 bg-gradient-to-r from-blue-600 to-blue-500 dark:from-dark-bg-tertiary dark:to-dark-bg-secondary shadow-lg transition-all duration-300 border-b border-blue-500/20 dark:border-dark-border-primary"
+      style={showSidebar ? 'left: 16rem; right: 0;' : 'left: 0; right: 0;'}
     >
-      <div class="w-full px-2 sm:pl-4 sm:pr-4 max-w-[1920px] mx-auto sm:mx-0 sm:max-w-full">
-        <div class="flex justify-between items-center h-20">
-          {/* Logo and Title - Fixed width on desktop, flexible on mobile */}
-          <div
-            class="flex items-center w-auto lg:w-[380px] flex-shrink-0 justify-start transition-all duration-300"
-            id="header-logo"
-          >
-            <a
-              href={`/cncf-certification-hub${lang === 'en' ? '' : '/' + lang}`}
-              class="flex items-center gap-2 sm:gap-3 group"
-              id="logo-link"
-              aria-label={lang === 'es' ? 'Inicio' : lang === 'pt' ? 'Início' : 'Home'}
-            >
-              <Logo />
-              <div class="hidden sm:block motion-safe:group-hover:drop-shadow-[0_1px_8px_rgba(56,189,248,0.25)]">
-                <!-- Short variant for small desktops/tablets (sm to <md) -->
-                <div
-                  class={`block md:hidden ${TYPOGRAPHY.weights.black} ${TYPOGRAPHY.sizes.xl} ${TYPOGRAPHY.lineHeights.tight} ${TYPOGRAPHY.tracking.tight} text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 motion-safe:group-hover:from-sky-300 motion-safe:group-hover:to-blue-500`}
-                >
-                  {t('site.titleShort')}
-                </div>
-                <!-- Short variant for md only -->
-                <div
-                  class={`hidden md:block lg:hidden ${TYPOGRAPHY.weights.black} ${TYPOGRAPHY.sizes.xl} ${TYPOGRAPHY.lineHeights.tight} ${TYPOGRAPHY.tracking.tight} text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 motion-safe:group-hover:from-sky-300 motion-safe:group-hover:to-blue-500`}
-                >
-                  {t('site.titleShort')}
-                </div>
-                <!-- Full variant for lg and up -->
-                <div
-                  class={`hidden lg:block ${TYPOGRAPHY.weights.black} ${TYPOGRAPHY.sizes['2xl']} ${TYPOGRAPHY.lineHeights.tight} ${TYPOGRAPHY.tracking.tight} text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600 motion-safe:group-hover:from-sky-300 motion-safe:group-hover:to-blue-500`}
-                >
-                  CNCF Certification Resources Hub
-                </div>
-                
-              </div>
-            </a>
-          </div>
+      <div class="w-full px-4 max-w-[1920px] mx-auto">
+        <div class="flex items-center h-16 px-6">
+          <!-- Left spacer -->
+          <div class="w-32"></div>
           
-          {/* Search Bar - Perfectly centered */}
-          <div class="flex-1 flex justify-center px-4">
-            <div class="w-full max-w-md">
+          <!-- Centered search bar -->
+          <div class="flex-1 flex justify-center">
+            <div class="max-w-lg w-full">
               <SearchBar client:idle lang={lang} />
             </div>
           </div>
           
-          {/* Right side actions - Fixed width on desktop to match left side */}
-          <div
-            class="flex items-center justify-end space-x-2 sm:space-x-3 w-auto lg:w-[380px] flex-shrink-0"
-          >
+          <!-- Right actions - properly aligned -->
+          <div class="w-32 flex items-center justify-end gap-2">
+            <ThemeToggle client:only="react" />
             <LanguageSelector client:idle currentLang={lang} />
             <a
               href={EXTERNAL_URLS.github}
               target="_blank"
-              class="flex items-center justify-center w-12 h-12 bg-slate-800/80 border border-slate-700 rounded-lg hover:bg-slate-700/80 hover:text-blue-400 transition-all duration-300 text-gray-400"
+              class="flex items-center justify-center w-10 h-10 bg-white/10 dark:bg-gray-700 border border-white/20 dark:border-gray-600 rounded-lg hover:bg-white/20 dark:hover:bg-gray-600 hover:text-white transition-all duration-300 text-blue-100 dark:text-gray-200"
+              aria-label="GitHub Repository"
             >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                ></path>
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
               </svg>
             </a>
           </div>
         </div>
       </div>
     </nav>
-    <div class="pt-20 flex min-h-screen">
-      {
-        showSidebar && (
-          <Sidebar client:visible lang={lang} transition:persist transition:name="sidebar" />
-        )
-      }
-      
-      <!-- Ghostly-style Sidebar Toggle -->
+    
+    <div class="pt-16 flex min-h-screen">
       {showSidebar && (
-        <button
-          id="sidebar-toggle"
-          class="hidden lg:flex fixed top-32 z-40 w-7 h-7 bg-white/10 text-slate-400 hover:text-white hover:bg-white/20 transition-all duration-200 items-center justify-center rounded-md backdrop-blur-sm border border-white/10"
-        >
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+        <Sidebar client:visible lang={lang} transition:persist transition:name="sidebar" />
       )}
       
       <div
-        class="flex-1 flex flex-col min-h-screen relative"
+        class={`flex-1 flex flex-col min-h-screen relative ${showSidebar ? 'lg:ml-64' : ''}`}
         id="main-wrapper"
         data-sidebar={showSidebar}
       >
-      <main class="flex-grow" id="main-content" role="main" aria-label={t('accessibility.mainContent')}>
-        <slot />
-      </main>
-      <footer class="relative bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 border-t border-gray-800/50 mt-20 overflow-hidden" id="footer">
-        <!-- Background Pattern -->
-        <div class="absolute inset-0 opacity-5">
-          <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-        </div>
+        <main class="flex-grow" id="main-content" role="main" aria-label={t('accessibility.mainContent')}>
+          <slot />
+        </main>
         
-        <div class="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32 py-8 sm:py-12">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 xl:gap-16 items-start justify-items-center sm:justify-items-start">
-            <!-- About Section -->
-            <div class="sm:col-span-2 lg:col-span-2 min-w-0 text-center sm:text-left">
-              <div class="mb-6">
-                <h3 class={`${TYPOGRAPHY.weights.bold} ${TYPOGRAPHY.sizes.footerTitle} bg-gradient-to-r from-blue-400 to-sky-300 bg-clip-text text-transparent`}>
-                  {t('footer.title')}
-                </h3>
-                <p class={`text-gray-400 ${TYPOGRAPHY.sizes.footerText} mb-4 ${TYPOGRAPHY.lineHeights.relaxed} max-w-md`}>
-                  {t('footer.built')}
-                </p>
-                <p class={`text-gray-500 ${TYPOGRAPHY.sizes.caption} ${TYPOGRAPHY.lineHeights.relaxed} max-w-lg`}>
-                  {t('footer.disclaimer')}
-                </p>
-              </div>
-            </div>
-            
-            <!-- Study Resources -->
-            <div class="min-w-0">
-              <h4 class="font-semibold mb-4 text-white flex items-center gap-2 justify-center sm:justify-start">
-                <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
-                </svg>
-                {t('footer.studyResources')}
-              </h4>
-              <ul class="space-y-3 text-sm mx-auto sm:mx-0">
-                <li>
-                  <a
-                    href={EXTERNAL_URLS.kubernetes.docs}
-                    target="_blank"
-                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-blue-300 transition-all duration-300 hover:translate-x-1 break-words"
-                  >
-                    <svg class="w-4 h-4 text-blue-500 group-hover:text-blue-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                    </svg>
-                    {t('footer.kubernetesDocs')}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={EXTERNAL_URLS.learning.killerSh}
-                    target="_blank"
-                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-blue-300 transition-all duration-300 hover:translate-x-1 break-words"
-                  >
-                    <svg class="w-4 h-4 text-green-500 group-hover:text-green-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                    </svg>
-                    {t('footer.killersh')}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={EXTERNAL_URLS.githubCNCF}
-                    target="_blank"
-                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-blue-300 transition-all duration-300 hover:translate-x-1 break-words"
-                  >
-                    <svg class="w-4 h-4 text-sky-500 group-hover:text-sky-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
-                    </svg>
-                    {t('footer.cncfCurriculum')}
-                  </a>
-                </li>
-              </ul>
-            </div>
-            
-            <!-- Community Section -->
-            <div class="min-w-0">
-              <h4 class="font-semibold mb-4 text-white flex items-center gap-2 justify-center sm:justify-start">
-                <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
-                </svg>
-                {t('footer.community')}
-              </h4>
-              <ul class="space-y-3 text-sm mx-auto sm:mx-0">
-                <li>
-                  <a
-                    href={EXTERNAL_URLS.kubernetes.slack}
-                    target="_blank"
-                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-purple-300 transition-all duration-300 hover:translate-x-1 break-words"
-                  >
-                    <svg class="w-4 h-4 text-purple-500 group-hover:text-purple-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
-                    </svg>
-                    {t('footer.kubernetesSlack')}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={EXTERNAL_URLS.kubernetes.discussion}
-                    target="_blank"
-                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-green-300 transition-all duration-300 hover:translate-x-1 break-words"
-                  >
-                    <svg class="w-4 h-4 text-green-500 group-hover:text-green-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path>
-                    </svg>
-                    {t('footer.discussionForum')}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={EXTERNAL_URLS.kubernetes.reddit}
-                    target="_blank"
-                    class="group flex items-center gap-2 justify-center sm:justify-start text-gray-400 hover:text-orange-300 transition-all duration-300 hover:translate-x-1 break-words"
-                  >
-                    <svg class="w-4 h-4 text-orange-500 group-hover:text-orange-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clip-rule="evenodd"></path>
-                    </svg>
-                    {t('footer.reddit')}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          <!-- Bottom Section with improved styling -->
-          <div class="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-gradient-to-r from-transparent via-gray-700/50 to-transparent">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div class="text-center sm:text-left">
-                <p class="text-gray-400 text-sm leading-relaxed">
-                  {t('footer.journey')}
-                </p>
+        <footer class="relative bg-gradient-to-br from-gray-100 via-blue-50 to-indigo-100 dark:from-dark-bg-secondary dark:via-dark-bg-tertiary dark:to-dark-bg-secondary border-t border-gray-200 dark:border-dark-border-primary mt-20 overflow-hidden" id="footer" style="background: var(--bg-tertiary); border-color: var(--border);">
+          <div class="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32 py-8 sm:py-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 xl:gap-16 items-start justify-items-center sm:justify-items-start">
+              <div class="sm:col-span-2 lg:col-span-2 min-w-0 text-center sm:text-left">
+                <div class="mb-6">
+                  <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">
+                    {t('footer.title')}
+                  </h3>
+                  <p class="text-blue-700 dark:text-gray-300 mb-4 max-w-md">
+                    {t('footer.built')}
+                  </p>
+                  <p class="text-blue-600 dark:text-gray-400 text-sm max-w-lg">
+                    {t('footer.disclaimer')}
+                  </p>
+                </div>
               </div>
               
-              <!-- Social Links -->
-              <div class="flex items-center gap-3 sm:gap-4 flex-wrap justify-center sm:justify-end">
-                <a
-                  href={EXTERNAL_URLS.github}
-                  target="_blank"
-                  class="group p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-slate-600 transition-all duration-300 hover:scale-110"
-                  aria-label={t('accessibility.githubRepository')}
-                >
-                  <svg class="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+              <div class="min-w-0">
+                <h4 class="font-semibold mb-4 text-blue-800 dark:text-gray-200 flex items-center gap-2 justify-center sm:justify-start">
+                  <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
                   </svg>
-                </a>
+                  {t('footer.studyResources')}
+                </h4>
+              </div>
+              
+              <div class="min-w-0">
+                <h4 class="font-semibold mb-4 text-blue-800 dark:text-gray-200 flex items-center gap-2 justify-center sm:justify-start">
+                  <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                  </svg>
+                  {t('footer.community')}
+                </h4>
+              </div>
+            </div>
+            
+            <div class="mt-10 pt-6 border-t border-gray-300 dark:border-gray-600">
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-center sm:text-left">
+                  <p class="text-blue-700 dark:text-gray-300 text-sm">
+                    {t('footer.journey')}
+                  </p>
+                </div>
                 
-                <a
-                  href={EXTERNAL_URLS.kubernetes.slack}
-                  target="_blank"
-                  class="group p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-slate-600 transition-all duration-300 hover:scale-110"
-                  aria-label={t('accessibility.kubernetesSlack')}
-                >
-                  <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path>
-                  </svg>
-                </a>
+                <div class="flex items-center gap-3">
+                  <a
+                    href={EXTERNAL_URLS.github}
+                    target="_blank"
+                    class="p-2 rounded-lg bg-blue-200 dark:bg-gray-700 hover:bg-blue-300 dark:hover:bg-gray-600 border border-blue-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-gray-500 transition-all"
+                    aria-label={t('accessibility.githubRepository')}
+                  >
+                    <svg class="w-5 h-5 text-blue-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </footer>
       </div>
     </div>
+    
     <script>
-      // Ghostly-style sidebar toggle functionality
-      document.addEventListener('DOMContentLoaded', () => {
-        const toggleBtn = document.getElementById('sidebar-toggle');
-        const sidebar = document.querySelector('aside');
-        
-        if (toggleBtn && sidebar) {
-          let isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-          
-          const updateSidebarState = () => {
-            if (isCollapsed) {
-              // Collapsed state - button on the left, sidebar hidden
-              sidebar.style.width = '0';
-              sidebar.style.overflow = 'hidden';
-              toggleBtn.style.left = '12px';
-              toggleBtn.querySelector('svg').style.transform = 'rotate(0deg)';
-            } else {
-              // Expanded state - button attached to sidebar right edge
-              sidebar.style.width = '20rem';
-              sidebar.style.overflow = 'auto';
-              toggleBtn.style.left = 'calc(20rem - 14px)'; // 320px - 14px = button overlaps sidebar edge
-              toggleBtn.querySelector('svg').style.transform = 'rotate(180deg)';
-            }
-          };
-          
-          updateSidebarState();
-          
-          toggleBtn.addEventListener('click', () => {
-            isCollapsed = !isCollapsed;
-            localStorage.setItem('sidebarCollapsed', isCollapsed.toString());
-            updateSidebarState();
-            
-            // Dispatch event for React components to sync state
-            const event = new CustomEvent('sidebarToggle', { detail: { collapsed: isCollapsed } });
-            document.dispatchEvent(event);
-          });
+      // Final fallback to ensure content is visible
+      setTimeout(() => {
+        if (!document.documentElement.classList.contains('visible')) {
+          document.documentElement.classList.add('visible');
         }
-      });
-
-      // Handle logo click to expand sidebar and collapse all sections
-      document.addEventListener('astro:page-load', () => {
-        const logoLink = document.getElementById('logo-link');
-        const wrapper = document.getElementById('main-wrapper');
-        const hasSidebar = wrapper?.dataset.sidebar === 'true';
-
-        if (logoLink && hasSidebar) {
-          logoLink.addEventListener('click', e => {
-            e.preventDefault();
-
-            // Dispatch custom event to expand sidebar and collapse sections
-            const event = new CustomEvent('expandSidebar', {
-              detail: { collapseAllSections: true },
-            });
-            document.dispatchEvent(event);
-
-            // Navigate to home after a short delay
-            setTimeout(() => {
-              window.location.href = logoLink.href;
-            }, 200);
-          });
-        }
-      });
+      }, 1000);
     </script>
   </body>
 </html>

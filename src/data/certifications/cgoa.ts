@@ -133,6 +133,16 @@ export const cgoa: Certification = {
         rating: 4.7,
       },
       {
+        title: 'GitOps: Continuous Delivery on Kubernetes with Flux (LFS269)',
+        url: 'https://training.linuxfoundation.org/training/gitops-continuous-delivery-on-kubernetes-with-flux-lfs269/',
+        author: 'The Linux Foundation',
+        description: 'Comprehensive paid course specifically designed for GitOps certification preparation',
+        isPaid: true,
+        duration: '30 hours',
+        difficulty: 'intermediate',
+        rating: 4.8,
+      },
+      {
         title: 'Introduction to GitOps',
         url: 'https://opengitops.dev/',
         author: 'OpenGitOps Community',

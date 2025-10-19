@@ -7,6 +7,7 @@ interface SidebarSectionProps {
   isOpen: boolean;
   onToggle: () => void;
   children: React.ReactNode;
+  isCollapsed?: boolean;
 }
 
 /**
@@ -18,6 +19,7 @@ export default function SidebarSection({
   isOpen,
   onToggle,
   children,
+  isCollapsed = false,
 }: SidebarSectionProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number>(0);
@@ -28,26 +30,44 @@ export default function SidebarSection({
     }
   }, [children]);
 
+  // Icon-only mode when collapsed - Exactly aligned with hamburger
+  if (isCollapsed) {
+    return (
+      <div className="mb-2 px-4">
+        <div className="flex justify-center">
+          <button
+            onClick={onToggle}
+            className="p-2 hover:bg-white/15 rounded-lg transition-all duration-200 group"
+            aria-expanded={isOpen}
+            aria-label={title}
+            title={title}
+          >
+            <div className={`text-lg transition-colors ${isOpen ? 'text-white' : 'text-indigo-200'} group-hover:text-white`}>
+              {icon}
+            </div>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="mb-8 last:mb-4">
+    <div className="mb-4">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between px-3 py-3.5 hover:bg-slate-800/30 rounded-xl transition-all duration-300 ease-out group relative overflow-hidden"
+        className="w-full flex items-center justify-between px-2 py-2.5 hover:bg-white/10 rounded-lg transition-all duration-200 group relative"
         aria-expanded={isOpen}
         aria-label={`Toggle ${title} section`}
       >
-        {/* Hover effect background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-600/5 to-blue-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out" />
-        
-        <div className="flex items-center gap-3.5 relative z-10">
-          <div className={`transition-all duration-300 text-lg ${isOpen ? 'text-blue-400 scale-110 rotate-3' : 'text-gray-500'} group-hover:text-blue-400 group-hover:scale-110`}>
+        <div className="flex items-center gap-1.5">
+          <div className={`text-base transition-colors ${isOpen ? 'text-white' : 'text-blue-200'} group-hover:text-white`}>
             {icon}
           </div>
-          <span className={`text-base font-bold tracking-wide transition-all duration-300 ${isOpen ? 'text-white' : 'text-gray-200'} group-hover:text-white group-hover:translate-x-0.5`}>
+          <span className={`font-medium text-sm transition-colors ${isOpen ? 'text-white' : 'text-blue-100'} group-hover:text-white`}>
             {title}
           </span>
         </div>
-        <div className={`transition-all duration-500 ease-out ${isOpen ? 'rotate-180 text-blue-400' : 'text-gray-500'} group-hover:text-blue-400`}>
+        <div className={`transition-transform duration-200 ${isOpen ? 'rotate-180 text-white' : 'text-blue-200'} group-hover:text-white`}>
           <ChevronDownIcon className="w-4 h-4" />
         </div>
       </button>

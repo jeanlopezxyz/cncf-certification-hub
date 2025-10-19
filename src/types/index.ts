@@ -29,12 +29,21 @@ export type CertificationCategory =
 // ============================================================================
 
 /**
+ * Individual exam topic with optional documentation link
+ */
+export interface ExamTopic {
+  name: string;
+  url?: string;
+}
+
+/**
  * Represents an exam domain with topics and weight
  */
 export interface ExamDomain {
   name: string;
   weight: number;
-  topics: string[];
+  topics: (string | ExamTopic)[];
+  documentationUrl?: string;
 }
 
 /**

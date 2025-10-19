@@ -383,10 +383,10 @@ export default function StudyTipsGuide({ tipId, lang }: StudyTipsGuideProps) {
           {config.sections.map((section, index) => (
             <div
               key={section.id}
-              className="group relative bg-gradient-to-br from-blue-900/30 via-blue-900/40 to-blue-950/50 rounded-xl border border-blue-700/50 overflow-hidden hover:border-blue-500/50 transition-all duration-300"
+              className="group relative bg-gradient-to-br from-blue-100 to-blue-200 dark:from-[#242145]/80 dark:via-[#1E1B3A]/40 dark:to-[#242145]/50 rounded-xl border border-blue-300 dark:border-purple-700/50 overflow-hidden hover:border-blue-400 dark:hover:border-purple-500/50 transition-all duration-300"
             >
               {/* Background decoration */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-600/10 to-transparent rounded-full blur-3xl"></div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/10 dark:from-purple-500/10 to-transparent rounded-full blur-3xl"></div>
 
               <button
                 className="relative w-full p-5 text-left transition-all duration-300 hover:bg-blue-900/10"

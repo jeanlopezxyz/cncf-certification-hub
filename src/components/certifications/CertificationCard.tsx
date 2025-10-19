@@ -30,18 +30,18 @@ export default function CertificationCard({
       style={animationProps.style}
     >
       <div 
-        className="h-full bg-gradient-to-br from-blue-900/40 to-blue-950/50 border border-blue-700/50 rounded-xl p-5 sm:p-6 hover:border-blue-500/60 hover:bg-gradient-to-br hover:from-blue-900/50 hover:to-blue-950/60 transition-all duration-300 relative flex flex-col group overflow-hidden"
+        className="h-full bg-gradient-to-br from-white to-gray-50 dark:from-dark-bg-secondary dark:to-dark-bg-tertiary border border-gray-200 dark:border-dark-border-primary rounded-xl p-5 sm:p-6 hover:border-blue-400 dark:hover:border-blue-500/60 hover:shadow-xl dark:hover:shadow-blue-900/30 transition-all duration-300 relative flex flex-col group overflow-hidden card-hover"
         style={{
-          transform: 'translateZ(0)', // Forces GPU acceleration
-          backfaceVisibility: 'hidden', // Prevents rendering issues
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
         }}
       >
-        {/* Glow effect on hover - no position change */}
+        {/* Enhanced glow effect on hover */}
         <div 
-          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none dark:block hidden"
           style={{
-            background: 'radial-gradient(circle at center, transparent 0%, rgba(59, 130, 246, 0.1) 100%)',
-            boxShadow: '0 0 40px rgba(59, 130, 246, 0.3), inset 0 0 20px rgba(59, 130, 246, 0.05)',
+            background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
+            boxShadow: '0 0 60px rgba(59, 130, 246, 0.4), inset 0 0 30px rgba(59, 130, 246, 0.1)',
           }}
         />
         {/* Prerequisite Badge - Top right corner with proper spacing */}
@@ -130,13 +130,13 @@ export default function CertificationCard({
         </div>
 
         {/* View Details Link - Always at bottom */}
-        <div className="mt-auto pt-4 border-t border-blue-700/30">
+        <div className="mt-auto pt-4 border-t border-gray-200 dark:border-dark-border-primary">
           <div className="flex items-center justify-between mt-3">
-            <span className="text-sm font-medium text-gray-300 group-hover:text-blue-300 transition-colors">
+            <span className="text-sm font-medium text-gray-600 dark:text-dark-text-tertiary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-all duration-300">
               {t('certifications.card.viewDetails')}
             </span>
             <svg
-              className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-all group-hover:translate-x-1"
+              className="w-4 h-4 text-blue-500 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

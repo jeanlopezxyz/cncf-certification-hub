@@ -3,7 +3,19 @@
  * Tracks Core Web Vitals without affecting UI/functionality
  */
 
-import { getCLS, getFID, getFCP, getLCP, getTTFB, type Metric } from 'web-vitals';
+import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
+import type { Metric } from 'web-vitals';
+
+// Declare gtag type for Google Analytics
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      targetId: string,
+      parameters?: Record<string, unknown>
+    ) => void;
+  }
+}
 
 interface VitalsData {
   name: string;
@@ -42,8 +54,8 @@ class WebVitalsMonitor {
     }
 
     // Example: Send to Google Analytics 4
-    if (typeof gtag !== 'undefined') {
-      gtag('event', metric.name, {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', metric.name, {
         value: Math.round(metric.value),
         metric_rating: metric.rating,
         custom_parameter_1: metric.delta,
@@ -81,11 +93,11 @@ class WebVitalsMonitor {
 
     try {
       // Core Web Vitals
-      getCLS(this.handleMetric);
-      getFID(this.handleMetric);
-      getFCP(this.handleMetric);
-      getLCP(this.handleMetric);
-      getTTFB(this.handleMetric);
+      onCLS(this.handleMetric);
+      onINP(this.handleMetric); // INP replaces FID in web-vitals v5
+      onFCP(this.handleMetric);
+      onLCP(this.handleMetric);
+      onTTFB(this.handleMetric);
 
       console.log('🚀 Web Vitals monitoring initialized');
     } catch (error) {
@@ -102,7 +114,7 @@ class WebVitalsMonitor {
 
     const grouped = this.data.reduce((acc, metric) => {
       if (!acc[metric.name]) acc[metric.name] = [];
-      acc[metric.name].push(metric.value);
+      acc[metric.name]!.push(metric.value);
       return acc;
     }, {} as Record<string, number[]>);
 

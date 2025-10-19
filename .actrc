@@ -1,4 +1,0 @@
-# Configuración de Act para testing local
--P ubuntu-latest=catthehacker/ubuntu:act-20.04
---container-architecture linux/amd64
---artifact-server-path /tmp/artifacts

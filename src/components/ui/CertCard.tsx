@@ -45,7 +45,7 @@ const CertCard: React.FC<CertCardProps> = ({
   showArrow,
 }) => {
   const t = useTranslations(lang);
-  const animationProps = showAnimation ? useFadeInUpStagger(index) : {};
+  const animationProps = showAnimation ? useFadeInUpStagger(index) : { className: '', style: {} };
   const certUrl = buildCertificationUrl(cert.id, lang);
 
   // Variant-specific configurations
@@ -170,8 +170,8 @@ const CertCard: React.FC<CertCardProps> = ({
     >
       <a
         href={certUrl}
-        className={`${variant === 'detailed' ? 'block' : 'group'} ${showAnimation ? animationProps.className || '' : ''}`}
-        style={showAnimation ? animationProps.style : {}}
+        className={`${variant === 'detailed' ? 'block' : 'group'} ${animationProps.className || ''}`}
+        style={animationProps.style || {}}
         aria-label={`${t('certifications.card.viewDetails')}: ${cert?.acronym ?? cert.id}`}
       >
         <BaseCard 

@@ -1,0 +1,50 @@
+/* Critical CSS that must be inline - no imports */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  visibility: hidden;
+  opacity: 0;
+  transition: none !important;
+}
+
+/* Theme variables */
+:root {
+  --bg-primary: #fff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --border: #e5e7eb;
+}
+
+.dark {
+  --bg-primary: #0a0b1e;
+  --bg-secondary: #141328;
+  --bg-tertiary: #1e1b3a;
+  --text-primary: #f8fafc;
+  --text-secondary: #e2e8f0;
+  --border: #334155;
+}
+
+body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  transition: none !important;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Show content when ready */
+html.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.15s ease-in;
+}
+
+/* Emergency fallback - always visible if theme class exists */
+html.dark:not(.visible),
+html.light:not(.visible) {
+  visibility: visible !important;
+  opacity: 1 !important;
+}

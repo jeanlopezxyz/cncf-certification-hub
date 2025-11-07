@@ -29,21 +29,29 @@ export default function CertificationCard({
       className={`block group ${animationProps.className}`}
       style={animationProps.style}
     >
-      <div 
-        className="h-full bg-gradient-to-br from-white to-gray-50 dark:from-dark-bg-secondary dark:to-dark-bg-tertiary border border-gray-200 dark:border-dark-border-primary rounded-xl p-5 sm:p-6 hover:border-blue-400 dark:hover:border-blue-500/60 hover:shadow-xl dark:hover:shadow-blue-900/30 transition-all duration-300 relative flex flex-col group overflow-hidden card-hover"
+      <div
+        className="h-full bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/50 dark:from-slate-900/80 dark:via-slate-800/60 dark:to-slate-900/80 backdrop-blur-sm border border-gray-200/80 dark:border-slate-700/50 rounded-2xl p-6 sm:p-7 hover:border-blue-400/60 dark:hover:border-blue-500/60 hover:shadow-2xl hover:shadow-blue-500/20 dark:hover:shadow-blue-900/40 transition-all duration-500 relative flex flex-col group overflow-hidden hover:-translate-y-2"
         style={{
           transform: 'translateZ(0)',
           backfaceVisibility: 'hidden',
         }}
       >
+        {/* Animated gradient background on hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-indigo-500/5 to-purple-500/5 dark:from-blue-500/10 dark:via-indigo-500/10 dark:to-purple-500/10"></div>
+        </div>
+
         {/* Enhanced glow effect on hover */}
-        <div 
-          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none dark:block hidden"
+        <div
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"
           style={{
-            background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
-            boxShadow: '0 0 60px rgba(59, 130, 246, 0.4), inset 0 0 30px rgba(59, 130, 246, 0.1)',
+            background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
+            boxShadow: '0 0 80px rgba(59, 130, 246, 0.3), inset 0 0 40px rgba(59, 130, 246, 0.1)',
           }}
         />
+
+        {/* Corner accent */}
+        <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-500/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         {/* Prerequisite Badge - Top right corner with proper spacing */}
         {cert.prerequisite && (
           <div className="absolute top-3 right-3 z-10 max-w-[140px]">

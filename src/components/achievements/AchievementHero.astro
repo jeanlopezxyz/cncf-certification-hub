@@ -1,0 +1,90 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  iconSrc: string;
+  certCount: number;
+  certCountLabel: string;
+  certRequiredLabel: string;
+  gradientClass: string;
+  particleStyle?: 'cosmic' | 'golden';
+}
+
+const {
+  title,
+  description,
+  iconSrc,
+  certCount,
+  certCountLabel,
+  certRequiredLabel,
+  gradientClass,
+  particleStyle = 'cosmic'
+} = Astro.props;
+---
+
+<div
+  class={`relative ${gradientClass} rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 text-white shadow-2xl overflow-hidden`}
+>
+  <!-- Particle effects -->
+  {particleStyle === 'cosmic' ? (
+    <!-- Space-like floating particles -->
+    <div class="absolute inset-0 opacity-30">
+      <div class="absolute top-8 left-12 w-1 h-1 bg-cyan-300 rounded-full animate-pulse"></div>
+      <div class="absolute top-16 right-16 w-0.5 h-0.5 bg-blue-200 rounded-full animate-ping" style="animation-delay: 0.8s;"></div>
+      <div class="absolute bottom-12 left-8 w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" style="animation-delay: 1.2s;"></div>
+      <div class="absolute bottom-8 right-12 w-0.5 h-0.5 bg-blue-300 rounded-full animate-ping" style="animation-delay: 1.8s;"></div>
+      <div class="absolute top-1/3 right-1/4 w-1 h-1 bg-cyan-200 rounded-full animate-pulse" style="animation-delay: 2.4s;"></div>
+      <div class="absolute top-2/3 left-1/3 w-0.5 h-0.5 bg-blue-200 rounded-full animate-ping" style="animation-delay: 3s;"></div>
+    </div>
+
+    <!-- Cosmic flow effect -->
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent transform rotate-12 animate-pulse" style="animation-duration: 4s;"></div>
+    </div>
+  ) : (
+    <!-- Golden sparkle effect -->
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute top-4 left-4 w-2 h-2 bg-white rounded-full animate-ping"></div>
+      <div class="absolute top-12 right-8 w-1 h-1 bg-yellow-200 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+      <div class="absolute bottom-8 left-8 w-1.5 h-1.5 bg-white rounded-full animate-ping" style="animation-delay: 1s;"></div>
+      <div class="absolute bottom-4 right-4 w-1 h-1 bg-yellow-200 rounded-full animate-pulse" style="animation-delay: 1.5s;"></div>
+      <div class="absolute top-1/2 left-1/4 w-1 h-1 bg-white rounded-full animate-ping" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Animated golden shine effect -->
+    <div class="absolute inset-0 opacity-30">
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 animate-pulse" style="animation-duration: 3s;"></div>
+    </div>
+  )}
+
+  <div class="relative flex flex-col lg:flex-row items-center lg:items-start lg:justify-between gap-4">
+    <div class="text-center lg:text-left flex-1">
+      <div class="flex flex-col lg:flex-row items-center gap-3 mb-4">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center">
+          <img
+            src={iconSrc}
+            alt={title}
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-contain drop-shadow-xl"
+          />
+        </div>
+        <div>
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+            {title}
+          </h1>
+          <p class="text-base sm:text-lg opacity-90 mt-1 text-blue-50">
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certification Count -->
+    <div class="flex flex-col items-center bg-gradient-to-br from-blue-800/50 to-sky-700/50 backdrop-blur-sm rounded-2xl px-6 sm:px-8 py-4 sm:py-6 border border-blue-400/30 shadow-xl">
+      <div class="text-4xl sm:text-5xl font-bold mb-1 sm:mb-2 text-blue-100">{certCount}</div>
+      <div class="text-xs sm:text-sm text-blue-100">{certCountLabel}</div>
+      <div class="text-xs sm:text-sm text-blue-200 font-semibold">{certRequiredLabel}</div>
+    </div>
+  </div>
+</div>

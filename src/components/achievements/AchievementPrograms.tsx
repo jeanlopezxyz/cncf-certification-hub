@@ -52,31 +52,48 @@ export default function AchievementPrograms({ lang }: AchievementProgramsProps) 
 
         {/* Programs Grid */}
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto md:items-stretch">
-          {programs.map(program => (
+          {programs.map((program, index) => (
             <a
               key={program.id}
               href={program.href}
-              className="group relative bg-gradient-to-br from-blue-900/40 to-blue-950/50 rounded-2xl p-6 border-2 border-blue-700/50 hover:border-blue-500/60 transition-all duration-300 hover:shadow-xl hover:shadow-blue-400/20 hover:scale-105 flex"
+              className="group relative bg-gradient-to-br from-blue-900/30 via-indigo-900/20 to-blue-950/40 backdrop-blur-sm rounded-2xl p-8 border-2 border-blue-700/40 hover:border-blue-500/70 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-400/30 hover:-translate-y-2 flex overflow-hidden"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="flex items-start gap-4 w-full">
-                {/* Icon */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <img
-                    src={program.iconSrc}
-                    alt={program.title}
-                    className="w-full h-full object-contain drop-shadow-lg"
-                  />
+              {/* Animated background gradient on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-indigo-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              {/* Glow effect */}
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{
+                  background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
+                  boxShadow: '0 0 60px rgba(59, 130, 246, 0.2)'
+                }}
+              ></div>
+
+              {/* Decorative corner */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              <div className="flex items-start gap-6 w-full relative z-10">
+                {/* Icon with float animation */}
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:animate-float">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <img
+                      src={program.iconSrc}
+                      alt={program.title}
+                      className="w-full h-full object-contain drop-shadow-2xl relative z-10 transform group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
                 </div>
 
                 {/* Content */}
                 <div className="flex-1 flex flex-col">
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">
+                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-300 group-hover:to-sky-200 group-hover:bg-clip-text transition-all duration-300">
                     {program.title}
                   </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed flex-1">
+                  <p className="text-gray-400 text-base leading-relaxed flex-1 group-hover:text-gray-300 transition-colors">
                     {program.description}
                   </p>
-                </div>
 
                 {/* Arrow */}
                 <div className="text-gray-500 group-hover:text-blue-400 transition-colors">

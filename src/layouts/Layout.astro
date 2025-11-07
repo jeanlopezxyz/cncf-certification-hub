@@ -1,4 +1,5 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import { EXTERNAL_URLS, TYPOGRAPHY } from '../config/app.config';
 import { APP_CONFIG } from '../constants/index';
@@ -35,6 +36,9 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
     <meta name="theme-color" content="#1E50D9" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | CNCF Certification Resources Hub</title>
+
+    <!-- View Transitions for smooth navigation -->
+    <ViewTransitions />
     
     <!-- Preconnect and preload hints for performance -->
     <link rel="preconnect" href={EXTERNAL_URLS.fonts.googleapis} />
@@ -44,24 +48,122 @@ const baseUrl = (import.meta.env.BASE_URL || '/').endsWith('/')
     
     <!-- Preload critical JS -->
     <link rel="modulepreload" href="/src/components/theme/ThemeToggle.tsx" />
-    <!-- ViewTransitions disabled to prevent flash -->
-    
-    <!-- Critical anti-flash CSS - INLINE AND COMPLETE -->
-    <style>html{visibility:hidden;opacity:0;transition:none!important}:root{color-scheme:dark;--bg-primary:#fff;--bg-secondary:#f8fafc;--bg-tertiary:#f1f5f9;--text-primary:#111827;--text-secondary:#374151;--border:#e5e7eb}.dark{--bg-primary:#0a0b1e;--bg-secondary:#141328;--bg-tertiary:#1e1b3a;--text-primary:#f8fafc;--text-secondary:#e2e8f0;--border:#334155}body{background-color:var(--bg-primary)!important;color:var(--text-primary)!important;transition:none!important;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif}html.visible{visibility:visible;opacity:1;transition:opacity .15s ease-in}html.dark:not(.visible),html.light:not(.visible){visibility:visible!important;opacity:1!important}</style>
 
-  <!-- Load global.css asynchronously to prevent flash -->
-    <link rel="preload" href="/src/styles/global.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="/src/styles/global.css" /></noscript>
-
-  <!-- Enhanced theme initialization with CSS load detection -->
+    <!-- Smooth page transitions with View Transitions API -->
     <script>
-!function(){"use strict";let themeApplied=!1;function applyTheme(){if(themeApplied)return;themeApplied=!0;try{const t=localStorage.getItem("theme")||"",e=window.matchMedia("(prefers-color-scheme: dark)").matches,o=t==="dark"||!t&&e;document.documentElement.classList.remove("light","dark"),document.documentElement.classList.add(o?"dark":"light");const s=document.documentElement,r={"--bg-primary":o?"#0a0b1e":"#fff","--text-primary":o?"#f8fafc":"#111827","--bg-secondary":o?"#141328":"#f8fafc","--bg-tertiary":o?"#1e1b3a":"#f1f5f9","--border":o?"#334155":"#e5e7eb"};Object.entries(r).forEach((([t,e])=>{s.style.setProperty(t,e)}))}catch(t){console.error("Theme error:",t)}}
-function showContent(){document.documentElement.classList.add("visible")}
-function init(){applyTheme(),setTimeout(showContent,50)}
-init(),document.addEventListener("DOMContentLoaded",showContent),window.addEventListener("load",showContent);
-const cssLink=document.querySelector('link[href*="global.css"]');cssLink&&cssLink.addEventListener("load",showContent);
-}();
-</script>
+      // Prevent flash on navigation by maintaining background color
+      if (typeof window !== 'undefined') {
+        const root = document.documentElement;
+        const savedTheme = localStorage.getItem('theme') || '';
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+
+        root.style.backgroundColor = isDark ? '#0a0b1e' : '#fff';
+        root.classList.add(isDark ? 'dark' : 'light');
+      }
+    </script>
+
+    <!-- Critical anti-flash CSS - Optimized -->
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg-primary: #fff;
+        --bg-secondary: #f8fafc;
+        --bg-tertiary: #f1f5f9;
+        --text-primary: #111827;
+        --text-secondary: #374151;
+        --border: #e5e7eb;
+      }
+
+      .dark {
+        --bg-primary: #0a0b1e;
+        --bg-secondary: #141328;
+        --bg-tertiary: #1e1b3a;
+        --text-primary: #f8fafc;
+        --text-secondary: #e2e8f0;
+        --border: #334155;
+      }
+
+      html {
+        background-color: var(--bg-primary);
+        transition: background-color 0s !important;
+      }
+
+      body {
+        background-color: var(--bg-primary) !important;
+        color: var(--text-primary) !important;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      }
+
+      /* Smooth View Transitions */
+      @view-transition {
+        navigation: auto;
+      }
+
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 0.2s;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      ::view-transition-old(root) {
+        animation-name: fadeOut;
+      }
+
+      ::view-transition-new(root) {
+        animation-name: fadeIn;
+      }
+
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0.8; }
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0.8; }
+        to { opacity: 1; }
+      }
+    </style>
+
+  <!-- Load global.css synchronously for instant styling -->
+    <link rel="stylesheet" href="/src/styles/global.css" />
+
+    <!-- Simple theme initialization without flash -->
+    <script is:inline>
+      (function() {
+        function applyTheme() {
+          try {
+            const savedTheme = localStorage.getItem('theme') || '';
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+
+            document.documentElement.classList.remove('light', 'dark');
+            document.documentElement.classList.add(isDark ? 'dark' : 'light');
+
+            const root = document.documentElement;
+            const colors = {
+              '--bg-primary': isDark ? '#0a0b1e' : '#fff',
+              '--text-primary': isDark ? '#f8fafc' : '#111827',
+              '--bg-secondary': isDark ? '#141328' : '#f8fafc',
+              '--bg-tertiary': isDark ? '#1e1b3a' : '#f1f5f9',
+              '--border': isDark ? '#334155' : '#e5e7eb'
+            };
+
+            Object.entries(colors).forEach(([prop, value]) => {
+              root.style.setProperty(prop, value);
+            });
+          } catch (error) {
+            console.error('Theme error:', error);
+          }
+        }
+
+        applyTheme();
+
+        // Listen for theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+        window.addEventListener('storage', applyTheme);
+      })();
+    </script>
   </head>
   <body class="min-h-screen transition-none" style="background-color: var(--bg-primary); color: var(--text-primary);">
     <a 

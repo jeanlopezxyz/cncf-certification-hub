@@ -1,0 +1,46 @@
+---
+interface Step {
+  number: number;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  title: string;
+  steps: Step[];
+}
+
+const { title, steps } = Astro.props;
+
+const getStepColor = (number: number) => {
+  switch (number) {
+    case 1: return 'bg-blue-600';
+    case 2: return 'bg-sky-600';
+    case 3: return 'bg-blue-700';
+    default: return 'bg-blue-600';
+  }
+};
+---
+
+<div class="bg-gradient-to-r from-blue-800/20 to-sky-800/20 rounded-2xl p-4 sm:p-6 lg:p-8 xl:p-10 border border-blue-600/40 mb-6 sm:mb-8">
+  <h3 class="text-lg sm:text-xl font-bold mb-4 text-center sm:text-left">
+    <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600">{title}</span>
+  </h3>
+  <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 xl:gap-8 2xl:gap-12">
+    {steps.map((step) => (
+      <div class="flex items-start gap-3 p-3 sm:p-0">
+        <div class={`w-10 h-10 sm:w-8 sm:h-8 ${getStepColor(step.number)} rounded-full flex items-center justify-center flex-shrink-0`}>
+          <span class="text-white font-bold text-base sm:text-sm">{step.number}</span>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white mb-1 text-base sm:text-base">
+            {step.title}
+          </h4>
+          <p class="text-sm sm:text-sm text-gray-400">
+            {step.description}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

@@ -5,76 +5,48 @@ import { certifications } from '../../data/certifications';
 import { APP_CONFIG } from '../../constants';
 import { TYPOGRAPHY } from '../../config/app.config';
 import AchievementCertificationGrid from '../../components/achievements/AchievementCertificationGrid';
+import AchievementHero from '../../components/achievements/AchievementHero.astro';
+import AchievementSteps from '../../components/achievements/AchievementSteps.astro';
+import AchievementCTA from '../../components/achievements/AchievementCTA.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const basePath = `${APP_CONFIG.basePath}${lang === 'en' ? '' : '/' + lang}`;
 
 const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
+
+const steps = [
+  {
+    number: 1,
+    title: t('achievements.kubestronaut.step1Title'),
+    description: t('achievements.kubestronaut.step1Desc')
+  },
+  {
+    number: 2,
+    title: t('achievements.kubestronaut.step2Title'),
+    description: t('achievements.kubestronaut.step2Desc')
+  },
+  {
+    number: 3,
+    title: t('achievements.kubestronaut.step3Title'),
+    description: t('achievements.kubestronaut.step3Desc')
+  }
+];
 ---
 
 <Layout title={t('achievements.kubestronaut.title')} lang={lang} showSidebar={true}>
   <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-20 3xl:px-32 py-6 sm:py-8">
-    <!-- Hero Section with Progress -->
-    <div
-      class="relative bg-gradient-to-br from-cyan-500 via-blue-500 to-indigo-600 dark:from-[#242145] dark:via-[#1A1735] dark:to-[#130F25] rounded-3xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 text-white shadow-2xl overflow-hidden"
-    >
-      <!-- Space-like floating particles -->
-      <div class="absolute inset-0 opacity-30">
-        <div class="absolute top-8 left-12 w-1 h-1 bg-cyan-300 rounded-full animate-pulse"></div>
-        <div class="absolute top-16 right-16 w-0.5 h-0.5 bg-blue-200 rounded-full animate-ping" style="animation-delay: 0.8s;"></div>
-        <div class="absolute bottom-12 left-8 w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" style="animation-delay: 1.2s;"></div>
-        <div class="absolute bottom-8 right-12 w-0.5 h-0.5 bg-blue-300 rounded-full animate-ping" style="animation-delay: 1.8s;"></div>
-        <div class="absolute top-1/3 right-1/4 w-1 h-1 bg-cyan-200 rounded-full animate-pulse" style="animation-delay: 2.4s;"></div>
-        <div class="absolute top-2/3 left-1/3 w-0.5 h-0.5 bg-blue-200 rounded-full animate-ping" style="animation-delay: 3s;"></div>
-      </div>
-      
-      <!-- Cosmic flow effect -->
-      <div class="absolute inset-0 opacity-20">
-        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent transform rotate-12 animate-pulse" style="animation-duration: 4s;"></div>
-      </div>
-
-      <div
-        class="relative flex flex-col lg:flex-row items-center lg:items-start lg:justify-between gap-4"
-      >
-        <div class="text-center lg:text-left flex-1">
-          <div class="flex flex-col lg:flex-row items-center gap-3 mb-4">
-            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center">
-              <img
-                src={`${APP_CONFIG.basePath}/kubestronaut-icon.svg`}
-                alt={t('achievements.kubestronaut.title')}
-                loading="lazy"
-                decoding="async"
-                class="w-full h-full object-contain drop-shadow-xl"
-              />
-            </div>
-            <div>
-              <h1
-                class={`${TYPOGRAPHY.sizes.title} ${TYPOGRAPHY.weights.bold} bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent`}
-              >
-                {t('achievements.kubestronaut.title')}
-              </h1>
-              <p class={`${TYPOGRAPHY.sizes.subheading} opacity-90 mt-1 text-blue-50`}>
-                {t('achievements.kubestronaut.description')}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Certification Count -->
-        <div
-          class="flex flex-col items-center bg-gradient-to-br from-blue-800/50 to-sky-700/50 backdrop-blur-sm rounded-2xl px-6 sm:px-8 py-4 sm:py-6 border border-blue-400/30 shadow-xl"
-        >
-          <div class={`${TYPOGRAPHY.sizes['5xl']} ${TYPOGRAPHY.weights.bold} mb-1 sm:mb-2 text-blue-100`}>5</div>
-          <div class={`${TYPOGRAPHY.sizes.caption} sm:${TYPOGRAPHY.sizes.bodySmall} text-blue-100`}>
-            {t('certifications.card.certifications')}
-          </div>
-          <div class={`${TYPOGRAPHY.sizes.caption} sm:${TYPOGRAPHY.sizes.bodySmall} text-blue-200 ${TYPOGRAPHY.weights.semibold}`}>
-            {t('certifications.card.required')}
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Hero Section - Refactored Component -->
+    <AchievementHero
+      title={t('achievements.kubestronaut.title')}
+      description={t('achievements.kubestronaut.description')}
+      iconSrc={`${APP_CONFIG.basePath}/kubestronaut-icon.svg`}
+      certCount={5}
+      certCountLabel={t('certifications.card.certifications')}
+      certRequiredLabel={t('certifications.card.required')}
+      gradientClass="bg-gradient-to-br from-cyan-500 via-blue-500 to-indigo-600 dark:from-[#242145] dark:via-[#1A1735] dark:to-[#130F25]"
+      particleStyle="cosmic"
+    />
 
     <!-- Certification Path -->
     <div class="mb-6 sm:mb-8">
@@ -94,7 +66,6 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
           {t('achievements.kubestronaut.requiredCerts')}
         </span>
       </h2>
-
 
       <AchievementCertificationGrid
         certIds={kubestronautCerts}
@@ -191,79 +162,17 @@ const kubestronautCerts = ['kcna', 'kcsa', 'cka', 'ckad', 'cks'];
       </div>
     </div>
 
-    <!-- How to Get Started -->
-    <div
-      class="bg-gradient-to-r from-blue-800/20 to-sky-800/20 rounded-2xl p-4 sm:p-6 lg:p-8 xl:p-10 border border-blue-600/40 mb-6 sm:mb-8"
-    >
-      <h3 class="text-lg sm:text-xl font-bold mb-4 text-center sm:text-left">
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-blue-600">{t('achievements.kubestronaut.how')}</span>
-      </h3>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 xl:gap-8 2xl:gap-12"
-      >
-        <div class="flex items-start gap-3 p-3 sm:p-0">
-          <div
-            class="w-10 h-10 sm:w-8 sm:h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0"
-          >
-            <span class="text-white font-bold text-base sm:text-sm">1</span>
-          </div>
-          <div>
-            <h4 class="font-semibold text-white mb-1 text-base sm:text-base">
-              {t('achievements.kubestronaut.step1Title')}
-            </h4>
-            <p class="text-sm sm:text-sm text-gray-400">
-              {t('achievements.kubestronaut.step1Desc')}
-            </p>
-          </div>
-        </div>
-        <div class="flex items-start gap-3 p-3 sm:p-0">
-          <div
-            class="w-10 h-10 sm:w-8 sm:h-8 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0"
-          >
-            <span class="text-white font-bold text-base sm:text-sm">2</span>
-          </div>
-          <div>
-            <h4 class="font-semibold text-white mb-1 text-base sm:text-base">
-              {t('achievements.kubestronaut.step2Title')}
-            </h4>
-            <p class="text-sm sm:text-sm text-gray-400">
-              {t('achievements.kubestronaut.step2Desc')}
-            </p>
-          </div>
-        </div>
-        <div class="flex items-start gap-3 p-3 sm:p-0">
-          <div
-            class="w-10 h-10 sm:w-8 sm:h-8 bg-blue-700 rounded-full flex items-center justify-center flex-shrink-0"
-          >
-            <span class="text-white font-bold text-base sm:text-sm">3</span>
-          </div>
-          <div>
-            <h4 class="font-semibold text-white mb-1 text-base sm:text-base">
-              {t('achievements.kubestronaut.step3Title')}
-            </h4>
-            <p class="text-sm sm:text-sm text-gray-400">
-              {t('achievements.kubestronaut.step3Desc')}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- How to Get Started - Refactored Component -->
+    <AchievementSteps
+      title={t('achievements.kubestronaut.how')}
+      steps={steps}
+    />
 
-    <!-- Call to Action -->
-    <div class="mt-6 sm:mt-8 text-center">
-      <p class="text-gray-400 mb-4">{t('achievements.kubestronaut.ctaText')}</p>
-      <a
-        href={`${basePath}/certifications/${kubestronautCerts[0]}`}
-        class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-sky-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-sky-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30"
-      >
-        {t('achievements.kubestronaut.ctaButton')}
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"></path>
-        </svg>
-      </a>
-    </div>
+    <!-- Call to Action - Refactored Component -->
+    <AchievementCTA
+      text={t('achievements.kubestronaut.ctaText')}
+      buttonText={t('achievements.kubestronaut.ctaButton')}
+      href={`${basePath}/certifications/${kubestronautCerts[0]}`}
+    />
   </div>
 </Layout>
